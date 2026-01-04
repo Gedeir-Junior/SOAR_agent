@@ -1,0 +1,16 @@
+infra/
+# Containers / volumes
+data/
+pg_data/
+ollama_data/
+n8n_data/
+
+# Python
+__pycache__/
+*.pyc
+.env
+.venv/
+
+# Logs
+*.log
+
