@@ -4,7 +4,7 @@ import json
 import fitz 
 import faiss 
 
-from rag.embeddings import embed_text 
+from rag.embeddings import embed
 
 # PATHs e constants
 
@@ -27,18 +27,23 @@ def extract_text_from_pdf(pdf_path: Path):
     """
     Extrai texto de um arquivo PDF
     """
+    try:
 
-    doc = fitz.open(pdf_path)
-    pages = []
+        doc = fitz.open(pdf_path)
+        pages = []
 
-    for page_num, page in enumerate(doc, start=1):
-        text = page.get_text()
-        if text.strip():
-            pages.append({
-                "text": text,
-                "page": page_num
-            })
-    return pages
+        for page_num, page in enumerate(doc, start=1):
+            text = page.get_text()
+            if text.strip():
+                pages.append({
+                    "text": text,
+                    "page": page_num
+                })
+        return pages
+    except Exception as e:
+        print(f"Erro ao extrair texto de {pdf_path.name}: {e}")
+        return []
+    
 
 def chunk_text(text: str, size: int, overlap: int):
     """ 
@@ -48,10 +53,12 @@ def chunk_text(text: str, size: int, overlap: int):
     chunks = []
     start = 0
 
+    step = size - overlap
+
     while start < len(text):
         end = start + size
         chunks.append(text[start:end])
-        start += end - overlap
+        start += step
     
     return chunks
 
@@ -90,6 +97,8 @@ def ingest_pdfs():
 
     with open(CHUNKS_PATH, "w", encoding="utf-8") as f:
         json.dump(all_chunks, f, ensure_ascii=False, indent=2)
+
+    faiss.write_index(index, str(INDEX_PATH))
     
     print(f"Ingest concluído: {len(all_chunks)} chunks vetorizados.")
 

@@ -1,5 +1,5 @@
 from pathlib import Path
-from rag.base import FaissRetriever
+from rag.retrievers.base import FaissRetriever
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 EXAMPLE_STORE = BASE_DIR / "rag" / "vectorstore" / "examples"

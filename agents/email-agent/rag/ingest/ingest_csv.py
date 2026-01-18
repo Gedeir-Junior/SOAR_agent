@@ -23,19 +23,19 @@ LABEL_COLUMN = ["label", "class", "category", "spam"]
 def detect_column(columns, candidates):
     for candidate in candidates:
         if candidate in columns:
-            return candidates
+            return candidate
     return None
 
 def ingest_csv():
     all_chunks = []
 
     for csv_file in DATASETS_DIR.glob("*.csv"):
-        with open(csv_file, newline="", encoding="utd-8", errors="ignore") as f:
+        with open(csv_file, newline="", encoding="utf-8", errors="ignore") as f:
             reader = csv.DictReader(f)
             columns = reader.fieldnames or []
 
-            text_col = detect_column(columns, TEXT_COLUMNS)
-            label_col = detect_column(columns, LABEL_COLUMNS)
+            text_col = detect_column(columns, TEXT_COLUMN)
+            label_col = detect_column(columns, LABEL_COLUMN)
 
             if not text_col:
                 print(f"No text column found in {csv_file.name}, skipping.")
@@ -48,7 +48,7 @@ def ingest_csv():
 
                 label = row.get(label_col, "unknown").strip() if label_col else "unknown"
 
-                all__chunks.append({
+                all_chunks.append({
                     "text": text,
                     "metadata": {"source": csv_file.name, "label": str(label).lower(), "type": "email_example"}
                 })
@@ -62,7 +62,7 @@ def ingest_csv():
     index = faiss.IndexFlatL2(embeddings.shape[1])
     index.add(embeddings)
 
-    with open(VECTORSTORE_DIR / "index.faiss", "w", encodings="utf-8") as f:
+    with open(VECTORSTORE_DIR / "chunks.json", "w", encoding="utf-8") as f:
         json.dump(all_chunks, f, ensure_ascii=False, indent=2)
 
     faiss.write_index(index, str(VECTORSTORE_DIR / "index.faiss"))
