@@ -1,5 +1,5 @@
-from rag.retrievers.pdf_retriever import retrieve_pdf_context
-from rag.retrievers.example_retriever import retrieve_examples
+from .pdf_retriever import retrieve_pdf_context
+from .example_retriever import retrieve_examples
 
 
 def retrieve_rag_context(query: str):

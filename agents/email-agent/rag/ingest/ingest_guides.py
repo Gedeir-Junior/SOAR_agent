@@ -8,7 +8,7 @@ from rag.embeddings import embed
 
 # PATHs e constants
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 GUIDES_DIR = BASE_DIR / "docs"
 VECTORSTORE_DIR = BASE_DIR / "rag" / "vectorstore"/ "guides"
 

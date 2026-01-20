@@ -42,7 +42,7 @@ def classify_email(email: dict):
         llm_output = query_ollama(prompt=prompt)
     except Exception as e:
         logger.exception(f"Erro ao chamar o modelo LLM")
-        raise RuntimeError("Falha ao chamar o modelo LLM: {e}")
+        raise RuntimeError(f"Falha ao chamar o modelo LLM: {e}")
 
     # 5. Dividir e Validar o output
     try:

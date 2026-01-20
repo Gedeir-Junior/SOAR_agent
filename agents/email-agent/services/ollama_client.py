@@ -4,7 +4,7 @@ import requests
 from requests.exceptions import ReadTimeout, RequestException
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama:11434/api/generate")
-MODEL = os.getenv("OLLAMA_MODEL", "phi")
+MODEL = os.getenv("MODEL_NAME", "mistral:latest")
 OLLAMA_TIMEOUT = int(os.getenv("OLLAMA_TIMEOUT", "300"))
 OLLAMA_RETRIES = int(os.getenv("OLLAMA_RETRIES", "2"))
 

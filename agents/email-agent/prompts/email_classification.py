@@ -75,72 +75,45 @@ def build_email_classification_prompt(
     # Prompt
     # =====================
 
-    return f"""
-You are a cybersecurity email analysis engine operating inside a SOAR platform.
+ # No final da sua função build_email_classification_prompt:
 
-Your task is to classify the email as either "phishing" or "legitimate".
-You MUST base your decision ONLY on the evidence provided below.
-If evidence is weak or contradictory, LOWER the confidence score.
+    return f"""[INST] You are a cybersecurity email analysis engine operating inside a SOAR platform.
+Classify the email as "phishing" or "legitimate".
 
-==================================================
-PHISHING IDENTIFICATION GUIDELINES (RAG):
-{guidelines or "No guideline data available."}
+### CONTEXTO DE APOIO (RAG):
+DIRETRIZES:
+{guidelines or "No guidelines available."}
 
-==================================================
-REAL EMAIL EXAMPLES (RAG):
-Similar phishing examples: {phishing_count}
-Similar legitimate examples: {legitimate_count}
-Sources: {", ".join(sources) if sources else "Unknown"}
+EXEMPLOS SIMILARES:
+Fontes detectadas: {", ".join(sources)}
+Contagem: Phishing ({phishing_count}), Legitimate ({legitimate_count})
+{chr(10).join(example_snippets)}
 
-Examples:
-{chr(10).join(example_snippets) if example_snippets else "No similar examples found."}
+### DADOS DO EMAIL:
+Sender: {email.get("sender")} | Subject: {email.get("subject")}
+Body: {email.get("body")}
+Links: {chr(10).join(link_lines)}
 
-==================================================
-EMAIL CONTENT:
-Sender: {email.get("sender")}
-Receiver: {email.get("receiver")}
-Date: {email.get("date")}
-Subject: {email.get("subject")}
+### REGRAS DE RESPOSTA:
+1. Em 'guidelines_evidence', cite frases curtas das DIRETRIZES acima que o email viola.
+2. Em 'sources', escreva exatamente os nomes dos arquivos citados em 'Fontes detectadas': {", ".join(sources)}.
+3. Em 'technical_indicators', analise o Sender e os Links fornecidos.
 
-Body:
-{email.get("body")}
-
-==================================================
-TECHNICAL EMAIL SIGNALS:
-{chr(10).join(header_lines) if header_lines else "No header data available."}
-
-==================================================
-LINK ANALYSIS:
-{chr(10).join(link_lines) if link_lines else "No links detected."}
-
-==================================================
-ATTACHMENT ANALYSIS:
-{chr(10).join(attachment_lines) if attachment_lines else "No attachments detected."}
-
-==================================================
-STRICT OUTPUT RULES:
-- Output VALID JSON ONLY
-- No markdown
-- No explanations outside JSON
-- Do NOT invent evidence
-- Base reasoning on the provided data
-
-==================================================
-REQUIRED JSON FORMAT:
+Responda APENAS com o JSON, sem texto explicativo, seguindo este formato:
 {{
-  "label": "phishing" or "legitimate",
+  "label": "phishing" ou "legitimate",
   "confidence": 0.0,
   "reasoning": {{
-    "guideline_evidence": [],
+    "guidelines_evidence": ["evidência 1", "evidência 2", ...],
     "example_evidence": {{
-      "phishing_similar": 0,
-      "legitimate_similar": 0,
-      "sources": []
+      "phishing_similar": {phishing_count},
+      "legitimate_similar": {legitimate_count},
+      "sources": ["{list(sources)[0] if sources else 'unknown'}"]
     }},
-    "technical_indicators": []
+    "technical_indicators": ["link suspeito", "remetente falso"]
   }},
-  "indicators": [],
-  "has_malicious_url": false,
-  "recommended_action": "quarantine" or "delete" or "none" or null
+  "indicators": ["urgency", "suspicious_link"],
+  "has_malicious_url": true,
+  "recommended_action": "quarantine"
 }}
-"""
+[/INST]"""
