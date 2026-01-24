@@ -1,6 +1,8 @@
 import logging
+import time
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+
 
 from app.classifier import classify_email
 
@@ -24,12 +26,18 @@ async def classify(email: EmailInput):
     Endpoint acionado pelo n8n.
     Recebe dados normalizados do email e retorna classificação + output bruto.
     """
+    start_time = time.perf_counter()
     try:
         classification, raw_output = classify_email(email.dict())
+        execution_time = time.perf_counter() - start_time
 
         return {
             "classification": classification.dict(),
-            "raw_output": raw_output
+            "raw_output": raw_output,
+            "metrics": {
+                "execution_time_seconds": round(execution_time)
+                
+            }
         }
 
     except ValueError as e:

@@ -110,7 +110,7 @@ Responda APENAS com o JSON, sem texto explicativo, seguindo este formato:
       "legitimate_similar": {legitimate_count},
       "sources": ["{list(sources)[0] if sources else 'unknown'}"]
     }},
-    "technical_indicators": ["link suspeito", "remetente falso"]
+    "technical_indicators": ["evidencia técnica 1", "evidencia técnica 2", ...]
   }},
   "indicators": ["urgency", "suspicious_link"],
   "has_malicious_url": true,
