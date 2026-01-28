@@ -46,20 +46,19 @@ def extract_text_from_pdf(pdf_path: Path):
     
 
 def chunk_text(text: str, size: int, overlap: int):
-    """ 
-    Divide o texto em chunks com tamanho e overlap especificados
-    """
-
+    # Tenta dividir por parágrafos primeiro para manter a semântica
+    paragraphs = text.split('\n')
     chunks = []
-    start = 0
-
-    step = size - overlap
-
-    while start < len(text):
-        end = start + size
-        chunks.append(text[start:end])
-        start += step
+    current_chunk = ""
     
+    for p in paragraphs:
+        if len(current_chunk) + len(p) < size:
+            current_chunk += p + "\n"
+        else:
+            chunks.append(current_chunk.strip())
+            current_chunk = p + "\n"
+    if current_chunk:
+        chunks.append(current_chunk.strip())
     return chunks
 
 def ingest_pdfs():
