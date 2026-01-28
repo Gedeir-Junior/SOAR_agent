@@ -77,43 +77,41 @@ def build_email_classification_prompt(
 
  # No final da sua função build_email_classification_prompt:
 
-    return f"""[INST] You are a cybersecurity email analysis engine operating inside a SOAR platform.
-Classify the email as "phishing" or "legitimate".
+    return f"""[INST] Você é um agente de análise de e-mails de cibersegurança operando dentro de uma plataforma SOAR.
+Sua missão é classificar o e-mail como "phishing" ou "legitimate" através de uma análise imparcial e multifatorial.
 
 ### CONTEXTO DE APOIO (RAG):
-DIRETRIZES:
-{guidelines or "No guidelines available."}
+DIRETRIZES RECUPERADAS:
+{guidelines or "Nenhuma diretriz específica encontrada para este contexto."}
 
-EXEMPLOS SIMILARES:
-Fontes detectadas: {", ".join(sources)}
-Contagem: Phishing ({phishing_count}), Legitimate ({legitimate_count})
+EXEMPLOS HISTÓRICOS SIMILARES:
+Fontes: {", ".join(sources)}
 {chr(10).join(example_snippets)}
 
-### DADOS DO EMAIL:
+### DADOS TÉCNICOS DO EMAIL:
 Sender: {email.get("sender")} | Subject: {email.get("subject")}
 Body: {email.get("body")}
-Links: {chr(10).join(link_lines)}
+Links Detectados: {chr(10).join(link_lines)}
+Anexos: {chr(10).join(attachment_lines)}
 
-### REGRAS DE RESPOSTA:
-1. Em 'guidelines_evidence', cite frases curtas das DIRETRIZES acima que o email viola.
-2. Em 'sources', escreva exatamente os nomes dos arquivos citados em 'Fontes detectadas': {", ".join(sources)}.
-3. Em 'technical_indicators', analise o Sender e os Links fornecidos.
+### PROTOCOLO DE ANÁLISE (Siga rigorosamente):
+1. **Pilar da Imparcialidade**: Não assuma que o e-mail é malicioso apenas por conter termos técnicos (ex: ISO 27001, NIST, Zero Trust). Analise se o autor está apenas discutindo conceitos ou se está tentando induzir uma ação.
+2. **Avaliação Dual**: Identifique explicitamente sinais de segurança (tom informativo, remetente conhecido, ausência de links externos) E sinais de ameaça (senso de urgência, links encurtados, inconsistência de remetente).
+3. **Uso do RAG**: Utilize os exemplos e diretrizes como guias de comparação, não como vereditos absolutos. Se o e-mail imita o estilo de um exemplo de phishing, mas os indicadores técnicos são seguros, pondere a incerteza.
 
-Responda APENAS com o JSON, sem texto explicativo, seguindo este formato:
+Responda estritamente em formato JSON:
 {{
   "label": "phishing" ou "legitimate",
   "confidence": 0.0,
   "reasoning": {{
-    "guidelines_evidence": ["evidência 1", "evidência 2", ...],
-    "example_evidence": {{
-      "phishing_similar": {phishing_count},
-      "legitimate_similar": {legitimate_count},
-      "sources": ["{list(sources)[0] if sources else 'unknown'}"]
-    }},
-    "technical_indicators": ["link suspeito", "remetente falso"]
+    "safety_signals": ["lista de evidências que sugerem que o e-mail é seguro/legítimo"],
+    "threat_signals": ["lista de evidências que sugerem que o e-mail é uma ameaça/phishing"],
+    "guidelines_match": "como o e-mail se compara às diretrizes fornecidas",
+    "final_decision_logic": "explicação lógica de por que uma hipótese prevaleceu sobre a outra"
   }},
-  "indicators": ["urgency", "suspicious_link"],
-  "has_malicious_url": true,
-  "recommended_action": "quarantine"
+  "indicators": ["urgency", "suspicious_link", "technical_discussion", "internal_communication"],
+  "has_malicious_url": true ou false,
+  "has_spoofed_sender": true ou false,
+  "recommended_action": "deliver_to_inbox", "quarantine", ou "mark_as_spam"
 }}
 [/INST]"""
