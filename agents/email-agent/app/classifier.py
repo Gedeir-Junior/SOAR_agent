@@ -1,55 +1,50 @@
+import requests
 import logging
-
 from prompts.email_classification import build_email_classification_prompt
+from app.safe_parse import safe_parse_json # Use o nome exato da sua função
 from rag.retrievers import retrieve_rag_context
-from services.ollama_client import query_ollama
-from app.schemas import EmailAnalysisResponse
-from app.safe_parse import safe_json_parse
 
 logger = logging.getLogger("email_agent")
 
-def classify_email(email: dict):
-    """
-    Ponto de entrada principal para classificar um email. (ENDPOINT)
-    Orquestra a construção do prompt, recuperação do RAG, chamada do modelo e a validação do outpur.
-    """
-
-    # 1. Contruir o query
-    query = f"""
-    Subject: {email.get('subject')}
-    Body: {email.get('body')}
-    """
-
-    #2. Recuperar contexto RAG
-    try:
-        rag_context = retrieve_rag_context(query)
-    except Exception as e:
-        logger.error(f"Erro ao recuperar contexto RAG: {e}")
-        rag_context = {
-            "guidelines": "",
-            "examples": []
-        }
+def classify_email(email_data: dict):
+    # Proteção contra campos nulos que causam falha de fatiamento
+    body_content = email_data.get('body') or email_data.get('content') or ""
+    truncated_body = body_content[:1500] if len(body_content) > 1500 else body_content
     
-    # 3. Construir o prompt
-    prompt = build_email_classification_prompt(
-        guidelines=rag_context.get("guidelines"),
-        examples=rag_context.get("examples",[]),
-        email=email
-    )
+    # Criamos o payload seguro para o prompt
+    safe_email = {
+        "sender": email_data.get("sender") or "Desconhecido",
+        "subject": email_data.get("subject") or "Sem Assunto",
+        "body": truncated_body,
+        "links": email_data.get("links") or []
+    }
 
-    # 4. Chamar o modelo
     try:
-        llm_output = query_ollama(prompt=prompt)
-    except Exception as e:
-        logger.exception(f"Erro ao chamar o modelo LLM")
-        raise RuntimeError(f"Falha ao chamar o modelo LLM: {e}")
+        # Busca RAG (limite k=2 para velocidade)
+        context = retrieve_rag_context(truncated_body)
+        
+        prompt = build_email_classification_prompt(
+            guidelines=context.get('guidelines', ""),
+            examples=context.get('examples', []),
+            email=safe_email
+        )
 
-    # 5. Dividir e Validar o output
-    try:
-        parsed = safe_json_parse(llm_output)
-        classification = EmailAnalysisResponse(**parsed)
+        response = requests.post(
+            "http://ollama:11434/api/generate",
+            json={
+                "model": "mistral",
+                "prompt": prompt,
+                "stream": False,
+                "options": {"temperature": 0.0},
+                "format": "json" 
+            },
+            timeout=300
+        )
+        
+        raw_text = response.json().get("response", "")
+        # Validação via safe_parse
+        return safe_parse_json(raw_text)
+
     except Exception as e:
-        logger.exception(f"Erro ao validar o output do modelo")
-        raise ValueError(f"Falha ao validar o output do modelo: {e}")
-    
-    return classification, llm_output
+        logger.error(f"Erro no pipeline: {e}")
+        return None, str(e)

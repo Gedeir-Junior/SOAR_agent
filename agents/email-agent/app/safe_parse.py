@@ -1,40 +1,23 @@
 import json
 import re
+import logging
+from .schemas import EmailAnalysisResponse
 
-def safe_json_parse(text: str) -> dict:
-    """
-    Safely parse a JSON string from the given text.
-    
-    Args:
-        text (str): The input text containing a JSON string.
-    """
+logger = logging.getLogger("email_agent")
 
-    if not text or not text.strip():
-        raise ValueError("Input text is empty or whitespace.")
-    raw = text.strip()
-
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        pass
-
-    match = re.search(r'\{.*\}', raw, re.DOTALL)
+def safe_parse_json(text: str):
+    # Remove qualquer texto antes ou depois do bloco JSON
+    match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
-        raise ValueError("No JSON object found in the text.")
+        logger.error("Nenhum JSON encontrado na resposta da LLM.")
+        return None, text
     
-    candidate = match.group(0)
-
-    candidate = candidate.replace("'", '"')
-    candidate = re.sub(r",\s*}", "}", candidate)
-    candidate = re.sub(r",\s*]", "]", candidate)
-
-    candidate = re.sub(r"\bTrue\b", "true", candidate)
-    candidate = re.sub(r"\bFalse\b", "false", candidate)
-    candidate = re.sub(r"\bNone\b", "null", candidate)
-
+    cleaned = match.group(0)
+    
     try:
-        return json.loads(candidate)
-    except json.JSONDecodeError as e:
-        raise ValueError("Failed to parse JSON from the text.") from e
-    
-    
+        data = json.loads(cleaned)
+        # Retorna o objeto validado
+        return EmailAnalysisResponse(**data), cleaned
+    except Exception as e:
+        logger.error(f"Falha na validação Pydantic: {e}")
+        return None, text
