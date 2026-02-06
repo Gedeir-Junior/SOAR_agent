@@ -14,6 +14,11 @@ def health():
 
 @app.post("/classify", response_model=ClassificationResponse)
 def classify_email(email: EmailInput):
-    text = f"Subject: {email.subject}\nBody: {email.body}"
+    text = (f"From: {email.sender} | "
+            f"To: {email.receiver} |"
+            f"Subject: {email.subject} | "
+            f"Links: {email.links} | "
+            f"Body: {email.body}"
+        )
     result = model.predict(text)
     return result

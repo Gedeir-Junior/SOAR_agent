@@ -3,7 +3,7 @@ import torch
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-MODEL_PATH = BASE_DIR / "models" / "bert-model"
+MODEL_PATH = BASE_DIR / "models" / "bert-model-3"
 
 class BertPhishingModel:
     def __init__(self):
@@ -16,7 +16,7 @@ class BertPhishingModel:
             text,
             return_tensors="pt",
             truncation=True,
-            padding=True,
+            padding="max_length",
             max_length=512
         )
 
