@@ -25,7 +25,7 @@ Corpo: {email.get("body")}
 ### TAREFA:
 Responda APENAS o JSON:
 {{
-  "label": "phishing" ou "legitimate",
+  "label": "phishing" ou "legitimate"
   "confidence": float,
   "analise_comparativa": {{
     "sinais_de_seguranca": [],

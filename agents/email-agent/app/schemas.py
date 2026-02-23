@@ -7,7 +7,7 @@ class AnaliseComparativa(BaseModel):
     justificativa_final: str = Field(..., description="Justificativa detalhada da decisão.")
 
 class EmailAnalysisResponse(BaseModel):
-    label: str = Field(..., description="'phishing' ou 'legitimate'")
+    label: str = Field(..., description="'phishing', uncertain ou 'legitimate'")
     confidence: float = Field(..., ge=0.0, le=1.0)
     analise_comparativa: AnaliseComparativa
     recommended_action: Optional[str] = Field(default="deliver_to_inbox")
