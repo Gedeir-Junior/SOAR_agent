@@ -1,7 +1,6 @@
 infra/
-BERT_Classifier/Containerfile
-agents/email-agent/datasets/
 agents/email-agent/rag/vectorstore/
+
 # Containers / volumes
 data/
 pg_data/
