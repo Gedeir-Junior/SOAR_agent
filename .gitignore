@@ -1,9 +1,15 @@
 infra/
+agents/email-agent/datasets/
+agents/email-agent/rag/vectorstore/
+agents/email-agent/docs/
+
 # Containers / volumes
 data/
 pg_data/
 ollama_data/
 n8n_data/
+BERT_Classifier/Containerfile
+
 
 # Python
 __pycache__/
