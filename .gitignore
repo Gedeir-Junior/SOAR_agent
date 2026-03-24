@@ -1,6 +1,4 @@
 infra/
-agents/email-agent/rag/vectorstore/
-
 # Containers / volumes
 data/
 pg_data/
