@@ -1,7 +1,7 @@
 infra/
 BERT_Classifier/Containerfile
-agents/email_agent/datasets/
-agents/email_agent/rag/vectorstores/
+agents/email-agent/datasets/
+agents/email-agent/rag/vectorstore/
 # Containers / volumes
 data/
 pg_data/
