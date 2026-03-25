@@ -3,7 +3,7 @@ agents/email-agent/datasets/
 agents/email-agent/docs/
 agents/email-agent/rag/vectorstore/
 agents/log_agent/
-manager/
+BERT_Classifier/models/
 # Containers / volumes
 data/
 pg_data/
