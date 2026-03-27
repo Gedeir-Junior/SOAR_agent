@@ -2,7 +2,6 @@ infra/
 agents/email-agent/datasets/
 agents/email-agent/docs/
 agents/email-agent/rag/vectorstore/
-agents/log_agent/
 BERT_Classifier/models/
 # Containers / volumes
 data/
