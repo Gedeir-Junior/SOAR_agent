@@ -2,20 +2,24 @@ import re
 
 class LogProcessor:
     def __init__(self):
+        # Padrões para anonimizar mas manter a estrutura
         self.filters = [
             (r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+Z', '<TIMESTAMP>'),
-            (r'\[(\d+)\]', '[<PID>]'), # Capturamos o dígito aqui
+            (r'\[\d+\]', '[<PID>]'),
             (r'\d+\.\d+\.\d+\.\d+', '<IP>'),
-            (r'uid=(\d+)', 'uid=<UID>') # Adicionado para capturar privilégio
+            (r'uid=(\d+)', 'uid=<UID>'),
+            (r'0x[a-fA-F0-9]+', '<HEX>')
         ]
 
     def process(self, log_line):
-        # Extração de metadados antes da limpeza pesada
+        """Retorna (texto_limpo, metadados_extraidos)"""
+        # Extração simples de metadados antes de limpar
         metadata = {
-            "is_root": 1 if "uid=0" in log_line or "root" in log_line.lower() else 0,
-            "has_sudo": 1 if "sudo" in log_line.lower() else 0
+            "is_root": "root" in log_line.lower() or "uid=0" in log_line,
+            "has_sudo": "sudo" in log_line.lower(),
+            "raw": log_line
         }
-        
+
         cleaned = log_line
         for pattern, replacement in self.filters:
             cleaned = re.sub(pattern, replacement, cleaned)
