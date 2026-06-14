@@ -1,0 +1,24 @@
+# Core dependencies
+pydantic>=2.7.0
+requests>=2.31.0
+
+# FastAPI Server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# NLP and embeddings
+sentence-transformers>=2.2.0
+transformers>=4.30.0
+
+# Vector database
+qdrant-client>=2.4.0
+
+# PDF generation
+reportlab>=4.0.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Optional: async support
+httpx>=0.25.0

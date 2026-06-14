@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-python-multipart
-qdrant-client
-sentence-transformers
-torch
-numpy
-fpdf2
-pandas
