@@ -1,0 +1,15 @@
+{
+  "resumo_comportamental": "O host HOST=10.20.10.90 teve sua interface IFACE=eth0 colocada em MODE=PROMISCUOUS e em seguida iniciou uma captura de tráfego com CAPTURE TOOL=tcpdump usando FILTER=\"port 21 or port 23 or port 445\", padrão típico de sniffing de rede para interceptar credenciais. Durante a captura, foi registrado um bind LDAP em texto claro (PROTOCOL=LDAP, SRC=10.20.10.9 DST=10.20.10.5) expondo a credencial cn=svc_backup,dc=northwind-logistics,dc=com. Logo depois, o mesmo HOST=10.20.10.90 exfiltrou o arquivo de captura pcap_northwind.pcap (4.1MB) via HTTPS para o IP externo 91.203.213.44 (DPT=443), e um IDS gerou o alerta SIG=\"ET POLICY Suspicious Wireshark/tcpdump process network capture\" confirmando a atividade suspeita de captura de rede. A linha 4 (ALLOW UDP ... DNS_QUERY=slack.com) representa tráfego legítimo e não faz parte do comportamento malicioso.",
+  "entidades_identificadas": [
+    "HOST=10.20.10.90",
+    "IFACE=eth0",
+    "tcpdump",
+    "SRC=10.20.10.9",
+    "DST=10.20.10.5",
+    "cn=svc_backup,dc=northwind-logistics,dc=com",
+    "91.203.213.44",
+    "pcap_northwind.pcap",
+    "ET POLICY Suspicious Wireshark/tcpdump process network capture"
+  ],
+  "severidade_maxima": "critical"
+}

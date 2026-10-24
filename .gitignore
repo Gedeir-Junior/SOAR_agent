@@ -1,17 +1,19 @@
 infra/
 agents/email-agent/datasets/
-agents/email-agent/rag/vectorstore/
 agents/email-agent/docs/
+agents/email-agent/rag/vectorstore/
+agents/log-agent/datasets/
+agents/log-agent/reports/
+agents/log-agent/uploads/
 BERT_Classifier/models/
+agents/log-agent/data/
 
-# Containers / volumes
-data/
 pg_data/
 ollama_data/
 n8n_data/
+data/
 BERT_Classifier/Containerfile
-
-
+atomic-red-team/
 # Python
 __pycache__/
 *.pyc
@@ -21,3 +23,5 @@ __pycache__/
 # Logs
 *.log
 
+manager/
+Relatórios/

@@ -1,0 +1,625 @@
+{
+  "arquivo": "windows-privesc-single.log",
+  "plataforma_detectada": "windows",
+  "total_linhas_analisadas": 24,
+  "fases": [
+    {
+      "numero_fase": 1,
+      "linha_inicio": 1,
+      "linha_fim": 24,
+      "titulo_fase": "Tentativa de Acesso Não Autorizado e Escalonamento de Privilégios",
+      "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+      "entidades_identificadas": [
+        "10.20.4.201",
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NORTHWIND\\t.oliveira",
+        "NW-DC01",
+        "NW-WEB-GW01",
+        "helpdesk01",
+        "svc-backup",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    }
+  ],
+  "candidatos_por_fase": {
+    "1": [
+      {
+        "tecnica_id": "T1556",
+        "nome_tecnica": "Modify Authentication Process",
+        "tatica": "Credential Access",
+        "tatica_id": "TA0006",
+        "score": 0.6109,
+        "descricao_mitre": "Adversaries may modify authentication mechanisms and processes to access user credentials or enable otherwise unwarranted access to accounts. The authentication process is handled by mechanisms, such as the Local Security Authentication Server (LSASS) process and the Security Accounts Manager (SAM) on Windows, pluggable authentication modules (PAM) on Unix-based systems, and authorization plugins on MacOS systems, responsible for gathering, storing, and validating credentials. By modifying an authentication process, an adversary may be able to authenticate to a service or system without using [Valid Accounts](https://attack.mitre.org/techniques/T1078).\n\nAdversaries may maliciously modify a part of this process to either reveal credentials or bypass authentication mechanisms. Compromised credentials or access may be used to bypass access controls placed on various resources on systems within the network and may even be used for persistent access to remote systems and externally available services, such as VPNs, Outlook Web Access and remote desktop.",
+        "descricao_semantica_log": "Telemetria evidencia modificacoes em mecanismos centrais de autenticacao, como injecao de modulos em LSASS no Windows, alteracoes em arquivos de configuracao PAM no Linux (/etc/pam.d/), instalacao de plugins de autorizacao maliciosos no macOS, ou registro de provedores de autenticacao personalizados em servicos de identidade na nuvem. Indicadores incluem carregamento de DLLs nao assinadas no processo lsass.exe, modificacao de timestamp em bibliotecas pam_unix.so, criacao de arquivos de plugin de autorizacao customizados, e anomalias de rede como autenticacoes bem-sucedidas a VPN ou OWA usando credenciais que normalmente falhariam, sugerindo bypass do fluxo de autenticacao legitimo apos comprometimento do mecanismo subjacente.",
+        "plataformas_mitre": [
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.75,
+        "palavras_chave_filtro": [
+          "lsass.exe",
+          "pam.d",
+          "Notification Packages",
+          "authorization plugin",
+          "unsigned DLL"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-05-14T02:11:09Z VPN-GW auth_result=SUCCESS user=svc_helpdesk method=bypass source_ip=203.0.113.9 anomaly=repeated_password_reuse",
+              "2026-05-14T02:12:40Z OWA auth_result=SUCCESS user=finance01 mfa_required=true mfa_satisfied=false"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "mfa_satisfied=false",
+              "anomaly=repeated_password_reuse"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "type=PATH msg=audit(1739310011.221:9001): name=\"/etc/pam.d/common-auth\" nametype=NORMAL",
+              "type=SYSCALL msg=audit(1739310011.221:9001): syscall=write comm=\"vi\" exe=\"/usr/bin/vi\" key=\"pam_modify\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "/etc/pam\\.d/",
+              "pam_modify"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Sysmon Event ID 7: ImageLoaded: C:\\Windows\\System32\\unsigned_auth.dll, Image: C:\\Windows\\System32\\lsass.exe, Signed: false",
+              "Event ID 4657: Object Name: HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Notification Packages"
+            ],
+            "event_ids": [
+              "7",
+              "4657"
+            ],
+            "indicadores_regex": [
+              "lsass\\.exe.*Signed: false",
+              "Notification Packages"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "log show: authd installed new authorization plugin bundle at /Library/Security/SecurityAgentPlugins/custom.bundle"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "SecurityAgentPlugins",
+              "authorization plugin"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1556 (Modify Authentication Process)\nTática: Credential Access (TA0006)\nTelemetria evidencia modificacoes em mecanismos centrais de autenticacao, como injecao de modulos em LSASS no Windows, alteracoes em arquivos de configuracao PAM no Linux (/etc/pam.d/), instalacao de plugins de autorizacao maliciosos no macOS, ou registro de provedores de autenticacao personalizados em servicos de identidade na nuvem. Indicadores incluem carregamento de DLLs nao assinadas no processo lsass.exe, modificacao de timestamp em bibliotecas pam_unix.so, criacao de arquivos de plugin de autorizacao customizados, e anomalias de rede como autenticacoes bem-sucedidas a VPN ou OWA usando credenciais que normalmente falhariam, sugerindo bypass do fluxo de autenticacao legitimo apos comprometimento do mecanismo subjacente.\nPalavras-chave: lsass.exe, pam.d, Notification Packages, authorization plugin, unsigned DLL\nFonte rede: 2026-05-14T02:11:09Z VPN-GW auth_result=SUCCESS user=svc_helpdesk method=bypass source_ip=203.0.113.9 anomaly=repeated_password_reuse | 2026-05-14T02:12:40Z OWA auth_result=SUCCESS user=finance01 mfa_required=true mfa_satisfied=false\nFonte linux_syslog: type=PATH msg=audit(1739310011.221:9001): name=\"/etc/pam.d/common-auth\" nametype=NORMAL | type=SYSCALL msg=audit(1739310011.221:9001): syscall=write comm=\"vi\" exe=\"/usr/bin/vi\" key=\"pam_modify\"\nFonte windows_eventlog: Sysmon Event ID 7: ImageLoaded: C:\\Windows\\System32\\unsigned_auth.dll, Image: C:\\Windows\\System32\\lsass.exe, Signed: false | Event ID 4657: Object Name: HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Notification Packages\nFonte macos_unified_log: log show: authd installed new authorization plugin bundle at /Library/Security/SecurityAgentPlugins/custom.bundle"
+      },
+      {
+        "tecnica_id": "T1078.001",
+        "nome_tecnica": "Default Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.606,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a default account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Default accounts are those that are built-into an OS, such as the Guest or Administrator accounts on Windows systems, or root in AWS, ESXi and Kubernetes.",
+        "descricao_semantica_log": "O abuso de contas padrao de fabrica ou de sistema operacional aparece como autenticacao bem-sucedida em identidades bem conhecidas que raramente deveriam ser usadas em producao, como Administrator, Guest, root ou vpxuser. Em Windows, o EventID 4624 mostra TargetUserName=Administrator com SID terminado em -500 autenticando de um host nao administrativo. Em Linux e ESXi, logins via ssh como root ou pela conta padrao vpxuser criada na integracao com vCenter sao registrados em auth.log ou hostd.log. Em dispositivos de rede, tentativas de autenticacao usando pares padrao de fabrica como admin/admin representam indicador direto desta tecnica.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "vpxuser",
+          "Administrator",
+          "root",
+          "admin/admin",
+          "TargetUserSid=-500",
+          "default credentials"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-03-10T19:02:11Z SSH auth attempt SRC=198.51.100.12 DST=10.10.5.9 DPT=22 username=admin password=admin result=success",
+              "2026-03-10T19:03:00Z Telnet auth SRC=198.51.100.12 DST=10.10.5.20 username=admin password=default result=success"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "username=admin.*password=(admin|default)",
+              "vpxuser"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "sshd[5521]: Accepted password for root from 198.51.100.12 port 44210 ssh2",
+              "hostd: [vpxuser] User vpxuser@10.10.5.9 logged in as root equivalent via SOAP session"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Accepted password for root",
+              "vpxuser"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "2026-03-10T19:04:22Z Security EventID=4624 TargetUserName=Administrator TargetUserSid=S-1-5-21-...-500 LogonType=3 IpAddress=198.51.100.12",
+              "2026-03-10T19:04:25Z Security EventID=4720 TargetUserName=Guest SubjectUserName=Administrator"
+            ],
+            "event_ids": [
+              "4624",
+              "4720"
+            ],
+            "indicadores_regex": [
+              "TargetUserSid=.*-500",
+              "TargetUserName=(Administrator|Guest)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "authd[210]: Authentication succeeded for user root via com.apple.authorization.system.login.console",
+              "sudo[9012]: root : TTY=ttys000 ; PWD=/ ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Authentication succeeded for user root",
+              "USER=root"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.001 (Default Accounts)\nTática: Privilege Escalation (TA0004)\nO abuso de contas padrao de fabrica ou de sistema operacional aparece como autenticacao bem-sucedida em identidades bem conhecidas que raramente deveriam ser usadas em producao, como Administrator, Guest, root ou vpxuser. Em Windows, o EventID 4624 mostra TargetUserName=Administrator com SID terminado em -500 autenticando de um host nao administrativo. Em Linux e ESXi, logins via ssh como root ou pela conta padrao vpxuser criada na integracao com vCenter sao registrados em auth.log ou hostd.log. Em dispositivos de rede, tentativas de autenticacao usando pares padrao de fabrica como admin/admin representam indicador direto desta tecnica.\nPalavras-chave: vpxuser, Administrator, root, admin/admin, TargetUserSid=-500, default credentials\nFonte rede: 2026-03-10T19:02:11Z SSH auth attempt SRC=198.51.100.12 DST=10.10.5.9 DPT=22 username=admin password=admin result=success | 2026-03-10T19:03:00Z Telnet auth SRC=198.51.100.12 DST=10.10.5.20 username=admin password=default result=success\nFonte linux_syslog: sshd[5521]: Accepted password for root from 198.51.100.12 port 44210 ssh2 | hostd: [vpxuser] User vpxuser@10.10.5.9 logged in as root equivalent via SOAP session\nFonte windows_eventlog: 2026-03-10T19:04:22Z Security EventID=4624 TargetUserName=Administrator TargetUserSid=S-1-5-21-...-500 LogonType=3 IpAddress=198.51.100.12 | 2026-03-10T19:04:25Z Security EventID=4720 TargetUserName=Guest SubjectUserName=Administrator\nFonte macos_unified_log: authd[210]: Authentication succeeded for user root via com.apple.authorization.system.login.console | sudo[9012]: root : TTY=ttys000 ; PWD=/ ; USER=root ; COMMAND=/bin/bash"
+      },
+      {
+        "tecnica_id": "T1098",
+        "nome_tecnica": "Account Manipulation",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.6006,
+        "descricao_mitre": "Adversaries may manipulate accounts to maintain and/or elevate access to victim systems. Account manipulation may consist of any action that preserves or modifies adversary access to a compromised account, such as modifying credentials or permission groups. These actions could also include account activity designed to subvert security policies, such as performing iterative password updates to bypass password duration policies and preserve the life of compromised credentials. In order to create or manipulate accounts, the adversary must already have sufficient permissions on systems or the domain. However, account manipulation may also lead to privilege escalation where modifications grant access to additional roles, permissions, or higher-privileged Valid Accounts.",
+        "descricao_semantica_log": "Telemetria de endpoint registra alteracoes em atributos de conta de usuario ou de servico, como redefinicao de senha fora do fluxo normal de autoatendimento, adicao a grupos de seguranca privilegiados, e modificacao de flags de conta como nunca expira senha. No Windows, o Security Log captura eventos de gerenciamento de conta emitidos pelo subsistema SAM. No Linux, comandos administrativos alteram arquivos de conta e sao auditados via auditd, enquanto no macOS o utilitario dscl altera atributos de diretorio local. Essas mudancas frequentemente precedem escalonamento de privilegios quando o ator ja possui algum nivel de acesso.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.65,
+        "palavras_chave_filtro": [
+          "4738",
+          "4728",
+          "usermod",
+          "dscl",
+          "PASSWD_NOTREQD"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "type=USER_CHAUTHTOK pid=4821 uid=0 auid=1000 msg='op=change-password acct=\"svc-backup\" exe=\"/usr/bin/passwd\"'",
+              "usermod -aG sudo svc-backup executado por operador remoto via sudo"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "op=change-password.*acct=",
+              "usermod\\s+-aG\\s+(sudo|wheel|admin)"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Security 4738: A user account was changed. Subject: SYSTEM Target Account: svc-backup Changed Attributes: UserAccountControl PASSWD_NOTREQD",
+              "Security 4728: A member was added to a security-enabled global group. Group: Domain Admins Member: svc-backup"
+            ],
+            "event_ids": [
+              "4738",
+              "4728",
+              "4732"
+            ],
+            "indicadores_regex": [
+              "EventID=(4738|4728|4732).*Group:\\s*(Domain Admins|Administrators)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "dscl . -append /Groups/admin GroupMembership svc-backup",
+              "log show: process opendirectoryd altered record type dsRecTypeStandard:Users attribute AuthenticationAuthority"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "dscl\\s+\\.\\s+-append\\s+/Groups/(admin|wheel)"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1098 (Account Manipulation)\nTática: Privilege Escalation (TA0004)\nTelemetria de endpoint registra alteracoes em atributos de conta de usuario ou de servico, como redefinicao de senha fora do fluxo normal de autoatendimento, adicao a grupos de seguranca privilegiados, e modificacao de flags de conta como nunca expira senha. No Windows, o Security Log captura eventos de gerenciamento de conta emitidos pelo subsistema SAM. No Linux, comandos administrativos alteram arquivos de conta e sao auditados via auditd, enquanto no macOS o utilitario dscl altera atributos de diretorio local. Essas mudancas frequentemente precedem escalonamento de privilegios quando o ator ja possui algum nivel de acesso.\nPalavras-chave: 4738, 4728, usermod, dscl, PASSWD_NOTREQD\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: type=USER_CHAUTHTOK pid=4821 uid=0 auid=1000 msg='op=change-password acct=\"svc-backup\" exe=\"/usr/bin/passwd\"' | usermod -aG sudo svc-backup executado por operador remoto via sudo\nFonte windows_eventlog: Security 4738: A user account was changed. Subject: SYSTEM Target Account: svc-backup Changed Attributes: UserAccountControl PASSWD_NOTREQD | Security 4728: A member was added to a security-enabled global group. Group: Domain Admins Member: svc-backup\nFonte macos_unified_log: dscl . -append /Groups/admin GroupMembership svc-backup | log show: process opendirectoryd altered record type dsRecTypeStandard:Users attribute AuthenticationAuthority"
+      },
+      {
+        "tecnica_id": "T1098.007",
+        "nome_tecnica": "Additional Local or Domain Groups",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.5984,
+        "descricao_mitre": "An adversary may add additional local or domain groups to an adversary-controlled account to maintain persistent access to a system or domain.",
+        "descricao_semantica_log": "Adicao de uma conta a grupos privilegiados como Administradores locais, Remote Desktop Users ou sudoers, capturada por comandos net localgroup, net group ou usermod -aG executados fora de janelas de manutencao programadas. A telemetria de auditoria de grupo mostra o nome do grupo alvo, a conta adicionada e a conta que realizou a operacao, permitindo correlacionar com atividade administrativa anomala recente.",
+        "plataformas_mitre": [
+          "Windows",
+          "macOS",
+          "Linux"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.7,
+        "palavras_chave_filtro": [
+          "4732",
+          "4728",
+          "usermod -aG",
+          "sudoers",
+          "Administrators group",
+          "dscl -append"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 12:41:09 srv01 usermod[3311]: add 'svcbackup' to group 'sudo'",
+              "Aug  2 12:41:10 srv01 usermod[3312]: add 'svcbackup' to group 'wheel'"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "usermod\\[\\d+\\]: add '\\w+' to group '(sudo|wheel|admin)'"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "A member was added to a security-enabled local group. Group Name: Administrators Member Name: svcbackup Event ID: 4732",
+              "A member was added to a security-enabled global group. Group Name: Domain Admins Member Name: svcbackup Event ID: 4728"
+            ],
+            "event_ids": [
+              "4732",
+              "4728"
+            ],
+            "indicadores_regex": [
+              "A member was added to a security-enabled (local|global) group",
+              "Group Name:\\s*(Administrators|Domain Admins|Remote Desktop Users)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "opendirectoryd: Added user 'svcbackup' to group 'admin' via dscl -append",
+              "opendirectoryd: Group membership modified for record 'admin'"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "dscl -append.*group",
+              "Added user '\\w+' to group '(admin|wheel)'"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1098.007 (Additional Local or Domain Groups)\nTática: Persistence (TA0003)\nAdicao de uma conta a grupos privilegiados como Administradores locais, Remote Desktop Users ou sudoers, capturada por comandos net localgroup, net group ou usermod -aG executados fora de janelas de manutencao programadas. A telemetria de auditoria de grupo mostra o nome do grupo alvo, a conta adicionada e a conta que realizou a operacao, permitindo correlacionar com atividade administrativa anomala recente.\nPalavras-chave: 4732, 4728, usermod -aG, sudoers, Administrators group, dscl -append\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug  2 12:41:09 srv01 usermod[3311]: add 'svcbackup' to group 'sudo' | Aug  2 12:41:10 srv01 usermod[3312]: add 'svcbackup' to group 'wheel'\nFonte windows_eventlog: A member was added to a security-enabled local group. Group Name: Administrators Member Name: svcbackup Event ID: 4732 | A member was added to a security-enabled global group. Group Name: Domain Admins Member Name: svcbackup Event ID: 4728\nFonte macos_unified_log: opendirectoryd: Added user 'svcbackup' to group 'admin' via dscl -append | opendirectoryd: Group membership modified for record 'admin'"
+      },
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.5983,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Local accounts are those configured by an organization for use by users, remote support, services, or for administration on a single system or service.",
+        "descricao_semantica_log": "O abuso de contas locais aparece como autenticacoes bem-sucedidas de uma mesma conta de administrador local em multiplos hosts distintos em curto periodo, sugerindo reuso de senha para movimentacao lateral. Em Windows, o EventID 4624 LogonType=3 ou 10 com TargetUserName correspondente a uma conta local (nao qualificada por dominio) e SubjectUserSid local, combinado com EventID 4732 de adicao ao grupo Administrators local, indica escalonamento. Em Linux/macOS, comandos su - localadmin ou sudo executados por contas locais fora do padrao de uso normal, junto a entradas correspondentes em /etc/passwd, evidenciam a mesma tecnica. Trafego SMB/RDP autenticado repetidamente com a mesma credencial local entre hosts diferentes tambem e um forte indicador.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.5,
+        "palavras_chave_filtro": [
+          "localadmin",
+          "Administrators group",
+          "su - ",
+          "sudo",
+          "TargetDomainName",
+          "password reuse"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-03-14T15:20:11Z SMB authentication SRC=10.10.2.15 DST=10.10.2.31 DPT=445 username=localadmin result=success",
+              "2026-03-14T15:21:02Z RDP session SRC=10.10.2.15 DST=10.10.2.44 DPT=3389 username=localadmin result=success"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "DPT=445.*username=localadmin",
+              "DPT=3389.*username=localadmin"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "su[7712]: (to localadmin) root on none",
+              "sudo[7715]: localadmin : TTY=pts/2 ; PWD=/home/localadmin ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "su\\[.*\\]: \\(to localadmin\\)",
+              "sudo\\[.*\\]: localadmin :"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "2026-03-14T15:20:09Z Security EventID=4624 TargetUserName=localadmin TargetDomainName=WIN-HOST31 LogonType=3 IpAddress=10.10.2.15",
+              "2026-03-14T15:22:00Z Security EventID=4732 TargetUserName=localadmin GroupName=Administrators"
+            ],
+            "event_ids": [
+              "4624",
+              "4732",
+              "4720"
+            ],
+            "indicadores_regex": [
+              "TargetDomainName=WIN-[A-Z0-9]+",
+              "GroupName=Administrators"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "loginwindow[301]: Login window - user localadmin authenticated",
+              "sudo[9020]: localadmin : TTY=ttys001 ; PWD=/Users/localadmin ; USER=root ; COMMAND=/usr/bin/dscl"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "user localadmin authenticated",
+              "sudo\\[.*\\]: localadmin :"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.003 (Local Accounts)\nTática: Privilege Escalation (TA0004)\nO abuso de contas locais aparece como autenticacoes bem-sucedidas de uma mesma conta de administrador local em multiplos hosts distintos em curto periodo, sugerindo reuso de senha para movimentacao lateral. Em Windows, o EventID 4624 LogonType=3 ou 10 com TargetUserName correspondente a uma conta local (nao qualificada por dominio) e SubjectUserSid local, combinado com EventID 4732 de adicao ao grupo Administrators local, indica escalonamento. Em Linux/macOS, comandos su - localadmin ou sudo executados por contas locais fora do padrao de uso normal, junto a entradas correspondentes em /etc/passwd, evidenciam a mesma tecnica. Trafego SMB/RDP autenticado repetidamente com a mesma credencial local entre hosts diferentes tambem e um forte indicador.\nPalavras-chave: localadmin, Administrators group, su - , sudo, TargetDomainName, password reuse\nFonte rede: 2026-03-14T15:20:11Z SMB authentication SRC=10.10.2.15 DST=10.10.2.31 DPT=445 username=localadmin result=success | 2026-03-14T15:21:02Z RDP session SRC=10.10.2.15 DST=10.10.2.44 DPT=3389 username=localadmin result=success\nFonte linux_syslog: su[7712]: (to localadmin) root on none | sudo[7715]: localadmin : TTY=pts/2 ; PWD=/home/localadmin ; USER=root ; COMMAND=/bin/bash\nFonte windows_eventlog: 2026-03-14T15:20:09Z Security EventID=4624 TargetUserName=localadmin TargetDomainName=WIN-HOST31 LogonType=3 IpAddress=10.10.2.15 | 2026-03-14T15:22:00Z Security EventID=4732 TargetUserName=localadmin GroupName=Administrators\nFonte macos_unified_log: loginwindow[301]: Login window - user localadmin authenticated | sudo[9020]: localadmin : TTY=ttys001 ; PWD=/Users/localadmin ; USER=root ; COMMAND=/usr/bin/dscl"
+      }
+    ]
+  },
+  "relatorio": {
+    "arquivo_log": "windows-privesc-single.log",
+    "total_linhas_analisadas": 24,
+    "total_fases": 1,
+    "fases": [
+      {
+        "numero_fase": 1,
+        "linha_inicio": 1,
+        "linha_fim": 24,
+        "titulo_fase": "Tentativa de Acesso Não Autorizado e Escalonamento de Privilégios",
+        "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+        "entidades_identificadas": [
+          "10.20.4.201",
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NORTHWIND\\t.oliveira",
+          "NW-DC01",
+          "NW-WEB-GW01",
+          "helpdesk01",
+          "svc-backup",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      }
+    ],
+    "ameacas": [
+      {
+        "tecnica_id": "T1556",
+        "nome_tecnica": "Modify Authentication Process",
+        "tatica": "Credential Access",
+        "tatica_id": "TA0006",
+        "severidade": "high",
+        "confianca_media": 0.6109,
+        "descricao_mitre": "Adversaries may modify authentication mechanisms and processes to access user credentials or enable otherwise unwarranted access to accounts. The authentication process is handled by mechanisms, such as the Local Security Authentication Server (LSASS) process and the Security Accounts Manager (SAM) on Windows, pluggable authentication modules (PAM) on Unix-based systems, and authorization plugins on MacOS systems, responsible for gathering, storing, and validating credentials. By modifying an authentication process, an adversary may be able to authenticate to a service or system without using [Valid Accounts](https://attack.mitre.org/techniques/T1078).\n\nAdversaries may maliciously modify a part of this process to either reveal credentials or bypass authentication mechanisms. Compromised credentials or access may be used to bypass access controls placed on various resources on systems within the network and may even be used for persistent access to remote systems and externally available services, such as VPNs, Outlook Web Access and remote desktop.",
+        "descricao_semantica_log": "Telemetria evidencia modificacoes em mecanismos centrais de autenticacao, como injecao de modulos em LSASS no Windows, alteracoes em arquivos de configuracao PAM no Linux (/etc/pam.d/), instalacao de plugins de autorizacao maliciosos no macOS, ou registro de provedores de autenticacao personalizados em servicos de identidade na nuvem. Indicadores incluem carregamento de DLLs nao assinadas no processo lsass.exe, modificacao de timestamp em bibliotecas pam_unix.so, criacao de arquivos de plugin de autorizacao customizados, e anomalias de rede como autenticacoes bem-sucedidas a VPN ou OWA usando credenciais que normalmente falhariam, sugerindo bypass do fluxo de autenticacao legitimo apos comprometimento do mecanismo subjacente.",
+        "plataformas_mitre": [
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+            "score_similaridade": 0.6109
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1556"
+      },
+      {
+        "tecnica_id": "T1078.001",
+        "nome_tecnica": "Default Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "high",
+        "confianca_media": 0.606,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a default account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Default accounts are those that are built-into an OS, such as the Guest or Administrator accounts on Windows systems, or root in AWS, ESXi and Kubernetes.",
+        "descricao_semantica_log": "O abuso de contas padrao de fabrica ou de sistema operacional aparece como autenticacao bem-sucedida em identidades bem conhecidas que raramente deveriam ser usadas em producao, como Administrator, Guest, root ou vpxuser. Em Windows, o EventID 4624 mostra TargetUserName=Administrator com SID terminado em -500 autenticando de um host nao administrativo. Em Linux e ESXi, logins via ssh como root ou pela conta padrao vpxuser criada na integracao com vCenter sao registrados em auth.log ou hostd.log. Em dispositivos de rede, tentativas de autenticacao usando pares padrao de fabrica como admin/admin representam indicador direto desta tecnica.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+            "score_similaridade": 0.606
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078/001"
+      },
+      {
+        "tecnica_id": "T1098",
+        "nome_tecnica": "Account Manipulation",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "high",
+        "confianca_media": 0.6006,
+        "descricao_mitre": "Adversaries may manipulate accounts to maintain and/or elevate access to victim systems. Account manipulation may consist of any action that preserves or modifies adversary access to a compromised account, such as modifying credentials or permission groups. These actions could also include account activity designed to subvert security policies, such as performing iterative password updates to bypass password duration policies and preserve the life of compromised credentials. In order to create or manipulate accounts, the adversary must already have sufficient permissions on systems or the domain. However, account manipulation may also lead to privilege escalation where modifications grant access to additional roles, permissions, or higher-privileged Valid Accounts.",
+        "descricao_semantica_log": "Telemetria de endpoint registra alteracoes em atributos de conta de usuario ou de servico, como redefinicao de senha fora do fluxo normal de autoatendimento, adicao a grupos de seguranca privilegiados, e modificacao de flags de conta como nunca expira senha. No Windows, o Security Log captura eventos de gerenciamento de conta emitidos pelo subsistema SAM. No Linux, comandos administrativos alteram arquivos de conta e sao auditados via auditd, enquanto no macOS o utilitario dscl altera atributos de diretorio local. Essas mudancas frequentemente precedem escalonamento de privilegios quando o ator ja possui algum nivel de acesso.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+            "score_similaridade": 0.6006
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1098"
+      },
+      {
+        "tecnica_id": "T1098.007",
+        "nome_tecnica": "Additional Local or Domain Groups",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "severidade": "high",
+        "confianca_media": 0.5984,
+        "descricao_mitre": "An adversary may add additional local or domain groups to an adversary-controlled account to maintain persistent access to a system or domain.",
+        "descricao_semantica_log": "Adicao de uma conta a grupos privilegiados como Administradores locais, Remote Desktop Users ou sudoers, capturada por comandos net localgroup, net group ou usermod -aG executados fora de janelas de manutencao programadas. A telemetria de auditoria de grupo mostra o nome do grupo alvo, a conta adicionada e a conta que realizou a operacao, permitindo correlacionar com atividade administrativa anomala recente.",
+        "plataformas_mitre": [
+          "Windows",
+          "macOS",
+          "Linux"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+            "score_similaridade": 0.5984
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1098/007"
+      },
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "medium",
+        "confianca_media": 0.5983,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Local accounts are those configured by an organization for use by users, remote support, services, or for administration on a single system or service.",
+        "descricao_semantica_log": "O abuso de contas locais aparece como autenticacoes bem-sucedidas de uma mesma conta de administrador local em multiplos hosts distintos em curto periodo, sugerindo reuso de senha para movimentacao lateral. Em Windows, o EventID 4624 LogonType=3 ou 10 com TargetUserName correspondente a uma conta local (nao qualificada por dominio) e SubjectUserSid local, combinado com EventID 4732 de adicao ao grupo Administrators local, indica escalonamento. Em Linux/macOS, comandos su - localadmin ou sudo executados por contas locais fora do padrao de uso normal, junto a entradas correspondentes em /etc/passwd, evidenciam a mesma tecnica. Trafego SMB/RDP autenticado repetidamente com a mesma credencial local entre hosts diferentes tambem e um forte indicador.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "O atacante tentou acessar a rede sem autorização, utilizando várias tentativas de login com a conta 'Administrator'. Além disso, houve criação de processos suspeitos, alterações em contas de usuário e grupos de segurança, incluindo a adição de um usuário ao grupo 'Domain Admins'. Isso indica uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. O comportamento observado sugere uma ameaça ativa e deliberada contra a segurança da rede.",
+            "score_similaridade": 0.5983
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078/003"
+      }
+    ],
+    "narrativa_incidente": "O incidente começou com uma tentativa de acesso não autorizado à rede, onde o atacante utilizou várias tentativas de login com a conta 'Administrator'. Em seguida, houve a criação de processos suspeitos, alterações em contas de usuário e grupos de segurança. O atacante adicionou um usuário ao grupo 'Domain Admins', indicando uma clara tentativa de escalonar privilégios e obter acesso não autorizado à rede. Essas ações sugerem uma ameaça ativa e deliberada contra a segurança da rede. A análise das técnicas MITRE ATT&CK associadas revelou a utilização de T1556 para modificar o processo de autenticação, T1078.001 para explorar contas padrão, T1098 para manipular contas, T1098.007 para adicionar grupos locais ou de domínio e T1078.003 para explorar contas locais. Essas técnicas foram empregadas em uma sequência que visava comprometer a segurança da rede e obter privilégios elevados.",
+    "resumo_executivo": "Foi detectada uma tentativa de acesso não autorizado à rede, com o atacante tentando escalonar privilégios e obter acesso à rede. O risco geral é considerado alto devido à natureza deliberada e ativa da ameaça. A urgência de resposta é crítica, pois a falha em responder prontamente pode resultar em comprometimento da segurança da rede e perda de dados sensíveis. É essencial tomar medidas imediatas para mitigar a ameaça e proteger a rede.",
+    "severidade_geral": "high",
+    "timestamp_geracao": "2026-08-07T01:29:53Z"
+  }
+}

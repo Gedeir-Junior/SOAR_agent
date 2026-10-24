@@ -1,0 +1,25 @@
+{
+  "resumo_comportamental": "No host mkt-mbp-021, o processo _svcupdate (executado via zsh/bash) conduz uma cadeia de ações consistente com exfiltração de dados disfarçada de atualização de serviço: começa com execução ofuscada em sh[1050] via 'args=-c,echo aGVsbG8= | base64 -D | sh', seguida por criptografia com 'openssl enc -aes-256-cbc -salt -in /tmp/.staging.tgz -out /private/var/root/.hidden/exfil/pkg.enc -k 7f3aQ9' e compactação para pkg.enc.gz, além de abertura de shell interativo oculto com 'bash --rcfile /private/var/root/.hidden/.bashrc_hidden -i'. O binário core_update é empacotado com 'upx --best /private/var/root/.hidden/core_update' (Packed 1 file: core_update -> core_update, 62.34% reduction), gerando alerta de com.apple.security[145] indicando que 'binary /private/var/root/.hidden/core_update signature status changed after modification (ad-hoc, unpacked size mismatch)'; em seguida o pacote pkg.enc.gz (842 KB) é registrado como 'exfiltration staged... queued for upload via hb.sh beacon channel', confirmando exfiltração ativa por canal de beacon. A última linha, de com.apple.xpc.launchd[1] referente a com.apple.cloudphotod, descreve uma sincronização periódica normal e não está relacionada ao comportamento malicioso do restante do trecho.",
+  "entidades_identificadas": [
+    "mkt-mbp-021",
+    "_svcupdate",
+    "sh[1050]",
+    "zsh[1052]",
+    "bash[1055]",
+    "zsh[1060]",
+    "upx[1060]",
+    "com.apple.security[145]",
+    "com.apple.xpc.launchd[1]",
+    "com.apple.cloudphotod",
+    "/bin/sh",
+    "/tmp/.staging.tgz",
+    "/private/var/root/.hidden/exfil/pkg.enc",
+    "/private/var/root/.hidden/exfil/pkg.enc.gz",
+    "/private/var/root/.hidden/.bashrc_hidden",
+    "/usr/local/bin/upx",
+    "/private/var/root/.hidden/core_update",
+    "hb.sh",
+    "root"
+  ],
+  "severidade_maxima": "critical"
+}

@@ -1,0 +1,24 @@
+{
+  "fonte": "macos_unified_log",
+  "arquivo_log": "macos-unified-log-execution-single.log",
+  "total_linhas": 31,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Execution",
+      "tatica_id_esperada": "TA0002",
+      "linha_inicio": 1,
+      "linha_fim": 31,
+      "tecnicas_esperadas": [
+        "T1059.002",
+        "T1059.004",
+        "T1059.006",
+        "T1129",
+        "T1204.002",
+        "T1204.004",
+        "T1569.001"
+      ],
+      "fonte": "macos_unified_log"
+    }
+  ]
+}

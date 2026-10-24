@@ -1,0 +1,25 @@
+{
+  "resumo_comportamental": "O trecho documenta uma cadeia de comprometimento e escalonamento de privilegios: a partir de 10.20.10.90 ocorre forca bruta SSH contra 10.20.10.9 (LOGIN_ATTEMPT user=root RESULT=FAIL, LOGIN_ATTEMPT user=admin RESULT=FAIL) seguida de sucesso com credencial padrao admin/admin123 (LOGIN_ATTEMPT user=admin RESULT=SUCCESS, SESSION_OPEN user=admin), usada para pivotar via SSH com a conta de servico svc_backup ate alcancar o controlador de dominio 10.20.10.5. A partir de 10.20.10.77 e explorada uma vulnerabilidade de kernel Dirty Pipe, gerando callback de reverse shell para 91.203.213.44:4444 (SYN e ESTABLISHED em DPT=4444) com confirmacao de shell privilegiado via DATA=\"id -> uid=0(root) gid=0(root)\"; o atacante entao grava persistencia em FILE_WRITE=/root/.ssh/authorized_keys e realiza LOGIN_ATTEMPT user=root KEY=id_rsa_attacker RESULT=SUCCESS com SESSION_OPEN sem senha. Em seguida ha movimento lateral contra 10.20.10.5 via RPC EPM_MAP INTERFACE=TaskScheduler, SMB TREE_CONNECT=\\\\10.20.10.5\\ADMIN$ e CREATE_TASK name=\"WinDefragUpdate\" run_as=SYSTEM, com execucao confirmada em TASK_SCHEDULER RUN task=\"WinDefragUpdate\" result=0, alem de atividade Kerberos suspeita (AS-REQ cname=svc_backup, AS-REP TGT_ISSUED etype=RC4-HMAC sem pre-autenticacao, e TGS-REQ spn=cifs/10.20.10.9 usando TGT roubado para movimento lateral). Linhas de trafego ALLOW HTTPS/DNS (Outlook, Google Drive, zoom.us, login.live.com) sao legitimas e nao fazem parte da cadeia maliciosa.",
+  "entidades_identificadas": [
+    "10.20.10.90",
+    "10.20.10.9",
+    "10.20.10.77",
+    "10.20.10.5",
+    "91.203.213.44",
+    "10.20.10.44",
+    "172.217.16.142",
+    "1.1.1.1",
+    "10.20.10.61",
+    "20.190.128.40",
+    "user=root",
+    "user=admin",
+    "user=svc_backup",
+    "id_rsa_attacker",
+    "WinDefragUpdate",
+    "spn=cifs/10.20.10.9",
+    "NORTHWIND-LOGISTICS.COM",
+    "/root/.ssh/authorized_keys",
+    "\\\\10.20.10.5\\ADMIN$"
+  ],
+  "severidade_maxima": "critical"
+}

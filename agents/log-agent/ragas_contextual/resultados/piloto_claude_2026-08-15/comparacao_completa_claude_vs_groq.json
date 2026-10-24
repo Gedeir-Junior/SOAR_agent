@@ -1,0 +1,721 @@
+[
+  {
+    "cenario": "linux-syslog-discovery",
+    "tatica": "Discovery",
+    "esperadas": [
+      "T1007"
+    ],
+    "claude_recuperadas": [
+      "T1021.004",
+      "T1543.002",
+      "T1569",
+      "T1569.002",
+      "T1569.003"
+    ],
+    "claude_acertos": [],
+    "claude_recall": 0.0,
+    "groq_recall": 0.0,
+    "groq_acertos": []
+  },
+  {
+    "cenario": "linux-syslog-execution",
+    "tatica": "Execution",
+    "esperadas": [
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1204.002",
+      "T1204.004",
+      "T1569"
+    ],
+    "claude_recuperadas": [
+      "T1020",
+      "T1053",
+      "T1053.003",
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1070.003",
+      "T1072",
+      "T1204.004",
+      "T1204.005",
+      "T1546.004",
+      "T1546.005",
+      "T1546.016",
+      "T1546.018",
+      "T1569.001",
+      "T1569.002"
+    ],
+    "claude_acertos": [
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1204.004"
+    ],
+    "claude_recall": 0.6667,
+    "groq_recall": 0.8333,
+    "groq_acertos": [
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1204.004",
+      "T1569"
+    ]
+  },
+  {
+    "cenario": "linux-syslog-initial-access",
+    "tatica": "Initial Access",
+    "esperadas": [
+      "T1133",
+      "T1190",
+      "T1195.001",
+      "T1566.001",
+      "T1566.003"
+    ],
+    "claude_recuperadas": [
+      "T1056.003",
+      "T1105",
+      "T1204.001",
+      "T1566",
+      "T1566.001",
+      "T1566.002",
+      "T1566.003",
+      "T1598.002",
+      "T1598.003",
+      "T1606",
+      "T1659"
+    ],
+    "claude_acertos": [
+      "T1566.001",
+      "T1566.003"
+    ],
+    "claude_recall": 0.4,
+    "groq_recall": 0.2,
+    "groq_acertos": [
+      "T1566.001"
+    ]
+  },
+  {
+    "cenario": "linux-syslog-privilege-escalation",
+    "tatica": "Privilege Escalation",
+    "esperadas": [
+      "T1053.003",
+      "T1068",
+      "T1078.001",
+      "T1098",
+      "T1098.004",
+      "T1098.007"
+    ],
+    "claude_recuperadas": [
+      "T1070.004",
+      "T1087.001",
+      "T1190",
+      "T1204.003",
+      "T1205.002",
+      "T1543",
+      "T1546.005",
+      "T1548.001",
+      "T1564.013",
+      "T1574.007",
+      "T1574.010",
+      "T1622",
+      "T1668",
+      "T1677",
+      "T1685",
+      "T1685.004",
+      "T1687"
+    ],
+    "claude_acertos": [],
+    "claude_recall": 0.0,
+    "groq_recall": 0.1667,
+    "groq_acertos": [
+      "T1098.004"
+    ]
+  },
+  {
+    "cenario": "linux-syslog-reconnaissance",
+    "tatica": "Reconnaissance",
+    "esperadas": [
+      "T1590",
+      "T1590.001",
+      "T1590.004",
+      "T1590.005",
+      "T1596.002"
+    ],
+    "claude_recuperadas": [
+      "T1018",
+      "T1046",
+      "T1568.002",
+      "T1568.003",
+      "T1583.002",
+      "T1584.001",
+      "T1584.002",
+      "T1590.002",
+      "T1590.005",
+      "T1596.004"
+    ],
+    "claude_acertos": [
+      "T1590.005"
+    ],
+    "claude_recall": 0.2,
+    "groq_recall": 0.6,
+    "groq_acertos": [
+      "T1590",
+      "T1590.005",
+      "T1596.002"
+    ]
+  },
+  {
+    "cenario": "linux-syslog-stealth",
+    "tatica": "Stealth",
+    "esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003",
+      "T1027.004"
+    ],
+    "claude_recuperadas": [
+      "T1074",
+      "T1074.001",
+      "T1195.001",
+      "T1569.001"
+    ],
+    "claude_acertos": [],
+    "claude_recall": 0.0,
+    "groq_recall": 0.0,
+    "groq_acertos": []
+  },
+  {
+    "cenario": "macos-unified-log-discovery",
+    "tatica": "Discovery",
+    "esperadas": [
+      "T1007"
+    ],
+    "claude_recuperadas": [
+      "T1007",
+      "T1036.004",
+      "T1543",
+      "T1543.001",
+      "T1543.002",
+      "T1543.004",
+      "T1569",
+      "T1569.001",
+      "T1569.003"
+    ],
+    "claude_acertos": [
+      "T1007"
+    ],
+    "claude_recall": 1.0,
+    "groq_recall": 1.0,
+    "groq_acertos": [
+      "T1007"
+    ]
+  },
+  {
+    "cenario": "macos-unified-log-execution",
+    "tatica": "Execution",
+    "esperadas": [
+      "T1059.002",
+      "T1059.004",
+      "T1059.006",
+      "T1129",
+      "T1204.002",
+      "T1204.004",
+      "T1569.001"
+    ],
+    "claude_recuperadas": [
+      "T1027.011",
+      "T1036.004",
+      "T1070.010",
+      "T1074.001",
+      "T1176.001",
+      "T1195.002",
+      "T1543",
+      "T1543.004",
+      "T1546.011",
+      "T1553.001",
+      "T1564.001",
+      "T1569.001"
+    ],
+    "claude_acertos": [
+      "T1569.001"
+    ],
+    "claude_recall": 0.1429,
+    "groq_recall": 0.1429,
+    "groq_acertos": [
+      "T1059.006"
+    ]
+  },
+  {
+    "cenario": "macos-unified-log-initial-access",
+    "tatica": "Initial Access",
+    "esperadas": [
+      "T1195.003",
+      "T1566.001"
+    ],
+    "claude_recuperadas": [
+      "T1195.003",
+      "T1495",
+      "T1542.001",
+      "T1542.002",
+      "T1542.004",
+      "T1553.001",
+      "T1574.011",
+      "T1601",
+      "T1601.001",
+      "T1601.002"
+    ],
+    "claude_acertos": [
+      "T1195.003"
+    ],
+    "claude_recall": 0.5,
+    "groq_recall": 0.5,
+    "groq_acertos": [
+      "T1195.003"
+    ]
+  },
+  {
+    "cenario": "macos-unified-log-privilege-escalation",
+    "tatica": "Privilege Escalation",
+    "esperadas": [
+      "T1037.002",
+      "T1053.003",
+      "T1055",
+      "T1078",
+      "T1078.003",
+      "T1098",
+      "T1098.004"
+    ],
+    "claude_recuperadas": [
+      "T1078.001",
+      "T1078.003",
+      "T1087",
+      "T1087.001",
+      "T1098",
+      "T1098.007",
+      "T1110.001",
+      "T1136",
+      "T1136.001",
+      "T1201",
+      "T1552",
+      "T1552.001",
+      "T1556.003",
+      "T1564.002"
+    ],
+    "claude_acertos": [
+      "T1078.003",
+      "T1098"
+    ],
+    "claude_recall": 0.2857,
+    "groq_recall": 0.5714,
+    "groq_acertos": [
+      "T1078",
+      "T1078.003",
+      "T1098",
+      "T1098.004"
+    ]
+  },
+  {
+    "cenario": "macos-unified-log-stealth",
+    "tatica": "Stealth",
+    "esperadas": [
+      "T1027",
+      "T1027.002"
+    ],
+    "claude_recuperadas": [
+      "T1027.013",
+      "T1036.004",
+      "T1059",
+      "T1195.002",
+      "T1546.004",
+      "T1552.001",
+      "T1564.001",
+      "T1569.001",
+      "T1569.002",
+      "T1574.009"
+    ],
+    "claude_acertos": [],
+    "claude_recall": 0.0,
+    "groq_recall": 0.0,
+    "groq_acertos": []
+  },
+  {
+    "cenario": "rede-discovery",
+    "tatica": "Discovery",
+    "esperadas": [
+      "T1040"
+    ],
+    "claude_recuperadas": [
+      "T1040",
+      "T1046",
+      "T1048",
+      "T1056",
+      "T1095",
+      "T1205",
+      "T1205.001",
+      "T1205.002",
+      "T1480.001",
+      "T1568.003",
+      "T1590",
+      "T1595",
+      "T1595.001"
+    ],
+    "claude_acertos": [
+      "T1040"
+    ],
+    "claude_recall": 1.0,
+    "groq_recall": 1.0,
+    "groq_acertos": [
+      "T1040"
+    ]
+  },
+  {
+    "cenario": "rede-execution",
+    "tatica": "Execution",
+    "esperadas": [
+      "T1047",
+      "T1053.007",
+      "T1059.006",
+      "T1059.007",
+      "T1204.001",
+      "T1609"
+    ],
+    "claude_recuperadas": [
+      "T1055.002",
+      "T1059.006",
+      "T1071.001",
+      "T1102",
+      "T1112",
+      "T1203",
+      "T1218.012",
+      "T1480.001",
+      "T1546.018",
+      "T1557.003",
+      "T1569.001",
+      "T1596.004"
+    ],
+    "claude_acertos": [
+      "T1059.006"
+    ],
+    "claude_recall": 0.1667,
+    "groq_recall": 0.0,
+    "groq_acertos": []
+  },
+  {
+    "cenario": "rede-initial-access",
+    "tatica": "Initial Access",
+    "esperadas": [
+      "T1133",
+      "T1190",
+      "T1566.003",
+      "T1659"
+    ],
+    "claude_recuperadas": [
+      "T1021.002",
+      "T1056.003",
+      "T1059.003",
+      "T1078.003",
+      "T1190",
+      "T1204",
+      "T1204.004",
+      "T1505.001",
+      "T1552",
+      "T1659"
+    ],
+    "claude_acertos": [
+      "T1190",
+      "T1659"
+    ],
+    "claude_recall": 0.5,
+    "groq_recall": 0.25,
+    "groq_acertos": [
+      "T1190"
+    ]
+  },
+  {
+    "cenario": "rede-privilege-escalation",
+    "tatica": "Privilege Escalation",
+    "esperadas": [
+      "T1053",
+      "T1068",
+      "T1078",
+      "T1078.001",
+      "T1078.002",
+      "T1098.004"
+    ],
+    "claude_recuperadas": [
+      "T1003",
+      "T1021.004",
+      "T1053",
+      "T1078.003",
+      "T1090",
+      "T1098",
+      "T1098.004",
+      "T1110",
+      "T1110.001",
+      "T1219",
+      "T1548.004",
+      "T1552.004",
+      "T1572",
+      "T1689"
+    ],
+    "claude_acertos": [
+      "T1053",
+      "T1098.004"
+    ],
+    "claude_recall": 0.3333,
+    "groq_recall": 0.1667,
+    "groq_acertos": [
+      "T1098.004"
+    ]
+  },
+  {
+    "cenario": "rede-reconnaissance",
+    "tatica": "Reconnaissance",
+    "esperadas": [
+      "T1589.002",
+      "T1590.002",
+      "T1595",
+      "T1595.001",
+      "T1595.002",
+      "T1595.003"
+    ],
+    "claude_recuperadas": [
+      "T1048",
+      "T1102.001",
+      "T1557.003",
+      "T1568",
+      "T1568.003",
+      "T1583.002",
+      "T1584.002",
+      "T1590",
+      "T1590.002",
+      "T1595.003",
+      "T1596.004"
+    ],
+    "claude_acertos": [
+      "T1590.002",
+      "T1595.003"
+    ],
+    "claude_recall": 0.3333,
+    "groq_recall": 0.1667,
+    "groq_acertos": [
+      "T1590.002"
+    ]
+  },
+  {
+    "cenario": "rede-stealth",
+    "tatica": "Stealth",
+    "esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003"
+    ],
+    "claude_recuperadas": [
+      "T1016.001",
+      "T1027.005",
+      "T1036.003",
+      "T1071.001",
+      "T1105",
+      "T1195.002",
+      "T1218.010",
+      "T1557",
+      "T1557.001",
+      "T1567.003",
+      "T1584.004",
+      "T1592.002",
+      "T1595",
+      "T1595.001",
+      "T1600",
+      "T1659",
+      "T1687",
+      "T1689"
+    ],
+    "claude_acertos": [],
+    "claude_recall": 0.0,
+    "groq_recall": 0.6667,
+    "groq_acertos": [
+      "T1027",
+      "T1027.003"
+    ]
+  },
+  {
+    "cenario": "windows-eventlog-discovery",
+    "tatica": "Discovery",
+    "esperadas": [
+      "T1007"
+    ],
+    "claude_recuperadas": [
+      "T1007",
+      "T1021.006",
+      "T1036.004",
+      "T1047",
+      "T1053.002",
+      "T1053.005",
+      "T1057",
+      "T1059.001",
+      "T1070.009",
+      "T1134.002",
+      "T1218.014",
+      "T1543.003",
+      "T1546",
+      "T1546.003",
+      "T1547.003",
+      "T1569.002"
+    ],
+    "claude_acertos": [
+      "T1007"
+    ],
+    "claude_recall": 1.0,
+    "groq_recall": 1.0,
+    "groq_acertos": [
+      "T1007"
+    ]
+  },
+  {
+    "cenario": "windows-eventlog-execution",
+    "tatica": "Execution",
+    "esperadas": [
+      "T1047",
+      "T1059.001",
+      "T1106",
+      "T1197",
+      "T1569.002",
+      "T1574.001"
+    ],
+    "claude_recuperadas": [
+      "T1059",
+      "T1059.001",
+      "T1070.005",
+      "T1127",
+      "T1189",
+      "T1203",
+      "T1216",
+      "T1216.002",
+      "T1218.011",
+      "T1218.012",
+      "T1505.004",
+      "T1546.003",
+      "T1546.013"
+    ],
+    "claude_acertos": [
+      "T1059.001"
+    ],
+    "claude_recall": 0.1667,
+    "groq_recall": 0.1667,
+    "groq_acertos": [
+      "T1059.001"
+    ]
+  },
+  {
+    "cenario": "windows-eventlog-initial-access",
+    "tatica": "Initial Access",
+    "esperadas": [
+      "T1133",
+      "T1195.003",
+      "T1566.001"
+    ],
+    "claude_recuperadas": [
+      "T1047",
+      "T1087.003",
+      "T1114.001",
+      "T1137",
+      "T1137.003",
+      "T1137.004",
+      "T1137.005",
+      "T1204.002",
+      "T1204.004",
+      "T1495",
+      "T1497.001",
+      "T1542",
+      "T1542.001",
+      "T1542.002",
+      "T1542.003",
+      "T1559.002",
+      "T1566.001",
+      "T1688"
+    ],
+    "claude_acertos": [
+      "T1566.001"
+    ],
+    "claude_recall": 0.3333,
+    "groq_recall": 0.0,
+    "groq_acertos": []
+  },
+  {
+    "cenario": "windows-eventlog-stealth",
+    "tatica": "Stealth",
+    "esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003",
+      "T1027.004"
+    ],
+    "claude_recuperadas": [
+      "T1047",
+      "T1059",
+      "T1059.001",
+      "T1059.003",
+      "T1070.005",
+      "T1127",
+      "T1127.001",
+      "T1134.002",
+      "T1204.002",
+      "T1216",
+      "T1216.002",
+      "T1218.011",
+      "T1218.013",
+      "T1546",
+      "T1546.003",
+      "T1546.013",
+      "T1547.009"
+    ],
+    "claude_acertos": [],
+    "claude_recall": 0.0,
+    "groq_recall": 0.0,
+    "groq_acertos": []
+  },
+  {
+    "cenario": "windows-privesc",
+    "tatica": "Privilege Escalation",
+    "esperadas": [
+      "T1053.005",
+      "T1055",
+      "T1078.001",
+      "T1078.002",
+      "T1098",
+      "T1134.001"
+    ],
+    "claude_recuperadas": [
+      "T1053",
+      "T1053.002",
+      "T1053.005",
+      "T1078",
+      "T1078.001",
+      "T1078.002",
+      "T1078.003",
+      "T1110",
+      "T1110.001",
+      "T1134.001",
+      "T1134.002",
+      "T1201",
+      "T1546",
+      "T1548.002",
+      "T1552.002",
+      "T1556.008"
+    ],
+    "claude_acertos": [
+      "T1053.005",
+      "T1078.001",
+      "T1078.002",
+      "T1134.001"
+    ],
+    "claude_recall": 0.6667,
+    "groq_recall": 0.5,
+    "groq_acertos": [
+      "T1078.001",
+      "T1078.002",
+      "T1134.001"
+    ]
+  }
+]

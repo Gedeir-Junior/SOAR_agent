@@ -1,0 +1,18 @@
+{
+  "resumo_comportamental": "O trecho mostra uma cadeia de reconhecimento e exploração ativa originada do IP externo SRC=203.0.113.77 contra a rede 10.20.5.0/24 e o servidor DNS 10.20.0.53. Inicia com consultas DNS QUERY_TYPE=MX, QUERY_TYPE=TXT e uma tentativa QUERY_TYPE=AXFR contra northwind-logistics.com, bloqueada com REASON=zone_transfer_refused; segue com varredura de portas via pacotes SYN para DPT=22, DPT=3389, DPT=443, DPT=80 e DPT=8080 em múltiplos hosts (10.20.5.10 a 10.20.5.20), e depois com brute-force de diretórios usando User-Agent: Gobuster/3.5 nas rotas GET /admin, GET /backup.zip, GET /.git/config e GET /config.php.bak. Na sequência há tentativas de exploração: SQL injection em GET /invoice/view?id=1%27%20OR%20%271%27=%271, path traversal em GET /api/v1/export?file=../../../../etc/passwd, varredura de vulnerabilidades com User-Agent: Nikto/2.5 em GET /cgi-bin/status, e enumeração de credenciais/usuário via POST /autodiscover/autodiscover.json?Email=jsilva@northwind-logistics.com e POST /GetCredentialType (STATUS=200 BODY=\"IfExistsResult:0\"). O restante do tráfego (DHCP DISCOVER/REQUEST, HTTPS para login.microsoftonline.com, DNS_QUERY=teams.microsoft.com, download via CDN Fastly) é explicitamente identificado como legítimo e não relacionado ao comportamento malicioso predominante.",
+  "entidades_identificadas": [
+    "203.0.113.77",
+    "10.20.0.53",
+    "10.20.5.10",
+    "10.20.5.11",
+    "10.20.5.12",
+    "10.20.5.13",
+    "10.20.5.15",
+    "10.20.5.20",
+    "northwind-logistics.com",
+    "jsilva@northwind-logistics.com",
+    "Gobuster/3.5",
+    "Nikto/2.5"
+  ],
+  "severidade_maxima": "high"
+}

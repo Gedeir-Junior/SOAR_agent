@@ -1,0 +1,76 @@
+{
+  "fonte": "macos_unified_log",
+  "arquivo_log": "macos-unified-log-multifase.log",
+  "total_linhas": 90,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Initial Access",
+      "tatica_id_esperada": "TA0001",
+      "linha_inicio": 1,
+      "linha_fim": 11,
+      "tecnicas_esperadas": [
+        "T1195.003",
+        "T1566.001"
+      ],
+      "fonte": "macos_unified_log"
+    },
+    {
+      "numero_fase_esperado": 2,
+      "tatica_esperada": "Discovery",
+      "tatica_id_esperada": "TA0007",
+      "linha_inicio": 12,
+      "linha_fim": 17,
+      "tecnicas_esperadas": [
+        "T1007"
+      ],
+      "fonte": "macos_unified_log"
+    },
+    {
+      "numero_fase_esperado": 3,
+      "tatica_esperada": "Privilege Escalation",
+      "tatica_id_esperada": "TA0004",
+      "linha_inicio": 18,
+      "linha_fim": 50,
+      "tecnicas_esperadas": [
+        "T1037.002",
+        "T1053.003",
+        "T1055",
+        "T1078",
+        "T1078.003",
+        "T1098",
+        "T1098.004"
+      ],
+      "fonte": "macos_unified_log"
+    },
+    {
+      "numero_fase_esperado": 4,
+      "tatica_esperada": "Execution",
+      "tatica_id_esperada": "TA0002",
+      "linha_inicio": 51,
+      "linha_fim": 81,
+      "tecnicas_esperadas": [
+        "T1059.002",
+        "T1059.004",
+        "T1059.006",
+        "T1129",
+        "T1204.002",
+        "T1204.004",
+        "T1569.001"
+      ],
+      "fonte": "macos_unified_log"
+    },
+    {
+      "numero_fase_esperado": 5,
+      "tatica_esperada": "Stealth",
+      "tatica_id_esperada": "TA0005",
+      "linha_inicio": 82,
+      "linha_fim": 90,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002"
+      ],
+      "fonte": "macos_unified_log"
+    }
+  ]
+}

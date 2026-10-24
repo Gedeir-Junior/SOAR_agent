@@ -1,0 +1,19 @@
+{
+  "fonte": "macos_unified_log",
+  "arquivo_log": "macos-unified-log-initial-access-single.log",
+  "total_linhas": 11,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Initial Access",
+      "tatica_id_esperada": "TA0001",
+      "linha_inicio": 1,
+      "linha_fim": 11,
+      "tecnicas_esperadas": [
+        "T1195.003",
+        "T1566.001"
+      ],
+      "fonte": "macos_unified_log"
+    }
+  ]
+}

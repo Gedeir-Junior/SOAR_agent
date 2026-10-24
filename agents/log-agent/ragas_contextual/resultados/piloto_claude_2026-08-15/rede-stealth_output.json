@@ -1,0 +1,19 @@
+{
+  "resumo_comportamental": "O host 10.20.20.7 estabelece uma sessao TLS com 91.203.213.44 (SNI=cdn-update-service.net) cujo hash JA3 e compativel com C2 conhecido, seguida de SSL_RENEGOTIATE incomum sugerindo tunel encoberto, o que dispara o alerta IDS SIG=\"ET MALWARE JA3 Hash Match Known C2 (Cobalt-Strike-like)\". Em seguida, 10.20.10.77 baixa de 91.203.213.44 o binario GET /binaries/svc_update_upx.bin (812440 bytes, bytes magicos de UPX detectados) e reporta sua execucao via POST /report BODY=\"unpacked=true pid=8842\". Os hosts 10.20.10.77 e 10.20.10.9 exfiltram dados atraves de POST /gallery/upload.php com arquivos PNG (quarterly_report_chart.png e team_offsite_photo.png, este ultimo contendo dump de credenciais via esteganografia), gerando o alerta IDS SIG=\"Possible Invoke-PSImage payload embedded in PNG (entropy anomaly)\", ate o encerramento do canal C2 com FIN apos a exfiltracao completa. Trafego legitimo (OneDrive para 13.107.42.14 e DNS_QUERY=windowsupdate.com para 8.8.8.8) aparece intercalado, sem relacao com a atividade maliciosa.",
+  "entidades_identificadas": [
+    "10.20.20.7",
+    "10.20.10.77",
+    "10.20.10.9",
+    "10.20.10.44",
+    "91.203.213.44",
+    "13.107.42.14",
+    "8.8.8.8",
+    "cdn-update-service.net",
+    "svc_update_upx.bin",
+    "pid=8842",
+    "quarterly_report_chart.png",
+    "team_offsite_photo.png",
+    "windowsupdate.com"
+  ],
+  "severidade_maxima": "critical"
+}

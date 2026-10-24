@@ -1,0 +1,1035 @@
+{
+  "arquivo": "windows-privesc-single.log",
+  "plataforma_detectada": "windows",
+  "total_linhas_analisadas": 24,
+  "fases": [
+    {
+      "numero_fase": 1,
+      "linha_inicio": 1,
+      "linha_fim": 24,
+      "titulo_fase": "Reconhecimento de rede",
+      "descricao_comportamental": "Ocorreram várias tentativas de login falhas e sucessos, incluindo a atribuição de privilégios especiais a novos logons.",
+      "entidades_identificadas": [
+        "10.20.4.201",
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NW-DC01",
+        "NW-SRV-APP12",
+        "NW-WEB-GW01",
+        "backup-svc-job",
+        "helpdesk01",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    },
+    {
+      "numero_fase": 2,
+      "linha_inicio": 1,
+      "linha_fim": 24,
+      "titulo_fase": "Elevação de privilégios",
+      "descricao_comportamental": "O usuário t.oliveira realizou logons em vários hosts e obteve privilégios de administrador.",
+      "entidades_identificadas": [
+        "10.20.4.201",
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NW-DC01",
+        "NW-SRV-APP12",
+        "NW-WEB-GW01",
+        "backup-svc-job",
+        "helpdesk01",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    },
+    {
+      "numero_fase": 3,
+      "linha_inicio": 1,
+      "linha_fim": 24,
+      "titulo_fase": "Lateral movement",
+      "descricao_comportamental": "A atividade parece ser uma tentativa de lateral movement.",
+      "entidades_identificadas": [
+        "10.20.4.201",
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NW-DC01",
+        "NW-SRV-APP12",
+        "NW-WEB-GW01",
+        "backup-svc-job",
+        "helpdesk01",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    }
+  ],
+  "candidatos_por_fase": {
+    "1": [
+      {
+        "tecnica_id": "T1547.007",
+        "nome_tecnica": "Re-opened Applications",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.6303,
+        "descricao_mitre": "Adversaries may modify plist files to automatically run an application when a user logs in. When a user logs out or restarts via the macOS Graphical User Interface (GUI), a prompt is provided to the user with a checkbox to \"Reopen windows when logging back in\".(Citation: Re-Open windows on Mac) When selected, all applications currently open are added to a property list file named <code>com.apple.loginwindow.[UUID].plist</code> within the <code>~/Library/Preferences/ByHost</code> directory.(Citation: Methods of Mac Malware Persistence)(Citation: Wardle Persistence Chapter) Applications listed in this file are automatically reopened upon the user’s next logon.\n\nAdversaries can establish [Persistence](https://attack.mitre.org/tactics/TA0003) by adding a malicious application path to the <code>com.apple.loginwindow.[UUID].plist</code> file to execute payloads when a user logs in.",
+        "descricao_semantica_log": "Escrita ou modificacao do arquivo com.apple.loginwindow.[UUID].plist localizado em ~/Library/Preferences/ByHost, capturada pelo Unified Log atraves do subsistema com.apple.loginwindow durante o processo de logoff. O evento registra a adicao de um novo caminho de aplicativo a lista de janelas reabertas, permitindo que um binario malicioso seja executado automaticamente no proximo login do usuario sem exigir persistencia via LaunchAgents tradicionais.",
+        "plataformas_mitre": [
+          "macOS"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.55,
+        "palavras_chave_filtro": [
+          "loginwindow",
+          "ByHost",
+          "com.apple.loginwindow",
+          "Reopen windows"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "log show: process loginwindow, subsystem com.apple.loginwindow, \"Saving reopen list to com.apple.loginwindow.550e8400.plist\"",
+              "fs_usage: WrRealloc /Users/victim/Library/Preferences/ByHost/com.apple.loginwindow.550e8400.plist loginwindow"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "com\\.apple\\.loginwindow\\.[0-9a-f-]+\\.plist"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1547.007 (Re-opened Applications)\nTática: Privilege Escalation (TA0004)\nEscrita ou modificacao do arquivo com.apple.loginwindow.[UUID].plist localizado em ~/Library/Preferences/ByHost, capturada pelo Unified Log atraves do subsistema com.apple.loginwindow durante o processo de logoff. O evento registra a adicao de um novo caminho de aplicativo a lista de janelas reabertas, permitindo que um binario malicioso seja executado automaticamente no proximo login do usuario sem exigir persistencia via LaunchAgents tradicionais.\nPalavras-chave: loginwindow, ByHost, com.apple.loginwindow, Reopen windows\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: log show: process loginwindow, subsystem com.apple.loginwindow, \"Saving reopen list to com.apple.loginwindow.550e8400.plist\" | fs_usage: WrRealloc /Users/victim/Library/Preferences/ByHost/com.apple.loginwindow.550e8400.plist loginwindow"
+      },
+      {
+        "tecnica_id": "T1037.002",
+        "nome_tecnica": "Login Hook",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.6285,
+        "descricao_mitre": "Adversaries may use a Login Hook to establish persistence executed upon user logon via com.apple.loginwindow.plist.",
+        "descricao_semantica_log": "Login hooks no macOS sao definidos no arquivo com.apple.loginwindow.plist por meio da chave LoginHook ou LogoutHook, apontando para um script executado com privilegios de root a cada logon ou logout de usuario. O Unified Log registra a atividade do processo loginwindow executando o script referenciado, bem como chamadas ao utilitario de linha de comando defaults usado para inserir ou alterar a chave no arquivo plist. Como apenas um hook pode existir por vez no sistema, adversarios frequentemente acrescentam comandos maliciosos a hooks legitimos preexistentes para permanecer furtivos durante a persistencia.",
+        "plataformas_mitre": [
+          "macOS"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "LoginHook",
+          "LogoutHook",
+          "com.apple.loginwindow",
+          "defaults write",
+          "loginwindow"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "loginwindow[143]: Executing LoginHook script /Library/Scripts/persist.sh with root privileges",
+              "defaults[221]: Write com.apple.loginwindow LoginHook /private/tmp/.hidden/hook.sh"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "LoginHook",
+              "LogoutHook",
+              "com\\.apple\\.loginwindow\\.plist"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1037.002 (Login Hook)\nTática: Persistence (TA0003)\nLogin hooks no macOS sao definidos no arquivo com.apple.loginwindow.plist por meio da chave LoginHook ou LogoutHook, apontando para um script executado com privilegios de root a cada logon ou logout de usuario. O Unified Log registra a atividade do processo loginwindow executando o script referenciado, bem como chamadas ao utilitario de linha de comando defaults usado para inserir ou alterar a chave no arquivo plist. Como apenas um hook pode existir por vez no sistema, adversarios frequentemente acrescentam comandos maliciosos a hooks legitimos preexistentes para permanecer furtivos durante a persistencia.\nPalavras-chave: LoginHook, LogoutHook, com.apple.loginwindow, defaults write, loginwindow\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: loginwindow[143]: Executing LoginHook script /Library/Scripts/persist.sh with root privileges | defaults[221]: Write com.apple.loginwindow LoginHook /private/tmp/.hidden/hook.sh"
+      },
+      {
+        "tecnica_id": "T1078",
+        "nome_tecnica": "Valid Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.6147,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Contas validas comprometidas permitem que adversarios contornem controles de acesso e mantenham presenca persistente em sistemas e servicos remotos, como VPNs, Outlook Web Access e area de trabalho remota, sem a necessidade de ferramentas maliciosas adicionais. Em Windows o Event Log registra logons bem-sucedidos com o Event ID 4624 e atribuicao de privilegios especiais com o 4672, enquanto em Linux o sshd registra autenticacoes aceitas via syslog. Em macOS o securityd concede autorizacoes de login, e concentradores VPN podem registrar autenticacoes bem-sucedidas de contas cujo comportamento de acesso destoa do padrao historico do usuario legitimo, especialmente contas inativas reativadas pelo adversario.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.45,
+        "palavras_chave_filtro": [
+          "4624",
+          "4672",
+          "Accepted password",
+          "VPN",
+          "RemoteInteractive",
+          "inactive account"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "VPN_CONCENTRATOR: user=backupsvc auth=SUCCESS protocol=IKEv2 session_duration=long",
+              "VPN_CONCENTRATOR: user=backupsvc auth=SUCCESS protocol=SSL-VPN unusual_hours=true"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "auth=SUCCESS.*IKEv2|SSL-VPN"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "sshd[2211]: Accepted password for backupsvc port 51322 ssh2",
+              "sshd[2233]: Failed password for invalid user admin"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Accepted password for",
+              "Failed password for invalid user"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "EventID=4624 An account was successfully logged on. Logon Type: 10 (RemoteInteractive) Account Name: svc_backup",
+              "EventID=4672 Special privileges assigned to new logon"
+            ],
+            "event_ids": [
+              "4624",
+              "4672",
+              "4625"
+            ],
+            "indicadores_regex": [
+              "Logon Type: (10|3|2)",
+              "Special privileges assigned"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "com.apple.securityd: authorization granted for right system.login.console"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "system\\.login\\.console"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078 (Valid Accounts)\nTática: Persistence (TA0003)\nContas validas comprometidas permitem que adversarios contornem controles de acesso e mantenham presenca persistente em sistemas e servicos remotos, como VPNs, Outlook Web Access e area de trabalho remota, sem a necessidade de ferramentas maliciosas adicionais. Em Windows o Event Log registra logons bem-sucedidos com o Event ID 4624 e atribuicao de privilegios especiais com o 4672, enquanto em Linux o sshd registra autenticacoes aceitas via syslog. Em macOS o securityd concede autorizacoes de login, e concentradores VPN podem registrar autenticacoes bem-sucedidas de contas cujo comportamento de acesso destoa do padrao historico do usuario legitimo, especialmente contas inativas reativadas pelo adversario.\nPalavras-chave: 4624, 4672, Accepted password, VPN, RemoteInteractive, inactive account\nFonte rede: VPN_CONCENTRATOR: user=backupsvc auth=SUCCESS protocol=IKEv2 session_duration=long | VPN_CONCENTRATOR: user=backupsvc auth=SUCCESS protocol=SSL-VPN unusual_hours=true\nFonte linux_syslog: sshd[2211]: Accepted password for backupsvc port 51322 ssh2 | sshd[2233]: Failed password for invalid user admin\nFonte windows_eventlog: EventID=4624 An account was successfully logged on. Logon Type: 10 (RemoteInteractive) Account Name: svc_backup | EventID=4672 Special privileges assigned to new logon\nFonte macos_unified_log: com.apple.securityd: authorization granted for right system.login.console"
+      },
+      {
+        "tecnica_id": "T1056.003",
+        "nome_tecnica": "Web Portal Capture",
+        "tatica": "Credential Access",
+        "tatica_id": "TA0006",
+        "score": 0.6081,
+        "descricao_mitre": "Adversarios instalam codigo em portais externos, como paginas de login VPN, para capturar e transmitir credenciais de usuarios que tentam autenticar no servico comprometido.",
+        "descricao_semantica_log": "A modificacao de portais de autenticacao web para captura de credenciais deixa rastros tanto no trafego de rede quanto no sistema de arquivos do servidor. No trafego de rede, requisicoes POST para paginas de login seguidas por transmissoes anomalas de dados codificados para dominios externos sao indicadores de exfiltracao de credenciais capturadas. No host Windows, o Sysmon Event ID 11 registra a criacao ou modificacao de arquivos como logon.aspx em portais OWA ou RDWeb, enquanto em Linux o auditd captura edicoes de arquivos como login.php dentro do diretorio /var/www/html por editores de texto executados fora de um processo de deploy legitimo.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.7,
+        "palavras_chave_filtro": [
+          "logon.aspx",
+          "login.php",
+          "OWA auth",
+          "webshell",
+          "credential exfiltration"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "HTTP access log: POST /vpn/index.html HTTP/1.1 200 seguido de POST outbound anomalo apos submissao do formulario de login",
+              "IDS alert: possivel exfiltracao de credenciais - POST em formulario de login seguido de payload base64 para dominio externo de C2"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "POST /(vpn|login|portal)",
+              "base64.*credential"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "type=SYSCALL msg=audit(1690000700.060:1300): comm=\"vim\" name=\"/var/www/html/portal/login.php\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "/var/www/.*login\\.php"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Sysmon Event ID 11: FileCreate TargetFilename=C:\\inetpub\\wwwroot\\owa\\auth\\logon.aspx",
+              "Sysmon Event ID 2: FileCreateTime alterado para C:\\inetpub\\wwwroot\\RDWeb\\Pages\\en-US\\login.aspx"
+            ],
+            "event_ids": [
+              "11",
+              "2"
+            ],
+            "indicadores_regex": [
+              "logon\\.aspx",
+              "owa\\\\auth",
+              "RDWeb.*login"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1056.003 (Web Portal Capture)\nTática: Credential Access (TA0006)\nA modificacao de portais de autenticacao web para captura de credenciais deixa rastros tanto no trafego de rede quanto no sistema de arquivos do servidor. No trafego de rede, requisicoes POST para paginas de login seguidas por transmissoes anomalas de dados codificados para dominios externos sao indicadores de exfiltracao de credenciais capturadas. No host Windows, o Sysmon Event ID 11 registra a criacao ou modificacao de arquivos como logon.aspx em portais OWA ou RDWeb, enquanto em Linux o auditd captura edicoes de arquivos como login.php dentro do diretorio /var/www/html por editores de texto executados fora de um processo de deploy legitimo.\nPalavras-chave: logon.aspx, login.php, OWA auth, webshell, credential exfiltration\nFonte rede: HTTP access log: POST /vpn/index.html HTTP/1.1 200 seguido de POST outbound anomalo apos submissao do formulario de login | IDS alert: possivel exfiltracao de credenciais - POST em formulario de login seguido de payload base64 para dominio externo de C2\nFonte linux_syslog: type=SYSCALL msg=audit(1690000700.060:1300): comm=\"vim\" name=\"/var/www/html/portal/login.php\"\nFonte windows_eventlog: Sysmon Event ID 11: FileCreate TargetFilename=C:\\inetpub\\wwwroot\\owa\\auth\\logon.aspx | Sysmon Event ID 2: FileCreateTime alterado para C:\\inetpub\\wwwroot\\RDWeb\\Pages\\en-US\\login.aspx\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1037",
+        "nome_tecnica": "Boot or Logon Initialization Scripts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.5998,
+        "descricao_mitre": "Adversaries may use scripts automatically executed at boot or logon initialization to establish persistence.",
+        "descricao_semantica_log": "Scripts de inicializacao configurados para execucao automatica no boot ou logon geram evidencias distribuidas conforme a plataforma alvo. Em ambientes Windows chaves de registro como UserInitMprLogonScript sao alteradas e processos como cscript.exe ou wscript.exe sao lancados durante o logon do usuario. Em sistemas Linux arquivos rc.local, rc.common ou scripts hospedados em /etc/init.d sao executados pelo systemd durante a inicializacao e podem ser capturados via auditd EXECVE. Em macOS hooks de login e logout referenciados no com.apple.loginwindow.plist disparam scripts com privilegios elevados de root. A telemetria combinada revela persistencia por meio de caminhos de script incomuns fora dos diretorios padrao esperados pelo sistema operacional.",
+        "plataformas_mitre": [
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.5,
+        "palavras_chave_filtro": [
+          "UserInitMprLogonScript",
+          "rc.local",
+          "LoginHook",
+          "logon script",
+          "cscript.exe",
+          "init.d"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 03:00:05 host systemd[1]: Starting Standard System V runlevel compatibility service via rc.local",
+              "type=EXECVE msg=audit(1690000000.123:456): argc=1 a0=\"/etc/rc.local\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "/etc/rc\\.local",
+              "/etc/init\\.d/",
+              "rc\\.common"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Process Create: New Process Name: C:\\Windows\\System32\\cscript.exe Command Line: cscript.exe \\\\DOMAIN\\NETLOGON\\logon.vbs",
+              "Registry value set: HKCU\\Environment\\UserInitMprLogonScript = \\\\server\\share\\script.bat"
+            ],
+            "event_ids": [
+              "4688",
+              "4657"
+            ],
+            "indicadores_regex": [
+              "UserInitMprLogonScript",
+              "cscript\\.exe|wscript\\.exe"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "loginwindow: Executing LoginHook /Library/Scripts/persist.sh as root",
+              "com.apple.xpc.launchd[1] (com.example.startup[501]): Service exited with abnormal code"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "LoginHook",
+              "com\\.apple\\.loginwindow"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1037 (Boot or Logon Initialization Scripts)\nTática: Persistence (TA0003)\nScripts de inicializacao configurados para execucao automatica no boot ou logon geram evidencias distribuidas conforme a plataforma alvo. Em ambientes Windows chaves de registro como UserInitMprLogonScript sao alteradas e processos como cscript.exe ou wscript.exe sao lancados durante o logon do usuario. Em sistemas Linux arquivos rc.local, rc.common ou scripts hospedados em /etc/init.d sao executados pelo systemd durante a inicializacao e podem ser capturados via auditd EXECVE. Em macOS hooks de login e logout referenciados no com.apple.loginwindow.plist disparam scripts com privilegios elevados de root. A telemetria combinada revela persistencia por meio de caminhos de script incomuns fora dos diretorios padrao esperados pelo sistema operacional.\nPalavras-chave: UserInitMprLogonScript, rc.local, LoginHook, logon script, cscript.exe, init.d\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Aug  2 03:00:05 host systemd[1]: Starting Standard System V runlevel compatibility service via rc.local | type=EXECVE msg=audit(1690000000.123:456): argc=1 a0=\"/etc/rc.local\"\nFonte windows_eventlog: Process Create: New Process Name: C:\\Windows\\System32\\cscript.exe Command Line: cscript.exe \\\\DOMAIN\\NETLOGON\\logon.vbs | Registry value set: HKCU\\Environment\\UserInitMprLogonScript = \\\\server\\share\\script.bat\nFonte macos_unified_log: loginwindow: Executing LoginHook /Library/Scripts/persist.sh as root | com.apple.xpc.launchd[1] (com.example.startup[501]): Service exited with abnormal code"
+      }
+    ],
+    "2": [
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.4682,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Autenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "local account",
+          "logon type 10",
+          "sshd",
+          "sudo",
+          "authd",
+          "credential reuse"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 09:14:33 srv01 sshd[2211]: Accepted password for svcbackup from 198.51.100.22 port 51422 ssh2",
+              "Aug  2 09:15:02 srv01 sudo:    svcbackup : TTY=pts/0 ; PWD=/home/svcbackup ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "sshd\\[\\d+\\]: Accepted password for \\w+",
+              "sudo:\\s+\\w+ : TTY=.* USER=root COMMAND="
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "An account was successfully logged on. Subject: NT AUTHORITY\\SYSTEM Account Name: WORKSTATION01\\localsupport Logon Type: 10 Event ID: 4624",
+              "An account failed to log on. Account Name: localsupport Logon Type: 3 Failure Reason: %%2313 Event ID: 4625"
+            ],
+            "event_ids": [
+              "4624",
+              "4625"
+            ],
+            "indicadores_regex": [
+              "Logon Type:\\s*(2|10)",
+              "Account Name:\\s*\\w+\\\\?\\w*local\\w*"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "authd: Authentication succeeded for user 'localsupport' via LocalAuthentication mechanism",
+              "loginwindow: Login window - user 'localsupport' authenticated locally, session started"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "authd: Authentication succeeded for user '\\w+'",
+              "loginwindow:.*authenticated locally"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.003 (Local Accounts)\nTática: Persistence (TA0003)\nAutenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.\nPalavras-chave: local account, logon type 10, sshd, sudo, authd, credential reuse\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug  2 09:14:33 srv01 sshd[2211]: Accepted password for svcbackup from 198.51.100.22 port 51422 ssh2 | Aug  2 09:15:02 srv01 sudo:    svcbackup : TTY=pts/0 ; PWD=/home/svcbackup ; USER=root ; COMMAND=/bin/bash\nFonte windows_eventlog: An account was successfully logged on. Subject: NT AUTHORITY\\SYSTEM Account Name: WORKSTATION01\\localsupport Logon Type: 10 Event ID: 4624 | An account failed to log on. Account Name: localsupport Logon Type: 3 Failure Reason: %%2313 Event ID: 4625\nFonte macos_unified_log: authd: Authentication succeeded for user 'localsupport' via LocalAuthentication mechanism | loginwindow: Login window - user 'localsupport' authenticated locally, session started"
+      },
+      {
+        "tecnica_id": "T1583.002",
+        "nome_tecnica": "Acquire Infrastructure: DNS Server",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.4582,
+        "descricao_mitre": "Adversaries configuram e operam seus proprios servidores DNS para dar suporte a futuras operacoes de Command and Control baseadas em DNS.",
+        "descricao_semantica_log": "A configuracao do servidor DNS proprio ocorre em infraestrutura do adversario, sem qualquer visibilidade para a organizacao alvo. A deteccao depende de reconhecimento externo de DNS, identificando servidores de nomes autoritativos com configuracao anomala, volume elevado de consultas para registros TXT ou NULL uma vez operacional, e associacao com ASN ou faixas de hospedagem conhecidas por atividade maliciosa; a atividade so se torna observavel para a vitima quando hosts internos comecam a resolver contra esse servidor durante a fase de C2.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.15,
+        "palavras_chave_filtro": [
+          "authoritative DNS",
+          "DNS C2",
+          "TXT record",
+          "NXDOMAIN",
+          "DNS tunneling",
+          "passive DNS",
+          "recursive resolver"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1583.002 (Acquire Infrastructure: DNS Server)\nTática: Resource Development (TA0042)\nA configuracao do servidor DNS proprio ocorre em infraestrutura do adversario, sem qualquer visibilidade para a organizacao alvo. A deteccao depende de reconhecimento externo de DNS, identificando servidores de nomes autoritativos com configuracao anomala, volume elevado de consultas para registros TXT ou NULL uma vez operacional, e associacao com ASN ou faixas de hospedagem conhecidas por atividade maliciosa; a atividade so se torna observavel para a vitima quando hosts internos comecam a resolver contra esse servidor durante a fase de C2.\nPalavras-chave: authoritative DNS, DNS C2, TXT record, NXDOMAIN, DNS tunneling, passive DNS, recursive resolver\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1585",
+        "nome_tecnica": "Establish Accounts",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.4545,
+        "descricao_mitre": "Adversaries create and cultivate accounts with online services to build personas that support social engineering and other operations.",
+        "descricao_semantica_log": "A criação de contas e o desenvolvimento de personas ocorrem inteiramente em plataformas de terceiros (redes sociais, provedores de e-mail, serviços de nuvem) fora do alcance de qualquer log corporativo, de rede ou de host da organização-alvo. Essas ações não deixam rastros golpeáveis nos sistemas internos monitorados. A detecção realista depende de OSINT, análise de personas suspeitas por equipes de inteligência de ameaças e correlação de contas recém-criadas associadas a campanhas conhecidas de phishing ou engenharia social.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.1,
+        "palavras_chave_filtro": [
+          "persona development",
+          "OSINT",
+          "sock puppet account",
+          "social engineering",
+          "fake profile"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1585 (Establish Accounts)\nTática: Resource Development (TA0042)\nA criação de contas e o desenvolvimento de personas ocorrem inteiramente em plataformas de terceiros (redes sociais, provedores de e-mail, serviços de nuvem) fora do alcance de qualquer log corporativo, de rede ou de host da organização-alvo. Essas ações não deixam rastros golpeáveis nos sistemas internos monitorados. A detecção realista depende de OSINT, análise de personas suspeitas por equipes de inteligência de ameaças e correlação de contas recém-criadas associadas a campanhas conhecidas de phishing ou engenharia social.\nPalavras-chave: persona development, OSINT, sock puppet account, social engineering, fake profile\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1586.001",
+        "nome_tecnica": "Compromise Accounts: Social Media Accounts",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.4522,
+        "descricao_mitre": "Adversaries compromise existing social media accounts to leverage trust and existing connections for social engineering.",
+        "descricao_semantica_log": "A apropriação de contas de mídia social existentes ocorre nos servidores de autenticação da própria plataforma social, fora do alcance de qualquer telemetria de rede, host ou diretório da organização-alvo. Não há eventos corporativos capazes de capturar login anômalo em uma conta pessoal de terceiro em outra plataforma. A detecção depende de alertas de segurança da própria rede social, monitoramento de credenciais vazadas em fóruns clandestinos e inteligência de ameaças sobre reutilização de senhas.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.1,
+        "palavras_chave_filtro": [
+          "account takeover",
+          "credential reuse",
+          "password spraying",
+          "leaked credentials",
+          "social media compromise"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1586.001 (Compromise Accounts: Social Media Accounts)\nTática: Resource Development (TA0042)\nA apropriação de contas de mídia social existentes ocorre nos servidores de autenticação da própria plataforma social, fora do alcance de qualquer telemetria de rede, host ou diretório da organização-alvo. Não há eventos corporativos capazes de capturar login anômalo em uma conta pessoal de terceiro em outra plataforma. A detecção depende de alertas de segurança da própria rede social, monitoramento de credenciais vazadas em fóruns clandestinos e inteligência de ameaças sobre reutilização de senhas.\nPalavras-chave: account takeover, credential reuse, password spraying, leaked credentials, social media compromise\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1583",
+        "nome_tecnica": "Acquire Infrastructure",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.4502,
+        "descricao_mitre": "Adversaries buy, lease, rent, or otherwise obtain infrastructure such as servers, domains, or cloud/VPS instances for use in later stages of an operation.",
+        "descricao_semantica_log": "Esta tecnica ocorre inteiramente em infraestrutura de terceiros ou controlada pelo adversario, antes de qualquer interacao com a rede da vitima, portanto nao gera eventos nos sistemas monitorados internamente. A deteccao so e possivel de forma indireta, atraves de feeds de threat intelligence, monitoramento de DNS passivo, logs de certificate transparency e rastreamento de registros WHOIS que sinalizam dominios recem-criados, faixas de IP de provedores de hospedagem bulletproof ou certificados TLS recem-emitidos posteriormente associados a campanhas maliciosas quando a infraestrutura e efetivamente utilizada contra os ativos da organizacao.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.15,
+        "palavras_chave_filtro": [
+          "aquisicao de infraestrutura",
+          "domain registration",
+          "bulletproof hosting",
+          "WHOIS privacy",
+          "ASN",
+          "VPS provider",
+          "threat intelligence feed",
+          "IOC"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1583 (Acquire Infrastructure)\nTática: Resource Development (TA0042)\nEsta tecnica ocorre inteiramente em infraestrutura de terceiros ou controlada pelo adversario, antes de qualquer interacao com a rede da vitima, portanto nao gera eventos nos sistemas monitorados internamente. A deteccao so e possivel de forma indireta, atraves de feeds de threat intelligence, monitoramento de DNS passivo, logs de certificate transparency e rastreamento de registros WHOIS que sinalizam dominios recem-criados, faixas de IP de provedores de hospedagem bulletproof ou certificados TLS recem-emitidos posteriormente associados a campanhas maliciosas quando a infraestrutura e efetivamente utilizada contra os ativos da organizacao.\nPalavras-chave: aquisicao de infraestrutura, domain registration, bulletproof hosting, WHOIS privacy, ASN, VPS provider, threat intelligence feed, IOC\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      }
+    ],
+    "3": [
+      {
+        "tecnica_id": "T1534",
+        "nome_tecnica": "Internal Spearphishing",
+        "tatica": "Lateral Movement",
+        "tatica_id": "TA0008",
+        "score": 0.461,
+        "descricao_mitre": "Adversarios utilizam contas internas ja comprometidas para enviar e-mails ou mensagens de phishing a outros usuarios da mesma organizacao, aumentando a credibilidade do ataque.",
+        "descricao_semantica_log": "O phishing interno gera um volume anomalo de mensagens enviadas por uma unica conta de e-mail em um curto periodo, muitas vezes direcionadas a listas de distribuicao internas ou a multiplos destinatarios simultaneos, visivel nos registros do servidor de correio como um pico de status de envio para a mesma conta de origem. Quando o anexo ou link malicioso e aberto pelo destinatario, pode ocorrer a execucao de um aplicativo de escritorio a partir do cliente de e-mail, gerando criacao de processo suspeita. O trafego de rede tambem pode revelar um aumento incomum de conexoes SMTP internas partindo de uma unica estacao de trabalho.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.55,
+        "palavras_chave_filtro": [
+          "postfix",
+          "status=sent",
+          "nrcpt",
+          "internal phishing",
+          "OUTLOOK.EXE"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2025-07-29T09:02:14Z SRC=10.10.1.12 DST=10.10.9.1 SPT=51004 DPT=25 SMTP RCPT-COUNT=48"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "DPT=25.*RCPT-COUNT=\\d{2,}"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "postfix/smtp[8821]: 4B2C1A1234: to=<team-all@corp.local>, relay=mail.corp.local, status=sent (250 OK)",
+              "postfix/qmgr[8801]: 4B2C1A1234: from=<compromised.user@corp.local>, size=45210, nrcpt=48"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "status=sent.*nrcpt=\\d{2,}"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Security: EventID=4688 NewProcessName=C:\\Program Files\\Microsoft Office\\WINWORD.EXE ParentProcessName=OUTLOOK.EXE"
+            ],
+            "event_ids": [
+              "4688"
+            ],
+            "indicadores_regex": [
+              "ParentProcessName=OUTLOOK\\.EXE"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1534 (Internal Spearphishing)\nTática: Lateral Movement (TA0008)\nO phishing interno gera um volume anomalo de mensagens enviadas por uma unica conta de e-mail em um curto periodo, muitas vezes direcionadas a listas de distribuicao internas ou a multiplos destinatarios simultaneos, visivel nos registros do servidor de correio como um pico de status de envio para a mesma conta de origem. Quando o anexo ou link malicioso e aberto pelo destinatario, pode ocorrer a execucao de um aplicativo de escritorio a partir do cliente de e-mail, gerando criacao de processo suspeita. O trafego de rede tambem pode revelar um aumento incomum de conexoes SMTP internas partindo de uma unica estacao de trabalho.\nPalavras-chave: postfix, status=sent, nrcpt, internal phishing, OUTLOOK.EXE\nFonte rede: 2025-07-29T09:02:14Z SRC=10.10.1.12 DST=10.10.9.1 SPT=51004 DPT=25 SMTP RCPT-COUNT=48\nFonte linux_syslog: postfix/smtp[8821]: 4B2C1A1234: to=<team-all@corp.local>, relay=mail.corp.local, status=sent (250 OK) | postfix/qmgr[8801]: 4B2C1A1234: from=<compromised.user@corp.local>, size=45210, nrcpt=48\nFonte windows_eventlog: Security: EventID=4688 NewProcessName=C:\\Program Files\\Microsoft Office\\WINWORD.EXE ParentProcessName=OUTLOOK.EXE\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      }
+    ]
+  },
+  "relatorio": {
+    "arquivo_log": "windows-privesc-single.log",
+    "total_linhas_analisadas": 24,
+    "total_fases": 3,
+    "fases": [
+      {
+        "numero_fase": 1,
+        "linha_inicio": 1,
+        "linha_fim": 24,
+        "titulo_fase": "Reconhecimento de rede",
+        "descricao_comportamental": "Ocorreram várias tentativas de login falhas e sucessos, incluindo a atribuição de privilégios especiais a novos logons.",
+        "entidades_identificadas": [
+          "10.20.4.201",
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NW-DC01",
+          "NW-SRV-APP12",
+          "NW-WEB-GW01",
+          "backup-svc-job",
+          "helpdesk01",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      },
+      {
+        "numero_fase": 2,
+        "linha_inicio": 1,
+        "linha_fim": 24,
+        "titulo_fase": "Elevação de privilégios",
+        "descricao_comportamental": "O usuário t.oliveira realizou logons em vários hosts e obteve privilégios de administrador.",
+        "entidades_identificadas": [
+          "10.20.4.201",
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NW-DC01",
+          "NW-SRV-APP12",
+          "NW-WEB-GW01",
+          "backup-svc-job",
+          "helpdesk01",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      },
+      {
+        "numero_fase": 3,
+        "linha_inicio": 1,
+        "linha_fim": 24,
+        "titulo_fase": "Lateral movement",
+        "descricao_comportamental": "A atividade parece ser uma tentativa de lateral movement.",
+        "entidades_identificadas": [
+          "10.20.4.201",
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NW-DC01",
+          "NW-SRV-APP12",
+          "NW-WEB-GW01",
+          "backup-svc-job",
+          "helpdesk01",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      }
+    ],
+    "ameacas": [
+      {
+        "tecnica_id": "T1056.003",
+        "nome_tecnica": "Web Portal Capture",
+        "tatica": "Credential Access",
+        "tatica_id": "TA0006",
+        "severidade": "high",
+        "confianca_media": 0.6081,
+        "descricao_mitre": "Adversarios instalam codigo em portais externos, como paginas de login VPN, para capturar e transmitir credenciais de usuarios que tentam autenticar no servico comprometido.",
+        "descricao_semantica_log": "A modificacao de portais de autenticacao web para captura de credenciais deixa rastros tanto no trafego de rede quanto no sistema de arquivos do servidor. No trafego de rede, requisicoes POST para paginas de login seguidas por transmissoes anomalas de dados codificados para dominios externos sao indicadores de exfiltracao de credenciais capturadas. No host Windows, o Sysmon Event ID 11 registra a criacao ou modificacao de arquivos como logon.aspx em portais OWA ou RDWeb, enquanto em Linux o auditd captura edicoes de arquivos como login.php dentro do diretorio /var/www/html por editores de texto executados fora de um processo de deploy legitimo.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "Ocorreram várias tentativas de login falhas e sucessos, incluindo a atribuição de privilégios especiais a novos logons.",
+            "score_similaridade": 0.6081
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1056/003"
+      },
+      {
+        "tecnica_id": "T1078",
+        "nome_tecnica": "Valid Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "severidade": "medium",
+        "confianca_media": 0.6147,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Contas validas comprometidas permitem que adversarios contornem controles de acesso e mantenham presenca persistente em sistemas e servicos remotos, como VPNs, Outlook Web Access e area de trabalho remota, sem a necessidade de ferramentas maliciosas adicionais. Em Windows o Event Log registra logons bem-sucedidos com o Event ID 4624 e atribuicao de privilegios especiais com o 4672, enquanto em Linux o sshd registra autenticacoes aceitas via syslog. Em macOS o securityd concede autorizacoes de login, e concentradores VPN podem registrar autenticacoes bem-sucedidas de contas cujo comportamento de acesso destoa do padrao historico do usuario legitimo, especialmente contas inativas reativadas pelo adversario.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "Ocorreram várias tentativas de login falhas e sucessos, incluindo a atribuição de privilégios especiais a novos logons.",
+            "score_similaridade": 0.6147
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078"
+      },
+      {
+        "tecnica_id": "T1037",
+        "nome_tecnica": "Boot or Logon Initialization Scripts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "severidade": "medium",
+        "confianca_media": 0.5998,
+        "descricao_mitre": "Adversaries may use scripts automatically executed at boot or logon initialization to establish persistence.",
+        "descricao_semantica_log": "Scripts de inicializacao configurados para execucao automatica no boot ou logon geram evidencias distribuidas conforme a plataforma alvo. Em ambientes Windows chaves de registro como UserInitMprLogonScript sao alteradas e processos como cscript.exe ou wscript.exe sao lancados durante o logon do usuario. Em sistemas Linux arquivos rc.local, rc.common ou scripts hospedados em /etc/init.d sao executados pelo systemd durante a inicializacao e podem ser capturados via auditd EXECVE. Em macOS hooks de login e logout referenciados no com.apple.loginwindow.plist disparam scripts com privilegios elevados de root. A telemetria combinada revela persistencia por meio de caminhos de script incomuns fora dos diretorios padrao esperados pelo sistema operacional.",
+        "plataformas_mitre": [
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "Ocorreram várias tentativas de login falhas e sucessos, incluindo a atribuição de privilégios especiais a novos logons.",
+            "score_similaridade": 0.5998
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1037"
+      },
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "severidade": "medium",
+        "confianca_media": 0.4682,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Autenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 2,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "O usuário t.oliveira realizou logons em vários hosts e obteve privilégios de administrador.",
+            "score_similaridade": 0.4682
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078/003"
+      },
+      {
+        "tecnica_id": "T1534",
+        "nome_tecnica": "Internal Spearphishing",
+        "tatica": "Lateral Movement",
+        "tatica_id": "TA0008",
+        "severidade": "medium",
+        "confianca_media": 0.461,
+        "descricao_mitre": "Adversarios utilizam contas internas ja comprometidas para enviar e-mails ou mensagens de phishing a outros usuarios da mesma organizacao, aumentando a credibilidade do ataque.",
+        "descricao_semantica_log": "O phishing interno gera um volume anomalo de mensagens enviadas por uma unica conta de e-mail em um curto periodo, muitas vezes direcionadas a listas de distribuicao internas ou a multiplos destinatarios simultaneos, visivel nos registros do servidor de correio como um pico de status de envio para a mesma conta de origem. Quando o anexo ou link malicioso e aberto pelo destinatario, pode ocorrer a execucao de um aplicativo de escritorio a partir do cliente de e-mail, gerando criacao de processo suspeita. O trafego de rede tambem pode revelar um aumento incomum de conexoes SMTP internas partindo de uma unica estacao de trabalho.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 3,
+            "linha_inicio": 1,
+            "linha_fim": 24,
+            "descricao_comportamental": "A atividade parece ser uma tentativa de lateral movement.",
+            "score_similaridade": 0.461
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1534"
+      }
+    ],
+    "narrativa_incidente": "Em uma tentativa de invasão, um atacante começou a reconhecer a rede do sistema, realizando várias tentativas de login falhas e sucessos, incluindo a atribuição de privilégios especiais a novos logons (Fase 1). Em seguida, o atacante conseguiu elevar privilégios, realizando logons em vários hosts e obtendo privilégios de administrador (Fase 2). Finalmente, a atividade parece ser uma tentativa de lateral movement, com a possibilidade de o atacante estar tentando se mover para outros sistemas dentro da rede (Fase 3).",
+    "resumo_executivo": "Foi detectado um ataque de invasão que envolveu reconhecimento de rede, elevação de privilégios e tentativa de lateral movement. O risco é alto, pois o atacante conseguiu acessar sistemas com privilégios de administrador. É fundamental uma resposta rápida para evitar danos adicionais e minimizar a exposição de dados confidenciais.",
+    "severidade_geral": "high",
+    "timestamp_geracao": "2026-08-07T01:22:53Z"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "fonte": "macos_unified_log",
+  "arquivo_log": "macos-unified-log-stealth-single.log",
+  "total_linhas": 9,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Stealth",
+      "tatica_id_esperada": "TA0005",
+      "linha_inicio": 1,
+      "linha_fim": 9,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002"
+      ],
+      "fonte": "macos_unified_log"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fonte": "macos_unified_log",
+  "arquivo_log": "macos-unified-log-privilege-escalation-single.log",
+  "total_linhas": 33,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Privilege Escalation",
+      "tatica_id_esperada": "TA0004",
+      "linha_inicio": 1,
+      "linha_fim": 33,
+      "tecnicas_esperadas": [
+        "T1037.002",
+        "T1053.003",
+        "T1055",
+        "T1078",
+        "T1078.003",
+        "T1098",
+        "T1098.004"
+      ],
+      "fonte": "macos_unified_log"
+    }
+  ]
+}

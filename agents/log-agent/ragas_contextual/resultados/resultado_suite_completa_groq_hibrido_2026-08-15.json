@@ -1,0 +1,744 @@
+[
+  {
+    "cenario": "linux-syslog-discovery",
+    "tatica": "Discovery",
+    "plataforma_detectada": "linux",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1007"
+    ],
+    "recuperadas": [
+      "T1021.004",
+      "T1078.004",
+      "T1102.002",
+      "T1210",
+      "T1569.002",
+      "T1569.003"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 21.2,
+    "erro": null
+  },
+  {
+    "cenario": "linux-syslog-execution",
+    "tatica": "Execution",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1204.002",
+      "T1204.004",
+      "T1569"
+    ],
+    "recuperadas": [
+      "T1020",
+      "T1036.004",
+      "T1053",
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1070.003",
+      "T1204.004",
+      "T1543",
+      "T1543.002",
+      "T1543.003",
+      "T1546.004",
+      "T1546.005",
+      "T1546.018",
+      "T1569",
+      "T1569.002",
+      "T1569.003",
+      "T1574.010",
+      "T1574.011"
+    ],
+    "acertos": [
+      "T1059",
+      "T1059.004",
+      "T1059.006",
+      "T1204.004",
+      "T1569"
+    ],
+    "recall": 0.8333,
+    "tempo_s": 11.9,
+    "erro": null
+  },
+  {
+    "cenario": "linux-syslog-initial-access",
+    "tatica": "Initial Access",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1133",
+      "T1190",
+      "T1195.001",
+      "T1566.001",
+      "T1566.003"
+    ],
+    "recuperadas": [
+      "T1059.002",
+      "T1204",
+      "T1216.001",
+      "T1491.002",
+      "T1534",
+      "T1546.004",
+      "T1566.001",
+      "T1585",
+      "T1589",
+      "T1683.001",
+      "T1684"
+    ],
+    "acertos": [
+      "T1566.001"
+    ],
+    "recall": 0.2,
+    "tempo_s": 12.1,
+    "erro": null
+  },
+  {
+    "cenario": "linux-syslog-privilege-escalation",
+    "tatica": "Privilege Escalation",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1053.003",
+      "T1068",
+      "T1078.001",
+      "T1098",
+      "T1098.004",
+      "T1098.007"
+    ],
+    "recuperadas": [
+      "T1021",
+      "T1021.004",
+      "T1059.008",
+      "T1070.004",
+      "T1078",
+      "T1078.003",
+      "T1098.004",
+      "T1205.002",
+      "T1546.005",
+      "T1552",
+      "T1552.001",
+      "T1564.013",
+      "T1574.007",
+      "T1611",
+      "T1622",
+      "T1677",
+      "T1685",
+      "T1685.004",
+      "T1686.002",
+      "T1687"
+    ],
+    "acertos": [
+      "T1098.004"
+    ],
+    "recall": 0.1667,
+    "tempo_s": 12.2,
+    "erro": null
+  },
+  {
+    "cenario": "linux-syslog-reconnaissance",
+    "tatica": "Reconnaissance",
+    "plataforma_detectada": "desconhecida",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1590",
+      "T1590.001",
+      "T1590.004",
+      "T1590.005",
+      "T1596.002"
+    ],
+    "recuperadas": [
+      "T1016",
+      "T1071.004",
+      "T1568",
+      "T1583.002",
+      "T1584.002",
+      "T1590",
+      "T1590.003",
+      "T1590.005",
+      "T1593.001",
+      "T1596.002"
+    ],
+    "acertos": [
+      "T1590",
+      "T1590.005",
+      "T1596.002"
+    ],
+    "recall": 0.6,
+    "tempo_s": 12.3,
+    "erro": null
+  },
+  {
+    "cenario": "linux-syslog-stealth",
+    "tatica": "Stealth",
+    "plataforma_detectada": "desconhecida",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003",
+      "T1027.004"
+    ],
+    "recuperadas": [
+      "T1037",
+      "T1056.002",
+      "T1059",
+      "T1072",
+      "T1216.001",
+      "T1216.002",
+      "T1546.013",
+      "T1565.003",
+      "T1569.002"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 12.3,
+    "erro": null
+  },
+  {
+    "cenario": "macos-unified-log-discovery",
+    "tatica": "Discovery",
+    "plataforma_detectada": "macos",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1007"
+    ],
+    "recuperadas": [
+      "T1007",
+      "T1036.004",
+      "T1037.005",
+      "T1072",
+      "T1210",
+      "T1518.002",
+      "T1543",
+      "T1543.001",
+      "T1543.002",
+      "T1543.004",
+      "T1546.014",
+      "T1569",
+      "T1569.001",
+      "T1569.002",
+      "T1569.003"
+    ],
+    "acertos": [
+      "T1007"
+    ],
+    "recall": 1.0,
+    "tempo_s": 11.7,
+    "erro": null
+  },
+  {
+    "cenario": "macos-unified-log-execution",
+    "tatica": "Execution",
+    "plataforma_detectada": "macos",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1059.002",
+      "T1059.004",
+      "T1059.006",
+      "T1129",
+      "T1204.002",
+      "T1204.004",
+      "T1569.001"
+    ],
+    "recuperadas": [
+      "T1053.003",
+      "T1056.004",
+      "T1059.006",
+      "T1059.011",
+      "T1070.010",
+      "T1204.005",
+      "T1543.004",
+      "T1546.016",
+      "T1546.018",
+      "T1553.001",
+      "T1555.001"
+    ],
+    "acertos": [
+      "T1059.006"
+    ],
+    "recall": 0.1429,
+    "tempo_s": 12.5,
+    "erro": null
+  },
+  {
+    "cenario": "macos-unified-log-initial-access",
+    "tatica": "Initial Access",
+    "plataforma_detectada": "desconhecida",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1195.003",
+      "T1566.001"
+    ],
+    "recuperadas": [
+      "T1036.008",
+      "T1113",
+      "T1125",
+      "T1129",
+      "T1195.003",
+      "T1495",
+      "T1542.002",
+      "T1546.008",
+      "T1546.012",
+      "T1564.009",
+      "T1574.011",
+      "T1601.002",
+      "T1647"
+    ],
+    "acertos": [
+      "T1195.003"
+    ],
+    "recall": 0.5,
+    "tempo_s": 12.5,
+    "erro": null
+  },
+  {
+    "cenario": "macos-unified-log-privilege-escalation",
+    "tatica": "Privilege Escalation",
+    "plataforma_detectada": "macos",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1037.002",
+      "T1053.003",
+      "T1055",
+      "T1078",
+      "T1078.003",
+      "T1098",
+      "T1098.004"
+    ],
+    "recuperadas": [
+      "T1078",
+      "T1078.001",
+      "T1078.003",
+      "T1087",
+      "T1087.001",
+      "T1098",
+      "T1098.004",
+      "T1110.001",
+      "T1201",
+      "T1550",
+      "T1552",
+      "T1552.001",
+      "T1556",
+      "T1556.003",
+      "T1564.002"
+    ],
+    "acertos": [
+      "T1078",
+      "T1078.003",
+      "T1098",
+      "T1098.004"
+    ],
+    "recall": 0.5714,
+    "tempo_s": 12.0,
+    "erro": null
+  },
+  {
+    "cenario": "macos-unified-log-stealth",
+    "tatica": "Stealth",
+    "plataforma_detectada": "desconhecida",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1027",
+      "T1027.002"
+    ],
+    "recuperadas": [
+      "T1027.005",
+      "T1027.013",
+      "T1204.003",
+      "T1218.010",
+      "T1485",
+      "T1564.001",
+      "T1574.004",
+      "T1574.007",
+      "T1574.010",
+      "T1679"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 12.1,
+    "erro": null
+  },
+  {
+    "cenario": "rede-discovery",
+    "tatica": "Discovery",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1040"
+    ],
+    "recuperadas": [
+      "T1040",
+      "T1041",
+      "T1046",
+      "T1048",
+      "T1095",
+      "T1205.001",
+      "T1205.002",
+      "T1568",
+      "T1568.003",
+      "T1590",
+      "T1590.004",
+      "T1592",
+      "T1595",
+      "T1595.001",
+      "T1596.004"
+    ],
+    "acertos": [
+      "T1040"
+    ],
+    "recall": 1.0,
+    "tempo_s": 131.8,
+    "erro": null
+  },
+  {
+    "cenario": "rede-execution",
+    "tatica": "Execution",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1047",
+      "T1053.007",
+      "T1059.006",
+      "T1059.007",
+      "T1204.001",
+      "T1609"
+    ],
+    "recuperadas": [
+      "T1021.003",
+      "T1036",
+      "T1072",
+      "T1204",
+      "T1210",
+      "T1218",
+      "T1557.003",
+      "T1574.008",
+      "T1574.009",
+      "T1590.003",
+      "T1596.004",
+      "T1608.002"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 11.9,
+    "erro": null
+  },
+  {
+    "cenario": "rede-initial-access",
+    "tatica": "Initial Access",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1133",
+      "T1190",
+      "T1566.003",
+      "T1659"
+    ],
+    "recuperadas": [
+      "T1021.003",
+      "T1037.003",
+      "T1056.003",
+      "T1190",
+      "T1204",
+      "T1210",
+      "T1218.005",
+      "T1505.001",
+      "T1574.008",
+      "T1650"
+    ],
+    "acertos": [
+      "T1190"
+    ],
+    "recall": 0.25,
+    "tempo_s": 12.0,
+    "erro": null
+  },
+  {
+    "cenario": "rede-privilege-escalation",
+    "tatica": "Privilege Escalation",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1053",
+      "T1068",
+      "T1078",
+      "T1078.001",
+      "T1078.002",
+      "T1098.004"
+    ],
+    "recuperadas": [
+      "T1021.004",
+      "T1078.003",
+      "T1090",
+      "T1098.004",
+      "T1110",
+      "T1110.001",
+      "T1550",
+      "T1552",
+      "T1552.004",
+      "T1555.002",
+      "T1556.003",
+      "T1556.006",
+      "T1572",
+      "T1689"
+    ],
+    "acertos": [
+      "T1098.004"
+    ],
+    "recall": 0.1667,
+    "tempo_s": 12.3,
+    "erro": null
+  },
+  {
+    "cenario": "rede-reconnaissance",
+    "tatica": "Reconnaissance",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1589.002",
+      "T1590.002",
+      "T1595",
+      "T1595.001",
+      "T1595.002",
+      "T1595.003"
+    ],
+    "recuperadas": [
+      "T1557.003",
+      "T1568",
+      "T1583.002",
+      "T1583.003",
+      "T1584.007",
+      "T1590",
+      "T1590.002",
+      "T1590.003",
+      "T1592",
+      "T1592.002",
+      "T1596.002",
+      "T1596.004"
+    ],
+    "acertos": [
+      "T1590.002"
+    ],
+    "recall": 0.1667,
+    "tempo_s": 11.7,
+    "erro": null
+  },
+  {
+    "cenario": "rede-stealth",
+    "tatica": "Stealth",
+    "plataforma_detectada": "network",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003"
+    ],
+    "recuperadas": [
+      "T1016.001",
+      "T1027",
+      "T1027.003",
+      "T1027.013",
+      "T1036.003",
+      "T1036.005",
+      "T1036.008",
+      "T1071.001",
+      "T1105",
+      "T1132",
+      "T1491.002",
+      "T1557",
+      "T1557.001",
+      "T1592.002",
+      "T1595",
+      "T1595.001",
+      "T1600",
+      "T1659",
+      "T1689"
+    ],
+    "acertos": [
+      "T1027",
+      "T1027.003"
+    ],
+    "recall": 0.6667,
+    "tempo_s": 12.7,
+    "erro": null
+  },
+  {
+    "cenario": "windows-eventlog-discovery",
+    "tatica": "Discovery",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1007"
+    ],
+    "recuperadas": [
+      "T1007",
+      "T1036",
+      "T1047",
+      "T1053.002",
+      "T1057",
+      "T1059.001",
+      "T1070.009",
+      "T1080",
+      "T1102.003",
+      "T1104",
+      "T1134.002",
+      "T1546",
+      "T1546.003",
+      "T1547.003",
+      "T1574.008",
+      "T1590.003",
+      "T1596.002",
+      "T1608.002"
+    ],
+    "acertos": [
+      "T1007"
+    ],
+    "recall": 1.0,
+    "tempo_s": 852.8,
+    "erro": null
+  },
+  {
+    "cenario": "windows-eventlog-execution",
+    "tatica": "Execution",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1047",
+      "T1059.001",
+      "T1106",
+      "T1197",
+      "T1569.002",
+      "T1574.001"
+    ],
+    "recuperadas": [
+      "T1059",
+      "T1059.001",
+      "T1070.005",
+      "T1104",
+      "T1127",
+      "T1203",
+      "T1216",
+      "T1216.002",
+      "T1218.012",
+      "T1546.003",
+      "T1546.013",
+      "T1574.008",
+      "T1590.003"
+    ],
+    "acertos": [
+      "T1059.001"
+    ],
+    "recall": 0.1667,
+    "tempo_s": 973.3,
+    "erro": null
+  },
+  {
+    "cenario": "windows-eventlog-initial-access",
+    "tatica": "Initial Access",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1133",
+      "T1195.003",
+      "T1566.001"
+    ],
+    "recuperadas": [
+      "T1047",
+      "T1495",
+      "T1497.001",
+      "T1542",
+      "T1542.001",
+      "T1542.002",
+      "T1542.003",
+      "T1688"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 496.6,
+    "erro": null
+  },
+  {
+    "cenario": "windows-eventlog-stealth",
+    "tatica": "Stealth",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003",
+      "T1027.004"
+    ],
+    "recuperadas": [
+      "T1036.005",
+      "T1047",
+      "T1059.001",
+      "T1070.005",
+      "T1102.002",
+      "T1127",
+      "T1134.002",
+      "T1218.011",
+      "T1218.013",
+      "T1498.002",
+      "T1546",
+      "T1546.003",
+      "T1547.009",
+      "T1584.007",
+      "T1590.003",
+      "T1593.001",
+      "T1596.002",
+      "T1602.001",
+      "T1608.002",
+      "T1608.006"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 970.4,
+    "erro": null
+  },
+  {
+    "cenario": "windows-privesc",
+    "tatica": "Privilege Escalation",
+    "plataforma_detectada": "windows",
+    "fases_detectadas": 1,
+    "esperadas": [
+      "T1053.005",
+      "T1055",
+      "T1078.001",
+      "T1078.002",
+      "T1098",
+      "T1134.001"
+    ],
+    "recuperadas": [
+      "T1036",
+      "T1078",
+      "T1078.001",
+      "T1078.002",
+      "T1078.003",
+      "T1080",
+      "T1110",
+      "T1110.001",
+      "T1134.001",
+      "T1201",
+      "T1552.002",
+      "T1556.008",
+      "T1574.008",
+      "T1587.004",
+      "T1590.003",
+      "T1593.001",
+      "T1602.001",
+      "T1608.002"
+    ],
+    "acertos": [
+      "T1078.001",
+      "T1078.002",
+      "T1134.001"
+    ],
+    "recall": 0.5,
+    "tempo_s": 613.2,
+    "erro": null
+  }
+]

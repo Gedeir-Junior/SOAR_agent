@@ -1,0 +1,17 @@
+{
+  "resumo_comportamental": "No host mkt-mbp-021, o usuário jsilva autentica localmente (loginwindow: login: jsilva logged in, auth succeeded) e via sudo executa '/usr/bin/dscl . -list /Users' e '/usr/bin/security find-generic-password -ga admin' para reconhecimento de contas e acesso a credenciais, em seguida cria com '/usr/sbin/dscl . -create /Users/_svcupdate' e adiciona ao grupo admin com '/usr/sbin/dscl . -append /Groups/admin GroupMembership _svcupdate' a conta oculta _svcupdate (opendirectoryd: account manipulation, action=add_to_group), que passa a autenticar com uid=0 ('hidden account reused for persistence'). A conta _svcupdate então estabelece persistência: cria '/var/root/.ssh' com 'mkdir -p', injeta chave SSH em authorized_keys ('chmod 600'), habilita login root editando /etc/ssh/sshd_config via 'sed -i.bak s/#PermitRootLogin/PermitRootLogin/' (sshd: RSA key added for root), e registra um LoginHook malicioso com 'defaults write com.apple.loginwindow LoginHook /var/root/.hidden/syscheck.sh' (LoginHook registered e validated), além de checar 'crontab -l'. Por fim, o processo Terminal (pid 901) sofre injeção de código não assinado originado do processo FirmwareUpdate_Q1 (pid 622), evidenciada por 'ESEventType 9 (ES_EVENT_TYPE_NOTIFY_REMOTE_THREAD_CREATE)', 'AMFI: Terminal (pid 901) executing injected code region from task_for_pid granted to pid 622' e 'Notice: Terminal (pid 901) began executing unsigned code injected by FirmwareUpdate_Q1 (pid 622)'. O conjunto representa escalonamento de privilégio para root, criação de conta oculta com UniqueID=0, backdoor SSH e LoginHook para persistência, e injeção de código em processo confiável (task_for_pid).",
+  "entidades_identificadas": [
+    "jsilva",
+    "_svcupdate",
+    "mkt-mbp-021",
+    "root",
+    "uid=0",
+    "admin (grupo)",
+    "/var/root/.ssh/authorized_keys",
+    "/etc/ssh/sshd_config",
+    "/var/root/.hidden/syscheck.sh",
+    "Terminal (pid 901)",
+    "FirmwareUpdate_Q1 (pid 622)"
+  ],
+  "severidade_maxima": "critical"
+}

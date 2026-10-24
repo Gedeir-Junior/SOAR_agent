@@ -1,0 +1,18 @@
+{
+  "fonte": "windows_eventlog",
+  "arquivo_log": "windows-eventlog-discovery-single.log",
+  "total_linhas": 5,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Discovery",
+      "tatica_id_esperada": "TA0007",
+      "linha_inicio": 1,
+      "linha_fim": 5,
+      "tecnicas_esperadas": [
+        "T1007"
+      ],
+      "fonte": "windows_eventlog"
+    }
+  ]
+}
