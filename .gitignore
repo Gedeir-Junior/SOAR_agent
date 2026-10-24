@@ -11,6 +11,8 @@ agents/log-agent/data/
 pg_data/
 ollama_data/
 n8n_data/
+data/
+BERT_Classifier/Containerfile
 atomic-red-team/
 # Python
 __pycache__/
