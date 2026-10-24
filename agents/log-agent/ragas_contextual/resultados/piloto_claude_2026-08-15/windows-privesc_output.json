@@ -1,0 +1,22 @@
+{
+  "resumo_comportamental": "O trecho documenta uma cadeia de escalação de privilégios e comprometimento de domínio em NW-WEB-GW01 e NW-DC01: após duas falhas de logon (Event ID 4625) para Administrator seguidas de logon bem-sucedido (Event ID 4624, Logon Type: 2) com privilégios especiais SeDebugPrivilege e SeTcbPrivilege (Event ID 4672), é criada uma tarefa agendada persistente via 'schtasks.exe /create /tn \"WinDefragOpt\" /tr \"C:\\Windows\\Temp\\svcupd.exe\" /sc onstart /ru SYSTEM /f' (Event ID 4688), que é registrada e executada com privilégios elevados como NT AUTHORITY\\SYSTEM (Task Scheduler Event ID 106 e Event ID 107). O binário svcupd.exe injeta uma thread remota em svchost.exe (Sysmon Event ID 8, CreateRemoteThread, StartModule kernel32.dll!LoadLibraryA) e em seguida executa 'svcupd.exe --duplicate-token --target lsass.exe' (Event ID 4688), obtendo SeAssignPrimaryTokenPrivilege e SeImpersonatePrivilege como SYSTEM (Event ID 4672) e um logon com token duplicado (Event ID 4624, Logon Type: 9 NewCredentials) — um padrão clássico de manipulação de token para escalação de privilégios local via LSASS. Em paralelo no NW-DC01, NORTHWIND\\svc-backup altera a conta t.oliveira (Event ID 4738), adiciona-a aos grupos Administrators (Event ID 4732) e Domain Admins (Event ID 4728) e relaxa a política de senha da conta (Event ID 4739); em seguida t.oliveira efetua logon de rede a partir de 10.20.4.201 (Event ID 4624, Logon Type: 3) com SeBackupPrivilege, SeRestorePrivilege e SeDebugPrivilege (Event ID 4672), e realiza logon lateral confirmando alcance de domain admin em NW-SRV-APP12.",
+  "entidades_identificadas": [
+    "Administrator",
+    "S-1-5-21-2003643221-668128994-3897254354-500",
+    "NW-WEB-GW01",
+    "NW-DC01",
+    "NW-SRV-APP12",
+    "helpdesk01",
+    "schtasks.exe",
+    "WinDefragOpt",
+    "svcupd.exe",
+    "svchost.exe",
+    "lsass.exe",
+    "SYSTEM",
+    "NORTHWIND\\svc-backup",
+    "t.oliveira",
+    "S-1-5-21-2003643221-668128994-3897254354-1104",
+    "10.20.4.201"
+  ],
+  "severidade_maxima": "critical"
+}

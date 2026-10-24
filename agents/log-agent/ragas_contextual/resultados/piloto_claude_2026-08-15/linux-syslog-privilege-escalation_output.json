@@ -1,0 +1,26 @@
+{
+  "resumo_comportamental": "No host fin-app07, o usuário jsantos abre uma sessão e executa o binário comm=\"dpp_exploit\" (exe=\"/tmp/.cache/.dpp/dirty_pipe\"), que falha (syscall=165, success=no, exit=-13) e em seguida é executado com sucesso (syscall=165, success=yes, exit=0), seguido por um log de kernel indicando 'overlayfs: unprivileged mount request triggered setuid escalation path for pid 8890' — evidenciando exploração de vulnerabilidade tipo Dirty Pipe para escalonamento de privilégios. Logo após, 'su: pam_unix(su:session): session opened for user root by jsantos(uid=1002)' confirma acesso root obtido. Com privilégios elevados, é criado o usuário dbsync (useradd new user: name=dbsync, UID=1003, GID=1003) que é adicionado aos grupos sudo, wheel e docker (usermod add 'dbsync' to group 'sudo'/'wheel'/'docker'), recebe uma chave SSH backdoor injetada em /home/dbsync/.ssh/authorized_keys (comentário 'backdoor@203.0.113.77'), efetua login via 'sshd: Accepted publickey for dbsync from 203.0.113.77', e obtém persistência adicional através de '/etc/sudoers.d/dbsync-nopasswd: dbsync ALL=(ALL) NOPASSWD:ALL added' e execução de comando sudo como root ('sudo: dbsync ... USER=root ; COMMAND=/bin/bash'), finalizando com enumeração de tarefas agendadas ('crontab[8961]: (root) LIST (root)'). O padrão geral representa uma cadeia completa de comprometimento: exploração de kernel para escalada de privilégio local, criação de conta backdoor com privilégios administrativos, acesso remoto persistente via chave SSH e regra sudo sem senha.",
+  "entidades_identificadas": [
+    "fin-app07",
+    "jsantos",
+    "uid=1002",
+    "dpp_exploit",
+    "/tmp/.cache/.dpp/dirty_pipe",
+    "pid 8890",
+    "dbsync",
+    "UID=1003",
+    "GID=1003",
+    "grupo sudo",
+    "grupo wheel",
+    "grupo docker",
+    "203.0.113.77",
+    "backdoor@203.0.113.77",
+    "sshd[8944]",
+    "/home/dbsync/.ssh/authorized_keys",
+    "/etc/sudoers.d/dbsync-nopasswd",
+    "visudo[8950]",
+    "sudo (USER=root, COMMAND=/bin/bash)",
+    "crontab[8961]"
+  ],
+  "severidade_maxima": "critical"
+}

@@ -1,0 +1,5 @@
+{
+  "resumo_comportamental": "O processo FirmwareUpdate_Q1[622] no host mkt-mbp-021 executa repetidamente 'exec /bin/launchctl list' e 'exec /bin/launchctl list com.apple.mdmclient' para enumerar os 214 serviços carregados via launchd (com.apple.xpc.launchd), verificando especificamente se com.apple.mdmclient está carregado (resultado: 'com.apple.mdmclient not loaded'), e em seguida executa 'exec /usr/bin/launchctl list | grep -i crowdstrike' para checar a presença de software de segurança CrowdStrike. Esse padrão, vindo de um processo com nome disfarçado de atualização de firmware, é característico de descoberta de software de segurança e evasão de defesa (verificação de MDM e EDR) antes de possíveis ações maliciosas. A linha final (backupd[790] iniciando backup automático do Time Machine em /dev/disk4s2) é uma atividade de sistema não relacionada e de rotina, sem relevância para o comportamento suspeito predominante.",
+  "entidades_identificadas": ["mkt-mbp-021", "FirmwareUpdate_Q1", "622", "launchd", "1", "com.apple.xpc.launchd", "com.apple.mdmclient", "crowdstrike", "backupd", "790", "/dev/disk4s2"],
+  "severidade_maxima": "medium"
+}

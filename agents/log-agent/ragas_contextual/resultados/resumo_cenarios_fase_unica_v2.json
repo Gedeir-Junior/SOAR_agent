@@ -1,0 +1,567 @@
+[
+  {
+    "cenario": "linux-syslog-discovery",
+    "recall": 0.0,
+    "acertos": [],
+    "n_esperadas": 1,
+    "obs": "rodada 1, confiavel"
+  },
+  {
+    "cenario": "linux-syslog-execution",
+    "recall": 0.16666666666666666,
+    "acertos": [
+      "T1569"
+    ],
+    "n_esperadas": 6,
+    "obs": "rodada 1, confiavel"
+  },
+  {
+    "cenario": "linux-syslog-initial-access",
+    "recall": 0.0,
+    "acertos": [],
+    "n_esperadas": 5,
+    "obs": "rodada 1, confiavel"
+  },
+  {
+    "cenario": "linux-syslog-privilege-escalation",
+    "recall": 0.6666666666666666,
+    "acertos": [
+      "T1078.001",
+      "T1098",
+      "T1098.004",
+      "T1098.007"
+    ],
+    "n_esperadas": 6,
+    "obs": "rodada 1, confiavel"
+  },
+  {
+    "cenario": "linux-syslog-reconnaissance",
+    "recall": 0.8,
+    "acertos": [
+      "T1590",
+      "T1590.001",
+      "T1590.005",
+      "T1596.002"
+    ],
+    "n_esperadas": 5,
+    "obs": "rodada 1, confiavel"
+  },
+  {
+    "cenario": "linux-syslog-stealth",
+    "recall": 0.0,
+    "acertos": [],
+    "n_esperadas": 4,
+    "obs": "rodada 1, confiavel"
+  },
+  {
+    "cenario": "macos-unified-log-discovery",
+    "tatica_esperada": "Discovery",
+    "total_linhas": 6,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Reconhecimento de Serviços"
+    ],
+    "tecnicas_esperadas": [
+      "T1007"
+    ],
+    "tecnicas_recuperadas": [
+      "T1007",
+      "T1036.004",
+      "T1543",
+      "T1543.001",
+      "T1543.004",
+      "T1569",
+      "T1569.001",
+      "T1569.002",
+      "T1569.003"
+    ],
+    "acertos": [
+      "T1007"
+    ],
+    "recall": 1.0,
+    "tempo_s": 10.9,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "macos-unified-log-execution",
+    "tatica_esperada": "Execution",
+    "total_linhas": 31,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exfiltração e Manipulação de Sistema"
+    ],
+    "tecnicas_esperadas": [
+      "T1059.002",
+      "T1059.004",
+      "T1059.006",
+      "T1129",
+      "T1204.002",
+      "T1204.004",
+      "T1569.001"
+    ],
+    "tecnicas_recuperadas": [
+      "T1027.008",
+      "T1059",
+      "T1059.002",
+      "T1204",
+      "T1216",
+      "T1216.001",
+      "T1218",
+      "T1218.001",
+      "T1218.005",
+      "T1674"
+    ],
+    "acertos": [
+      "T1059.002"
+    ],
+    "recall": 0.14285714285714285,
+    "tempo_s": 12.3,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "macos-unified-log-initial-access",
+    "tatica_esperada": "Initial Access",
+    "total_linhas": 11,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Execução de Código Malicioso"
+    ],
+    "tecnicas_esperadas": [
+      "T1195.003",
+      "T1566.001"
+    ],
+    "tecnicas_recuperadas": [
+      "T1098.005",
+      "T1495",
+      "T1553.001",
+      "T1553.002",
+      "T1556",
+      "T1556.004",
+      "T1574.011",
+      "T1601.002",
+      "T1685.003"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 11.4,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "macos-unified-log-privilege-escalation",
+    "tatica_esperada": "Privilege Escalation",
+    "total_linhas": 33,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Persistência e Elevação de Privilégios"
+    ],
+    "tecnicas_esperadas": [
+      "T1037.002",
+      "T1053.003",
+      "T1055",
+      "T1078",
+      "T1078.003",
+      "T1098",
+      "T1098.004"
+    ],
+    "tecnicas_recuperadas": [
+      "T1021.004",
+      "T1056.003",
+      "T1078",
+      "T1098.004",
+      "T1550",
+      "T1552",
+      "T1552.004",
+      "T1563.001"
+    ],
+    "acertos": [
+      "T1078",
+      "T1098.004"
+    ],
+    "recall": 0.2857142857142857,
+    "tempo_s": 11.7,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "macos-unified-log-stealth",
+    "tatica_esperada": "Stealth",
+    "total_linhas": 9,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exfiltração de Dados"
+    ],
+    "tecnicas_esperadas": [
+      "T1027",
+      "T1027.002"
+    ],
+    "tecnicas_recuperadas": [
+      "T1027.013",
+      "T1048.001",
+      "T1140",
+      "T1195.002",
+      "T1218.010",
+      "T1491.002",
+      "T1564.001",
+      "T1567.001",
+      "T1567.003",
+      "T1574.010"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 10.9,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "rede-discovery",
+    "tatica_esperada": "Discovery",
+    "total_linhas": 6,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exfiltração de dados"
+    ],
+    "tecnicas_esperadas": [
+      "T1040"
+    ],
+    "tecnicas_recuperadas": [
+      "T1016",
+      "T1016.001",
+      "T1018",
+      "T1040",
+      "T1046",
+      "T1205.002",
+      "T1480.001",
+      "T1595",
+      "T1595.001"
+    ],
+    "acertos": [
+      "T1040"
+    ],
+    "recall": 1.0,
+    "tempo_s": 11.1,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "rede-execution",
+    "tatica_esperada": "Execution",
+    "total_linhas": 23,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exploração e Execução de Código Malicioso"
+    ],
+    "tecnicas_esperadas": [
+      "T1047",
+      "T1053.007",
+      "T1059.006",
+      "T1059.007",
+      "T1204.001",
+      "T1609"
+    ],
+    "tecnicas_recuperadas": [
+      "T1053.007",
+      "T1072",
+      "T1204",
+      "T1210",
+      "T1569.002",
+      "T1574.008",
+      "T1608",
+      "T1608.001",
+      "T1608.002",
+      "T1682"
+    ],
+    "acertos": [
+      "T1053.007"
+    ],
+    "recall": 0.16666666666666666,
+    "tempo_s": 11.6,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "rede-initial-access",
+    "tatica_esperada": "Initial Access",
+    "total_linhas": 19,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exploração e Injeção de Código"
+    ],
+    "tecnicas_esperadas": [
+      "T1133",
+      "T1190",
+      "T1566.003",
+      "T1659"
+    ],
+    "tecnicas_recuperadas": [
+      "T1056.003",
+      "T1505.001",
+      "T1588.006",
+      "T1590.003",
+      "T1596.002",
+      "T1596.005",
+      "T1597.002",
+      "T1608",
+      "T1608.004",
+      "T1682"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 12.6,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "rede-privilege-escalation",
+    "tatica_esperada": "Privilege Escalation",
+    "total_linhas": 26,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exploração e Comprometimento Inicial"
+    ],
+    "tecnicas_esperadas": [
+      "T1053",
+      "T1068",
+      "T1078",
+      "T1078.001",
+      "T1078.002",
+      "T1098.004"
+    ],
+    "tecnicas_recuperadas": [
+      "T1021.002",
+      "T1098.004",
+      "T1110.003",
+      "T1550",
+      "T1550.002",
+      "T1552",
+      "T1555",
+      "T1556.001",
+      "T1558.005"
+    ],
+    "acertos": [
+      "T1098.004"
+    ],
+    "recall": 0.16666666666666666,
+    "tempo_s": 11.2,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "rede-reconnaissance",
+    "tatica_esperada": "Reconnaissance",
+    "total_linhas": 29,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exploração de rede e identificação de vulnerabilidades"
+    ],
+    "tecnicas_esperadas": [
+      "T1589.002",
+      "T1590.002",
+      "T1595",
+      "T1595.001",
+      "T1595.002",
+      "T1595.003"
+    ],
+    "tecnicas_recuperadas": [
+      "T1584.006",
+      "T1584.007",
+      "T1588",
+      "T1588.006",
+      "T1590.003",
+      "T1593.002",
+      "T1596",
+      "T1597.002",
+      "T1608",
+      "T1608.005"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 11.5,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "rede-stealth",
+    "tatica_esperada": "Stealth",
+    "total_linhas": 13,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exfiltração e Infiltração Maliciosa"
+    ],
+    "tecnicas_esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003"
+    ],
+    "tecnicas_recuperadas": [
+      "T1027",
+      "T1027.003",
+      "T1027.013",
+      "T1036.008",
+      "T1055.005",
+      "T1573",
+      "T1587.003",
+      "T1588.004",
+      "T1596.003",
+      "T1608.003"
+    ],
+    "acertos": [
+      "T1027",
+      "T1027.003"
+    ],
+    "recall": 0.6666666666666666,
+    "tempo_s": 11.8,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "windows-eventlog-discovery",
+    "tatica_esperada": "Discovery",
+    "total_linhas": 5,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Reconhecimento de Serviços e Processos"
+    ],
+    "tecnicas_esperadas": [
+      "T1007"
+    ],
+    "tecnicas_recuperadas": [
+      "T1007",
+      "T1036",
+      "T1036.004",
+      "T1053",
+      "T1210",
+      "T1543",
+      "T1569.002",
+      "T1569.003",
+      "T1608",
+      "T1682"
+    ],
+    "acertos": [
+      "T1007"
+    ],
+    "recall": 1.0,
+    "tempo_s": 11.6,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "windows-eventlog-execution",
+    "tatica_esperada": "Execution",
+    "total_linhas": 23,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Infiltração e Exploração"
+    ],
+    "tecnicas_esperadas": [
+      "T1047",
+      "T1059.001",
+      "T1106",
+      "T1197",
+      "T1569.002",
+      "T1574.001"
+    ],
+    "tecnicas_recuperadas": [
+      "T1055.002",
+      "T1059.003",
+      "T1204",
+      "T1216.002",
+      "T1218",
+      "T1218.003",
+      "T1559.001",
+      "T1569.002",
+      "T1574.008",
+      "T1574.009"
+    ],
+    "acertos": [
+      "T1569.002"
+    ],
+    "recall": 0.16666666666666666,
+    "tempo_s": 11.7,
+    "obs": "rodada 2 (um por vez)"
+  },
+  {
+    "cenario": "windows-eventlog-initial-access",
+    "tatica_esperada": "Initial Access",
+    "total_linhas": 14,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Reconhecimento de rede"
+    ],
+    "tecnicas_esperadas": [
+      "T1133",
+      "T1195.003",
+      "T1566.001"
+    ],
+    "tecnicas_recuperadas": [
+      "T1588",
+      "T1588.002",
+      "T1588.003",
+      "T1588.007",
+      "T1590.003",
+      "T1591.002",
+      "T1596.005",
+      "T1597.002",
+      "T1608",
+      "T1608.002"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 491.4,
+    "obs": "rodada 3 (retry apos queda do qdrant)"
+  },
+  {
+    "cenario": "windows-eventlog-stealth",
+    "tatica_esperada": "Stealth",
+    "total_linhas": 15,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Exfiltração e Estabelecimento de Backdoor"
+    ],
+    "tecnicas_esperadas": [
+      "T1027",
+      "T1027.002",
+      "T1027.003",
+      "T1027.004"
+    ],
+    "tecnicas_recuperadas": [
+      "T1204",
+      "T1216.002",
+      "T1218",
+      "T1218.003",
+      "T1546.008",
+      "T1546.012",
+      "T1574.008",
+      "T1574.009",
+      "T1574.011",
+      "T1608"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 13.6,
+    "obs": "rodada 3 (retry apos queda do qdrant)"
+  },
+  {
+    "cenario": "windows-privesc",
+    "tatica_esperada": "Privilege Escalation",
+    "total_linhas": 24,
+    "fases_detectadas": 1,
+    "titulos_fases": [
+      "Tentativa de Logon e Elevação de Privilégios"
+    ],
+    "tecnicas_esperadas": [
+      "T1053.005",
+      "T1055",
+      "T1078.001",
+      "T1078.002",
+      "T1098",
+      "T1134.001"
+    ],
+    "tecnicas_recuperadas": [
+      "T1053",
+      "T1053.002",
+      "T1098.003",
+      "T1134.002",
+      "T1204",
+      "T1546.016",
+      "T1548",
+      "T1548.002",
+      "T1548.004",
+      "T1608"
+    ],
+    "acertos": [],
+    "recall": 0.0,
+    "tempo_s": 12.5,
+    "obs": "rodada 3 (retry apos queda do qdrant)"
+  }
+]

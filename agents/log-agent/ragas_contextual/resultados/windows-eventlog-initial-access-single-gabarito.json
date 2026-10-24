@@ -1,0 +1,20 @@
+{
+  "fonte": "windows_eventlog",
+  "arquivo_log": "windows-eventlog-initial-access-single.log",
+  "total_linhas": 14,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Initial Access",
+      "tatica_id_esperada": "TA0001",
+      "linha_inicio": 1,
+      "linha_fim": 14,
+      "tecnicas_esperadas": [
+        "T1133",
+        "T1195.003",
+        "T1566.001"
+      ],
+      "fonte": "windows_eventlog"
+    }
+  ]
+}

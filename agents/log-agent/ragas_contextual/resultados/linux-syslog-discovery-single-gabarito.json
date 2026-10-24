@@ -1,0 +1,18 @@
+{
+  "fonte": "linux_syslog",
+  "arquivo_log": "linux-syslog-discovery-single.log",
+  "total_linhas": 8,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Discovery",
+      "tatica_id_esperada": "TA0007",
+      "linha_inicio": 1,
+      "linha_fim": 8,
+      "tecnicas_esperadas": [
+        "T1007"
+      ],
+      "fonte": "linux_syslog"
+    }
+  ]
+}

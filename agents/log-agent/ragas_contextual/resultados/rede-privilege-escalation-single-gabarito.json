@@ -1,0 +1,23 @@
+{
+  "fonte": "rede",
+  "arquivo_log": "rede-privilege-escalation-single.log",
+  "total_linhas": 26,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Privilege Escalation",
+      "tatica_id_esperada": "TA0004",
+      "linha_inicio": 1,
+      "linha_fim": 26,
+      "tecnicas_esperadas": [
+        "T1053",
+        "T1068",
+        "T1078",
+        "T1078.001",
+        "T1078.002",
+        "T1098.004"
+      ],
+      "fonte": "rede"
+    }
+  ]
+}

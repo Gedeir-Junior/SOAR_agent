@@ -1,0 +1,763 @@
+{
+  "dataset_path": "ragas_contextual/resultados/dataset_contextual.json",
+  "resumo_plataformas": [
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "plataforma_esperada": "linux",
+      "plataforma_detectada": "linux"
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "plataforma_esperada": "macos",
+      "plataforma_detectada": "macos"
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "plataforma_esperada": "network",
+      "plataforma_detectada": "network"
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "plataforma_esperada": "windows",
+      "plataforma_detectada": "windows"
+    }
+  ],
+  "contexto": {
+    "total_fases": 22,
+    "context_precision_macro": 0.0037,
+    "context_recall_macro": 0.0076,
+    "context_precision_micro": 0.0061,
+    "context_recall_micro": 0.0109,
+    "detalhes": [
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "fase": 1,
+        "tatica": "Reconnaissance",
+        "esperadas": [
+          "T1590",
+          "T1590.001",
+          "T1590.004",
+          "T1590.005",
+          "T1596.002"
+        ],
+        "recuperadas": [
+          "T1072",
+          "T1078.003",
+          "T1213.006",
+          "T1588.007",
+          "T1608",
+          "T1608.002"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "fase": 2,
+        "tatica": "Initial Access",
+        "esperadas": [
+          "T1133",
+          "T1190",
+          "T1195.001",
+          "T1566.001",
+          "T1566.003"
+        ],
+        "recuperadas": [
+          "T1072",
+          "T1078.003",
+          "T1213.006",
+          "T1588.007",
+          "T1608",
+          "T1608.002"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "fase": 3,
+        "tatica": "Discovery",
+        "esperadas": [
+          "T1007"
+        ],
+        "recuperadas": [
+          "T1072",
+          "T1078.003",
+          "T1213.006",
+          "T1588.007",
+          "T1608",
+          "T1608.002"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "fase": 4,
+        "tatica": "Privilege Escalation",
+        "esperadas": [
+          "T1053.003",
+          "T1068",
+          "T1078.001",
+          "T1098",
+          "T1098.004",
+          "T1098.007"
+        ],
+        "recuperadas": [
+          "T1072",
+          "T1078.003",
+          "T1213.006",
+          "T1588.007",
+          "T1608",
+          "T1608.002"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "fase": 5,
+        "tatica": "Execution",
+        "esperadas": [
+          "T1059",
+          "T1059.004",
+          "T1059.006",
+          "T1204.002",
+          "T1204.004",
+          "T1569"
+        ],
+        "recuperadas": [
+          "T1072",
+          "T1078.003",
+          "T1213.006",
+          "T1588.007",
+          "T1608",
+          "T1608.002"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "fase": 6,
+        "tatica": "Stealth",
+        "esperadas": [
+          "T1027",
+          "T1027.002",
+          "T1027.003",
+          "T1027.004"
+        ],
+        "recuperadas": [
+          "T1027.015",
+          "T1059.012",
+          "T1072",
+          "T1078.003",
+          "T1204",
+          "T1210",
+          "T1213.006",
+          "T1574.008",
+          "T1574.014",
+          "T1583.008",
+          "T1588",
+          "T1588.007",
+          "T1608",
+          "T1608.002"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "fase": 1,
+        "tatica": "Initial Access",
+        "esperadas": [
+          "T1195.003",
+          "T1566.001"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1588.007",
+          "T1591.002",
+          "T1608",
+          "T1682"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "fase": 2,
+        "tatica": "Discovery",
+        "esperadas": [
+          "T1007"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1588.007",
+          "T1591.002",
+          "T1608",
+          "T1682"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "fase": 3,
+        "tatica": "Privilege Escalation",
+        "esperadas": [
+          "T1037.002",
+          "T1053.003",
+          "T1055",
+          "T1078",
+          "T1078.003",
+          "T1098",
+          "T1098.004"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1588.007",
+          "T1591.002",
+          "T1608",
+          "T1682"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "fase": 4,
+        "tatica": "Execution",
+        "esperadas": [
+          "T1059.002",
+          "T1059.004",
+          "T1059.006",
+          "T1129",
+          "T1204.002",
+          "T1204.004",
+          "T1569.001"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1588.007",
+          "T1591.002",
+          "T1608",
+          "T1682"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "fase": 5,
+        "tatica": "Stealth",
+        "esperadas": [
+          "T1027",
+          "T1027.002"
+        ],
+        "recuperadas": [
+          "T1036.008",
+          "T1041",
+          "T1565.003",
+          "T1566.003",
+          "T1588.002",
+          "T1588.007",
+          "T1591.002",
+          "T1608",
+          "T1608.001",
+          "T1682"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "fase": 1,
+        "tatica": "Reconnaissance",
+        "esperadas": [
+          "T1589.002",
+          "T1590.002",
+          "T1595",
+          "T1595.001",
+          "T1595.002",
+          "T1595.003"
+        ],
+        "recuperadas": [
+          "T1059.004",
+          "T1071.004",
+          "T1074",
+          "T1546.004",
+          "T1560",
+          "T1574.008",
+          "T1583.002",
+          "T1584.002",
+          "T1588.002",
+          "T1588.007",
+          "T1590.002",
+          "T1596.001",
+          "T1608"
+        ],
+        "precisao": 0.0769,
+        "recall": 0.1667
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "fase": 2,
+        "tatica": "Initial Access",
+        "esperadas": [
+          "T1133",
+          "T1190",
+          "T1566.003",
+          "T1659"
+        ],
+        "recuperadas": [
+          "T1059.004",
+          "T1071.004",
+          "T1074",
+          "T1546.004",
+          "T1560",
+          "T1574.008",
+          "T1583.002",
+          "T1584.002",
+          "T1588.002",
+          "T1588.007",
+          "T1590.002",
+          "T1596.001",
+          "T1608"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "fase": 3,
+        "tatica": "Discovery",
+        "esperadas": [
+          "T1040"
+        ],
+        "recuperadas": [
+          "T1059.004",
+          "T1071.004",
+          "T1074",
+          "T1546.004",
+          "T1560",
+          "T1574.008",
+          "T1583.002",
+          "T1584.002",
+          "T1588.002",
+          "T1588.007",
+          "T1590.002",
+          "T1596.001",
+          "T1608"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "fase": 4,
+        "tatica": "Privilege Escalation",
+        "esperadas": [
+          "T1053",
+          "T1068",
+          "T1078",
+          "T1078.001",
+          "T1078.002",
+          "T1098.004"
+        ],
+        "recuperadas": [
+          "T1059.004",
+          "T1071.004",
+          "T1074",
+          "T1546.004",
+          "T1560",
+          "T1574.008",
+          "T1583.002",
+          "T1584.002",
+          "T1588.002",
+          "T1588.007",
+          "T1590.002",
+          "T1596.001",
+          "T1608"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "fase": 5,
+        "tatica": "Execution",
+        "esperadas": [
+          "T1047",
+          "T1053.007",
+          "T1059.006",
+          "T1059.007",
+          "T1204.001",
+          "T1609"
+        ],
+        "recuperadas": [
+          "T1059.004",
+          "T1071.004",
+          "T1074",
+          "T1546.004",
+          "T1560",
+          "T1574.008",
+          "T1583.002",
+          "T1584.002",
+          "T1588.002",
+          "T1588.007",
+          "T1590.002",
+          "T1596.001",
+          "T1608"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "fase": 6,
+        "tatica": "Stealth",
+        "esperadas": [
+          "T1027",
+          "T1027.002",
+          "T1027.003"
+        ],
+        "recuperadas": [],
+        "precisao": null,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "fase": 1,
+        "tatica": "Initial Access",
+        "esperadas": [
+          "T1133",
+          "T1195.003",
+          "T1566.001"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1591.002",
+          "T1591.003",
+          "T1596.005",
+          "T1654"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "fase": 2,
+        "tatica": "Discovery",
+        "esperadas": [
+          "T1007"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1591.002",
+          "T1591.003",
+          "T1596.005",
+          "T1654"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "fase": 3,
+        "tatica": "Privilege Escalation",
+        "esperadas": [
+          "T1053.005",
+          "T1055",
+          "T1078.001",
+          "T1078.002",
+          "T1098",
+          "T1134.001"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1591.002",
+          "T1591.003",
+          "T1596.005",
+          "T1654"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "fase": 4,
+        "tatica": "Execution",
+        "esperadas": [
+          "T1047",
+          "T1059.001",
+          "T1106",
+          "T1197",
+          "T1569.002",
+          "T1574.001"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1591.002",
+          "T1591.003",
+          "T1596.005",
+          "T1654"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "fase": 5,
+        "tatica": "Stealth",
+        "esperadas": [
+          "T1027",
+          "T1027.002",
+          "T1027.003",
+          "T1027.004"
+        ],
+        "recuperadas": [
+          "T1588.002",
+          "T1591.002",
+          "T1591.003",
+          "T1596.005",
+          "T1654"
+        ],
+        "precisao": 0.0,
+        "recall": 0.0
+      }
+    ]
+  },
+  "geracao": {
+    "faithfulness_medio": 0.5925,
+    "answer_relevancy_medio": 0.4772,
+    "taxa_ordem_narrativa_correta": 0.0,
+    "total_avaliacoes_faithfulness": 26,
+    "total_avaliacoes_relevancy": 26,
+    "detalhes_documento": [
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "resposta_narrativa": {
+          "faithfulness": 0.9231,
+          "answer_relevancy": 0.375,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "resposta_resumo": {
+          "faithfulness": 0.6667,
+          "answer_relevancy": 0.5386,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "ordem_narrativa_correta": false,
+        "ordem_narrativa_justificativa": "A narrativa menciona a criação de um agente malicioso e sua envio para um servidor externo como o último evento, enquanto a lista original lista a criação de agente malicioso como a quarta fase."
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "resposta_narrativa": {
+          "faithfulness": 0.6667,
+          "answer_relevancy": 0.5168,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "resposta_resumo": {
+          "faithfulness": 0.8,
+          "answer_relevancy": 0.5077,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "ordem_narrativa_correta": false,
+        "ordem_narrativa_justificativa": "A narrativa menciona que a atividade suspeita evoluiu da Fase 1 (Reconhecimento de rede) para a Fase 2 (Exploração de sistema), o que sugere que a ordem cronológica está invertida."
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "resposta_narrativa": {
+          "faithfulness": 0.9,
+          "answer_relevancy": 0.4238,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "resposta_resumo": {
+          "faithfulness": 0.5,
+          "answer_relevancy": 0.5556,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "ordem_narrativa_correta": false,
+        "ordem_narrativa_justificativa": "A narrativa menciona que o atacante conseguiu comprometer um sistema (Fase 2) antes de tentar exfiltrar dados (Fase 3), o que sugere que a ordem cronológica está invertida em relação à lista fornecida."
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "resposta_narrativa": {
+          "faithfulness": 0.6667,
+          "answer_relevancy": 0.4714,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "resposta_resumo": {
+          "faithfulness": 0.6,
+          "answer_relevancy": 0.5186,
+          "erro_faithfulness": "",
+          "erro_relevancy": ""
+        },
+        "ordem_narrativa_correta": false,
+        "ordem_narrativa_justificativa": "A narrativa menciona a falha de reconhecimento de rede como uma fase do incidente, o que sugere que a fase de reconhecimento de rede ocorreu após a falha, e não antes. Além disso, a enumeração de logs (T1654) é uma técnica utilizada na fase de exploração, não na fase de reconhecimento de rede."
+      }
+    ],
+    "detalhes_ameaca": [
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1059.012",
+        "faithfulness": 0.375,
+        "answer_relevancy": 0.5063
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1213.006",
+        "faithfulness": 0.5714,
+        "answer_relevancy": 0.4617
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1072",
+        "faithfulness": 0.6667,
+        "answer_relevancy": 0.3923
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1210",
+        "faithfulness": 0.4444,
+        "answer_relevancy": 0.5374
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1078.003",
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.4965
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1204",
+        "faithfulness": 0.375,
+        "answer_relevancy": 0.5381
+      },
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "tecnica_id": "T1027.015",
+        "faithfulness": 0.4,
+        "answer_relevancy": 0.4931
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "tecnica_id": "T1041",
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.3981
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "tecnica_id": "T1036.008",
+        "faithfulness": 0.4545,
+        "answer_relevancy": 0.433
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "tecnica_id": "T1565.003",
+        "faithfulness": 0.625,
+        "answer_relevancy": 0.4247
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "tecnica_id": "T1566.003",
+        "faithfulness": 0.3,
+        "answer_relevancy": 0.5138
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "tecnica_id": "T1071.004",
+        "faithfulness": 0.7273,
+        "answer_relevancy": 0.4662
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "tecnica_id": "T1059.004",
+        "faithfulness": 0.5,
+        "answer_relevancy": 0.5409
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "tecnica_id": "T1574.008",
+        "faithfulness": 0.75,
+        "answer_relevancy": 0.4878
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "tecnica_id": "T1546.004",
+        "faithfulness": 0.7143,
+        "answer_relevancy": 0.4305
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "tecnica_id": "T1560",
+        "faithfulness": 0.5556,
+        "answer_relevancy": 0.4479
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "tecnica_id": "T1074",
+        "faithfulness": 0.3333,
+        "answer_relevancy": 0.4494
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "tecnica_id": "T1654",
+        "faithfulness": 0.8889,
+        "answer_relevancy": 0.4819
+      }
+    ]
+  },
+  "estrutural": {
+    "total_arquivos": 4,
+    "taxa_fases_sem_sobreposicao": 0.5,
+    "taxa_total_fases_bate_gabarito": 0.0,
+    "detalhes": [
+      {
+        "arquivo": "linux-syslog-multifase.log",
+        "total_fases_esperado": 6,
+        "total_fases_detectado": 4,
+        "fases_ordenadas_sem_sobreposicao": false,
+        "problemas_ordem": [
+          "Fase 1 (L1-91) se sobrepõe à fase 2 (L1-91).",
+          "Fase 3 (L92-101) se sobrepõe à fase 4 (L92-101)."
+        ]
+      },
+      {
+        "arquivo": "macos-unified-log-multifase.log",
+        "total_fases_esperado": 5,
+        "total_fases_detectado": 2,
+        "fases_ordenadas_sem_sobreposicao": true,
+        "problemas_ordem": []
+      },
+      {
+        "arquivo": "rede-multifase.log",
+        "total_fases_esperado": 6,
+        "total_fases_detectado": 4,
+        "fases_ordenadas_sem_sobreposicao": false,
+        "problemas_ordem": [
+          "Fase 1 (L1-83) se sobrepõe à fase 2 (L1-83).",
+          "Fase 2 (L1-83) se sobrepõe à fase 3 (L1-83)."
+        ]
+      },
+      {
+        "arquivo": "windows-eventlog-multifase.log",
+        "total_fases_esperado": 5,
+        "total_fases_detectado": 1,
+        "fases_ordenadas_sem_sobreposicao": true,
+        "problemas_ordem": []
+      }
+    ]
+  }
+}

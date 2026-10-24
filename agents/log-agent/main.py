@@ -45,6 +45,16 @@ except ImportError as e:
     print(f"[!] Erro ao importar agentes do pipeline: {e}")
     sys.exit(1)
 
+# Importar agentes do pipeline contextual (segundo pipeline, independente do acima)
+try:
+    from pipeline_contextual.agente_resumidor_arquivo import AgenteResumidorArquivo
+    from pipeline_contextual.agente_organizador_fases import AgenteOrganizadorFases
+    from pipeline_contextual.agente_comparador_contextual import AgenteComparadorContextual
+    from pipeline_contextual.gerador_relatorio_contextual import gerar_pdf_contextual
+except ImportError as e:
+    print(f"[!] Erro ao importar agentes do pipeline contextual: {e}")
+    sys.exit(1)
+
 # =========================================================================
 # Configurações
 # =========================================================================
@@ -87,6 +97,26 @@ class ProcessingConfig(BaseModel):
                 "limiar_score": 0.7,
                 "gerar_analise_llm": True,
                 "ignorar_info_logs": False,
+            }
+        }
+
+
+class ProcessingConfigContextual(BaseModel):
+    """Configurações do pipeline contextual (análise por fases)"""
+    chunk_size: int = 80
+    reduce_batch_size: int = 20
+    top_k_busca: int = 5
+    limiar_score: float = 0.45
+    gerar_analise_llm: bool = True
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "chunk_size": 80,
+                "reduce_batch_size": 20,
+                "top_k_busca": 5,
+                "limiar_score": 0.45,
+                "gerar_analise_llm": True,
             }
         }
 
@@ -254,6 +284,129 @@ def _processar_arquivo_logs(
     return pdf_gerado, json_path, relatorio_dict
 
 
+def _processar_arquivo_contextual(
+    arquivo_path: Path,
+    config: ProcessingConfigContextual,
+) -> tuple[Path, Path, dict]:
+    """
+    Processa arquivo de logs através do pipeline contextual (análise por fases
+    comportamentais), separado do pipeline linha-a-linha em _processar_arquivo_logs.
+
+    Retorna: (pdf_path, json_path, relatório_dict)
+    """
+    print(f"\n[*] Iniciando processamento contextual: {arquivo_path.name}")
+    print(f"[*] Configuração: chunk_size={config.chunk_size}, reduce_batch_size={config.reduce_batch_size}, "
+          f"top_k={config.top_k_busca}, limiar={config.limiar_score}")
+
+    # --------- STAGE 0: Filtragem de Logs (reuso do Stage 0 do pipeline atual) ---------
+    print("\n[STAGE 0] Filtragem e detecção de plataforma…")
+    try:
+        filtrador = AgenteFiltadorLogs()
+        logs_filtrados, plataforma_predominante = filtrador.filtrar_arquivo(arquivo_path)
+        linhas_para_resumir = [lf.numero_linha for lf in logs_filtrados if not lf.foi_filtrado]
+        logs_removidos = len(logs_filtrados) - len(linhas_para_resumir)
+        print(f"[✓] {len(logs_filtrados)} linhas analisadas, {logs_removidos} removidas (comandos inofensivos)")
+        print(f"[✓] Plataforma detectada: {plataforma_predominante}")
+    except Exception as e:
+        print(f"[✗] Erro na filtragem: {e}")
+        raise RuntimeError(f"Falha ao filtrar logs: {e}") from e
+
+    # --------- STAGE 1: Resumo do Arquivo (map) ---------
+    print("\n[STAGE 1] Resumo comportamental por chunk…")
+    try:
+        resumidor = AgenteResumidorArquivo(chunk_size=config.chunk_size)
+        resumos = resumidor.resumir_logs_filtrados(logs_filtrados)
+        print(f"[✓] {len(resumos)} chunk(s) resumido(s)")
+    except Exception as e:
+        print(f"[✗] Erro no resumo: {e}")
+        raise RuntimeError(f"Falha ao resumir arquivo: {e}") from e
+
+    # --------- STAGE 2: Organização em Fases (reduce) ---------
+    print("\n[STAGE 2] Consolidação em fases comportamentais…")
+    try:
+        organizador = AgenteOrganizadorFases(reduce_batch_size=config.reduce_batch_size)
+        fases = organizador.organizar(resumos)
+        print(f"[✓] {len(fases)} fase(s) identificada(s)")
+    except Exception as e:
+        print(f"[✗] Erro na organização de fases: {e}")
+        raise RuntimeError(f"Falha ao organizar fases: {e}") from e
+
+    # --------- STAGE 3: Comparação Contextual (busca semântica pura) ---------
+    print("\n[STAGE 3] Comparação com banco de ameaças (busca semântica pura)…")
+    try:
+        comparador = AgenteComparadorContextual(
+            top_k=config.top_k_busca,
+            limiar_score=config.limiar_score,
+            gerar_analise_llm=config.gerar_analise_llm,
+        )
+        relatorio = comparador.analisar(
+            fases=fases,
+            nome_arquivo_log=arquivo_path.name,
+            plataforma_predominante=plataforma_predominante,
+            total_linhas_analisadas=len(logs_filtrados),
+            logs_filtrados=logs_filtrados,
+        )
+        print(f"[✓] {len(relatorio.ameacas)} ameaça(s) detectada(s)")
+        print(f"[✓] Severidade geral: {relatorio.severidade_geral}")
+    except Exception as e:
+        print(f"[✗] Erro na comparação: {e}")
+        raise RuntimeError(f"Falha ao comparar ameaças: {e}") from e
+
+    # --------- STAGE 4: Geração de Relatório PDF ---------
+    print("\n[STAGE 4] Geração de relatório PDF…")
+    try:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        nome_base = arquivo_path.stem
+        pdf_filename = f"{nome_base}_{timestamp}_contextual.pdf"
+        pdf_path = OUTPUT_DIR / pdf_filename
+
+        pdf_gerado = gerar_pdf_contextual(relatorio, pdf_path)
+        print(f"[✓] PDF gerado: {pdf_gerado.name}")
+    except Exception as e:
+        print(f"[✗] Erro na geração de PDF: {e}")
+        pdf_gerado = None
+
+    # --------- STAGE 5: Exportação de Relatório JSON ---------
+    print("\n[STAGE 5] Exportação de relatório JSON…")
+    try:
+        import dataclasses
+
+        json_filename = f"{nome_base}_{timestamp}_contextual.json"
+        json_path = OUTPUT_DIR / json_filename
+
+        def dataclass_serializer(obj):
+            if dataclasses.is_dataclass(obj):
+                return dataclasses.asdict(obj)
+            raise TypeError(f"Tipo não serializável: {type(obj)}")
+
+        relatorio_dict = {
+            "arquivo_log": relatorio.arquivo_log,
+            "timestamp_geracao": relatorio.timestamp_geracao,
+            "total_linhas_analisadas": relatorio.total_linhas_analisadas,
+            "total_fases": relatorio.total_fases,
+            "total_ameacas_detectadas": len(relatorio.ameacas),
+            "severidade_geral": relatorio.severidade_geral,
+            "narrativa_incidente": relatorio.narrativa_incidente,
+            "resumo_executivo": relatorio.resumo_executivo,
+            "fases": [dataclasses.asdict(f) for f in relatorio.fases],
+            "ameacas": [dataclasses.asdict(a) for a in relatorio.ameacas],
+        }
+
+        with json_path.open("w", encoding="utf-8") as f:
+            json.dump(relatorio_dict, f, indent=2, ensure_ascii=False, default=dataclass_serializer)
+
+        print(f"[✓] JSON exportado: {json_path.name}")
+    except Exception as e:
+        print(f"[✗] Erro na exportação JSON: {e}")
+        json_path = None
+
+    print(f"\n[✓] Processamento contextual concluído com sucesso!")
+    print(f"    PDF: {pdf_gerado}")
+    print(f"    JSON: {json_path}")
+
+    return pdf_gerado, json_path, relatorio_dict
+
+
 def _limpar_arquivo(path: Optional[Path], delay_segundos: int = 3600) -> None:
     """Limpa arquivo após um delay (em background task)"""
     if path and path.exists():
@@ -278,8 +431,9 @@ async def root():
         "agente": "log-agent",
         "version": "1.0.0",
         "endpoints": {
-            "POST /analyze": "Analisa arquivo de logs",
-            "POST /analyze-text": "Analisa texto de logs",
+            "POST /analyze": "Analisa arquivo de logs (pipeline linha-a-linha)",
+            "POST /analyze-text": "Analisa texto de logs (pipeline linha-a-linha)",
+            "POST /analyze-contextual": "Analisa arquivo de logs por fases comportamentais (pipeline contextual)",
             "GET /docs": "Documentação interativa (Swagger)",
         }
     }
@@ -454,6 +608,84 @@ async def analyze_text(
             message=f"Processamento concluído: {relatorio_dict.get('total_ameacas_detectadas', 0)} ameaça(s) detectada(s)",
         )
     
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[ERROR] {e}", file=sys.stderr)
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
+
+@app.post("/analyze-contextual", tags=["Processing"], response_model=ProcessingResponse)
+async def analyze_file_contextual(
+    file: UploadFile = File(...),
+    chunk_size: int = Form(80),
+    reduce_batch_size: int = Form(20),
+    top_k_busca: int = Form(5),
+    limiar_score: float = Form(0.45),
+    gerar_analise_llm: bool = Form(True),
+    background_tasks: BackgroundTasks = None,
+):
+    """
+    Analisa um arquivo de logs através do pipeline contextual (análise por
+    fases comportamentais), separado do pipeline linha-a-linha de /analyze.
+
+    - **file**: arquivo de logs (.log, .txt, .csv, .json)
+    - **chunk_size**: linhas por chunk resumido no Stage 1 (padrão: 80)
+    - **reduce_batch_size**: itens por lote na consolidação de fases (padrão: 20)
+    - **top_k_busca**: resultados por busca semântica pura (padrão: 5)
+    - **limiar_score**: score mínimo 0-1 (padrão: 0.45)
+    - **gerar_analise_llm**: gerar análise por IA (padrão: true)
+
+    Retorna URLs para acessar o PDF e JSON gerados.
+    """
+    config = ProcessingConfigContextual(
+        chunk_size=chunk_size,
+        reduce_batch_size=reduce_batch_size,
+        top_k_busca=top_k_busca,
+        limiar_score=limiar_score,
+        gerar_analise_llm=gerar_analise_llm,
+    )
+
+    timestamp = datetime.now().isoformat()
+
+    try:
+        if not _validar_arquivo(file):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Arquivo inválido. Extensões permitidas: .log, .txt, .csv, .json"
+            )
+
+        temp_path = UPLOAD_DIR / f"temp_{file.filename}"
+        with temp_path.open("wb") as f:
+            conteudo = await file.read()
+            f.write(conteudo)
+
+        try:
+            pdf_path, json_path, relatorio_dict = _processar_arquivo_contextual(temp_path, config)
+        finally:
+            if temp_path.exists():
+                temp_path.unlink()
+
+        if background_tasks and pdf_path:
+            background_tasks.add_task(_limpar_arquivo, pdf_path)
+        if background_tasks and json_path:
+            background_tasks.add_task(_limpar_arquivo, json_path)
+
+        return ProcessingResponse(
+            status="success",
+            arquivo_log=file.filename,
+            timestamp=timestamp,
+            total_linhas_analisadas=relatorio_dict.get("total_linhas_analisadas", 0),
+            total_ameacas_detectadas=relatorio_dict.get("total_ameacas_detectadas", 0),
+            pdf_path=str(pdf_path.name) if pdf_path else None,
+            json_path=str(json_path.name) if json_path else None,
+            message=f"Processamento contextual concluído: {relatorio_dict.get('total_fases', 0)} fase(s), "
+                    f"{relatorio_dict.get('total_ameacas_detectadas', 0)} ameaça(s) detectada(s)",
+        )
+
     except HTTPException:
         raise
     except Exception as e:

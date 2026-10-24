@@ -1,0 +1,1627 @@
+{
+  "arquivo": "windows-privesc-single.log",
+  "plataforma_detectada": "windows",
+  "total_linhas_analisadas": 24,
+  "fases": [
+    {
+      "numero_fase": 1,
+      "linha_inicio": 1,
+      "linha_fim": 21,
+      "titulo_fase": "Reconhecimento de rede",
+      "descricao_comportamental": "Ocorreu uma sequência de eventos suspeitos envolvendo a conta 'Administrator' e 'SYSTEM' em diferentes hosts.",
+      "entidades_identificadas": [
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NW-DC01",
+        "NW-WEB-GW01",
+        "SYSTEM",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    },
+    {
+      "numero_fase": 2,
+      "linha_inicio": 1,
+      "linha_fim": 21,
+      "titulo_fase": "Exploração de vulnerabilidades",
+      "descricao_comportamental": "A conta 'Administrator' tentou logar sem sucesso, mas posteriormente conseguiu logar com sucesso, criando novos processos e tarefas.",
+      "entidades_identificadas": [
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NW-DC01",
+        "NW-WEB-GW01",
+        "SYSTEM",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    },
+    {
+      "numero_fase": 3,
+      "linha_inicio": 1,
+      "linha_fim": 21,
+      "titulo_fase": "Elevação de privilégios",
+      "descricao_comportamental": "Houve a criação de um novo processo 'svchost.exe' com privilégios elevados e alterações em contas e grupos de segurança.",
+      "entidades_identificadas": [
+        "Administrator",
+        "NORTHWIND\\svc-backup",
+        "NW-DC01",
+        "NW-WEB-GW01",
+        "SYSTEM",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "high",
+      "chunks_origem": [
+        1
+      ]
+    },
+    {
+      "numero_fase": 4,
+      "linha_inicio": 22,
+      "linha_fim": 24,
+      "titulo_fase": "Acesso remoto suspeito",
+      "descricao_comportamental": "O usuário t.oliveira está realizando logons em diferentes hosts com logon tipo 3, indicando acesso remoto.",
+      "entidades_identificadas": [
+        "10.20.4.201",
+        "NW-DC01",
+        "NW-SRV-APP12",
+        "t.oliveira"
+      ],
+      "severidade_inferida": "medium",
+      "chunks_origem": [
+        2
+      ]
+    }
+  ],
+  "candidatos_por_fase": {
+    "1": [
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.6283,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Local accounts are those configured by an organization for use by users, remote support, services, or for administration on a single system or service.",
+        "descricao_semantica_log": "O abuso de contas locais aparece como autenticacoes bem-sucedidas de uma mesma conta de administrador local em multiplos hosts distintos em curto periodo, sugerindo reuso de senha para movimentacao lateral. Em Windows, o EventID 4624 LogonType=3 ou 10 com TargetUserName correspondente a uma conta local (nao qualificada por dominio) e SubjectUserSid local, combinado com EventID 4732 de adicao ao grupo Administrators local, indica escalonamento. Em Linux/macOS, comandos su - localadmin ou sudo executados por contas locais fora do padrao de uso normal, junto a entradas correspondentes em /etc/passwd, evidenciam a mesma tecnica. Trafego SMB/RDP autenticado repetidamente com a mesma credencial local entre hosts diferentes tambem e um forte indicador.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.5,
+        "palavras_chave_filtro": [
+          "localadmin",
+          "Administrators group",
+          "su - ",
+          "sudo",
+          "TargetDomainName",
+          "password reuse"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-03-14T15:20:11Z SMB authentication SRC=10.10.2.15 DST=10.10.2.31 DPT=445 username=localadmin result=success",
+              "2026-03-14T15:21:02Z RDP session SRC=10.10.2.15 DST=10.10.2.44 DPT=3389 username=localadmin result=success"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "DPT=445.*username=localadmin",
+              "DPT=3389.*username=localadmin"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "su[7712]: (to localadmin) root on none",
+              "sudo[7715]: localadmin : TTY=pts/2 ; PWD=/home/localadmin ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "su\\[.*\\]: \\(to localadmin\\)",
+              "sudo\\[.*\\]: localadmin :"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "2026-03-14T15:20:09Z Security EventID=4624 TargetUserName=localadmin TargetDomainName=WIN-HOST31 LogonType=3 IpAddress=10.10.2.15",
+              "2026-03-14T15:22:00Z Security EventID=4732 TargetUserName=localadmin GroupName=Administrators"
+            ],
+            "event_ids": [
+              "4624",
+              "4732",
+              "4720"
+            ],
+            "indicadores_regex": [
+              "TargetDomainName=WIN-[A-Z0-9]+",
+              "GroupName=Administrators"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "loginwindow[301]: Login window - user localadmin authenticated",
+              "sudo[9020]: localadmin : TTY=ttys001 ; PWD=/Users/localadmin ; USER=root ; COMMAND=/usr/bin/dscl"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "user localadmin authenticated",
+              "sudo\\[.*\\]: localadmin :"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.003 (Local Accounts)\nTática: Privilege Escalation (TA0004)\nO abuso de contas locais aparece como autenticacoes bem-sucedidas de uma mesma conta de administrador local em multiplos hosts distintos em curto periodo, sugerindo reuso de senha para movimentacao lateral. Em Windows, o EventID 4624 LogonType=3 ou 10 com TargetUserName correspondente a uma conta local (nao qualificada por dominio) e SubjectUserSid local, combinado com EventID 4732 de adicao ao grupo Administrators local, indica escalonamento. Em Linux/macOS, comandos su - localadmin ou sudo executados por contas locais fora do padrao de uso normal, junto a entradas correspondentes em /etc/passwd, evidenciam a mesma tecnica. Trafego SMB/RDP autenticado repetidamente com a mesma credencial local entre hosts diferentes tambem e um forte indicador.\nPalavras-chave: localadmin, Administrators group, su - , sudo, TargetDomainName, password reuse\nFonte rede: 2026-03-14T15:20:11Z SMB authentication SRC=10.10.2.15 DST=10.10.2.31 DPT=445 username=localadmin result=success | 2026-03-14T15:21:02Z RDP session SRC=10.10.2.15 DST=10.10.2.44 DPT=3389 username=localadmin result=success\nFonte linux_syslog: su[7712]: (to localadmin) root on none | sudo[7715]: localadmin : TTY=pts/2 ; PWD=/home/localadmin ; USER=root ; COMMAND=/bin/bash\nFonte windows_eventlog: 2026-03-14T15:20:09Z Security EventID=4624 TargetUserName=localadmin TargetDomainName=WIN-HOST31 LogonType=3 IpAddress=10.10.2.15 | 2026-03-14T15:22:00Z Security EventID=4732 TargetUserName=localadmin GroupName=Administrators\nFonte macos_unified_log: loginwindow[301]: Login window - user localadmin authenticated | sudo[9020]: localadmin : TTY=ttys001 ; PWD=/Users/localadmin ; USER=root ; COMMAND=/usr/bin/dscl"
+      },
+      {
+        "tecnica_id": "T1078.001",
+        "nome_tecnica": "Default Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.5794,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a default account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Default accounts are those that are built-into an OS, such as the Guest or Administrator accounts on Windows systems, or root in AWS, ESXi and Kubernetes.",
+        "descricao_semantica_log": "O abuso de contas padrao de fabrica ou de sistema operacional aparece como autenticacao bem-sucedida em identidades bem conhecidas que raramente deveriam ser usadas em producao, como Administrator, Guest, root ou vpxuser. Em Windows, o EventID 4624 mostra TargetUserName=Administrator com SID terminado em -500 autenticando de um host nao administrativo. Em Linux e ESXi, logins via ssh como root ou pela conta padrao vpxuser criada na integracao com vCenter sao registrados em auth.log ou hostd.log. Em dispositivos de rede, tentativas de autenticacao usando pares padrao de fabrica como admin/admin representam indicador direto desta tecnica.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "vpxuser",
+          "Administrator",
+          "root",
+          "admin/admin",
+          "TargetUserSid=-500",
+          "default credentials"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-03-10T19:02:11Z SSH auth attempt SRC=198.51.100.12 DST=10.10.5.9 DPT=22 username=admin password=admin result=success",
+              "2026-03-10T19:03:00Z Telnet auth SRC=198.51.100.12 DST=10.10.5.20 username=admin password=default result=success"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "username=admin.*password=(admin|default)",
+              "vpxuser"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "sshd[5521]: Accepted password for root from 198.51.100.12 port 44210 ssh2",
+              "hostd: [vpxuser] User vpxuser@10.10.5.9 logged in as root equivalent via SOAP session"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Accepted password for root",
+              "vpxuser"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "2026-03-10T19:04:22Z Security EventID=4624 TargetUserName=Administrator TargetUserSid=S-1-5-21-...-500 LogonType=3 IpAddress=198.51.100.12",
+              "2026-03-10T19:04:25Z Security EventID=4720 TargetUserName=Guest SubjectUserName=Administrator"
+            ],
+            "event_ids": [
+              "4624",
+              "4720"
+            ],
+            "indicadores_regex": [
+              "TargetUserSid=.*-500",
+              "TargetUserName=(Administrator|Guest)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "authd[210]: Authentication succeeded for user root via com.apple.authorization.system.login.console",
+              "sudo[9012]: root : TTY=ttys000 ; PWD=/ ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Authentication succeeded for user root",
+              "USER=root"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.001 (Default Accounts)\nTática: Privilege Escalation (TA0004)\nO abuso de contas padrao de fabrica ou de sistema operacional aparece como autenticacao bem-sucedida em identidades bem conhecidas que raramente deveriam ser usadas em producao, como Administrator, Guest, root ou vpxuser. Em Windows, o EventID 4624 mostra TargetUserName=Administrator com SID terminado em -500 autenticando de um host nao administrativo. Em Linux e ESXi, logins via ssh como root ou pela conta padrao vpxuser criada na integracao com vCenter sao registrados em auth.log ou hostd.log. Em dispositivos de rede, tentativas de autenticacao usando pares padrao de fabrica como admin/admin representam indicador direto desta tecnica.\nPalavras-chave: vpxuser, Administrator, root, admin/admin, TargetUserSid=-500, default credentials\nFonte rede: 2026-03-10T19:02:11Z SSH auth attempt SRC=198.51.100.12 DST=10.10.5.9 DPT=22 username=admin password=admin result=success | 2026-03-10T19:03:00Z Telnet auth SRC=198.51.100.12 DST=10.10.5.20 username=admin password=default result=success\nFonte linux_syslog: sshd[5521]: Accepted password for root from 198.51.100.12 port 44210 ssh2 | hostd: [vpxuser] User vpxuser@10.10.5.9 logged in as root equivalent via SOAP session\nFonte windows_eventlog: 2026-03-10T19:04:22Z Security EventID=4624 TargetUserName=Administrator TargetUserSid=S-1-5-21-...-500 LogonType=3 IpAddress=198.51.100.12 | 2026-03-10T19:04:25Z Security EventID=4720 TargetUserName=Guest SubjectUserName=Administrator\nFonte macos_unified_log: authd[210]: Authentication succeeded for user root via com.apple.authorization.system.login.console | sudo[9012]: root : TTY=ttys000 ; PWD=/ ; USER=root ; COMMAND=/bin/bash"
+      },
+      {
+        "tecnica_id": "T1078.001",
+        "nome_tecnica": "Default Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.5792,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a default account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Contas padrao pre-configuradas em sistemas operacionais, aplicacoes e dispositivos, como Administrator e Guest no Windows, root em sistemas Unix-like e ESXi, ou vpxuser criado automaticamente na integracao entre ESXi e vCenter, representam um vetor de persistencia quando credenciais padrao nao sao alteradas apos a instalacao. A telemetria de Windows Event Log evidencia logons e alteracoes de estado da conta Guest atraves dos Event IDs 4624 e 4738, enquanto em Linux autenticacoes diretas como root via SSH sao capturadas pelo sshd. Logs do hostd de ESXi tambem revelam autenticacoes do vpxuser originadas de enderecos incomuns, indicando possivel abuso de credenciais padrao de fabrica.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.5,
+        "palavras_chave_filtro": [
+          "root",
+          "Administrator",
+          "Guest",
+          "vpxuser",
+          "default account",
+          "built-in"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "sshd[3301]: Accepted publickey for root port 22 ssh2",
+              "hostd: [vpxuser] User vpxuser logged in as root Administrator"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Accepted (password|publickey) for root",
+              "vpxuser"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "EventID=4624 Account Name: Administrator Account Domain: WORKSTATION12 Logon Type: 3",
+              "EventID=4738 A user account was changed: Guest account Enabled flag set to Enabled"
+            ],
+            "event_ids": [
+              "4624",
+              "4738",
+              "4672"
+            ],
+            "indicadores_regex": [
+              "Account Name: (Administrator|Guest)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "opendirectoryd: Authentication succeeded for user root via com.apple.loginwindow"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Authentication succeeded for user root"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.001 (Default Accounts)\nTática: Persistence (TA0003)\nContas padrao pre-configuradas em sistemas operacionais, aplicacoes e dispositivos, como Administrator e Guest no Windows, root em sistemas Unix-like e ESXi, ou vpxuser criado automaticamente na integracao entre ESXi e vCenter, representam um vetor de persistencia quando credenciais padrao nao sao alteradas apos a instalacao. A telemetria de Windows Event Log evidencia logons e alteracoes de estado da conta Guest atraves dos Event IDs 4624 e 4738, enquanto em Linux autenticacoes diretas como root via SSH sao capturadas pelo sshd. Logs do hostd de ESXi tambem revelam autenticacoes do vpxuser originadas de enderecos incomuns, indicando possivel abuso de credenciais padrao de fabrica.\nPalavras-chave: root, Administrator, Guest, vpxuser, default account, built-in\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: sshd[3301]: Accepted publickey for root port 22 ssh2 | hostd: [vpxuser] User vpxuser logged in as root Administrator\nFonte windows_eventlog: EventID=4624 Account Name: Administrator Account Domain: WORKSTATION12 Logon Type: 3 | EventID=4738 A user account was changed: Guest account Enabled flag set to Enabled\nFonte macos_unified_log: opendirectoryd: Authentication succeeded for user root via com.apple.loginwindow"
+      },
+      {
+        "tecnica_id": "T1098.007",
+        "nome_tecnica": "Additional Local or Domain Groups",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.5681,
+        "descricao_mitre": "An adversary may add additional local or domain groups to an adversary-controlled account to maintain persistent access to a system or domain.",
+        "descricao_semantica_log": "Adicao de uma conta a grupos privilegiados como Administradores locais, Remote Desktop Users ou sudoers, capturada por comandos net localgroup, net group ou usermod -aG executados fora de janelas de manutencao programadas. A telemetria de auditoria de grupo mostra o nome do grupo alvo, a conta adicionada e a conta que realizou a operacao, permitindo correlacionar com atividade administrativa anomala recente.",
+        "plataformas_mitre": [
+          "Windows",
+          "macOS",
+          "Linux"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.7,
+        "palavras_chave_filtro": [
+          "4732",
+          "4728",
+          "usermod -aG",
+          "sudoers",
+          "Administrators group",
+          "dscl -append"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 12:41:09 srv01 usermod[3311]: add 'svcbackup' to group 'sudo'",
+              "Aug  2 12:41:10 srv01 usermod[3312]: add 'svcbackup' to group 'wheel'"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "usermod\\[\\d+\\]: add '\\w+' to group '(sudo|wheel|admin)'"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "A member was added to a security-enabled local group. Group Name: Administrators Member Name: svcbackup Event ID: 4732",
+              "A member was added to a security-enabled global group. Group Name: Domain Admins Member Name: svcbackup Event ID: 4728"
+            ],
+            "event_ids": [
+              "4732",
+              "4728"
+            ],
+            "indicadores_regex": [
+              "A member was added to a security-enabled (local|global) group",
+              "Group Name:\\s*(Administrators|Domain Admins|Remote Desktop Users)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "opendirectoryd: Added user 'svcbackup' to group 'admin' via dscl -append",
+              "opendirectoryd: Group membership modified for record 'admin'"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "dscl -append.*group",
+              "Added user '\\w+' to group '(admin|wheel)'"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1098.007 (Additional Local or Domain Groups)\nTática: Persistence (TA0003)\nAdicao de uma conta a grupos privilegiados como Administradores locais, Remote Desktop Users ou sudoers, capturada por comandos net localgroup, net group ou usermod -aG executados fora de janelas de manutencao programadas. A telemetria de auditoria de grupo mostra o nome do grupo alvo, a conta adicionada e a conta que realizou a operacao, permitindo correlacionar com atividade administrativa anomala recente.\nPalavras-chave: 4732, 4728, usermod -aG, sudoers, Administrators group, dscl -append\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug  2 12:41:09 srv01 usermod[3311]: add 'svcbackup' to group 'sudo' | Aug  2 12:41:10 srv01 usermod[3312]: add 'svcbackup' to group 'wheel'\nFonte windows_eventlog: A member was added to a security-enabled local group. Group Name: Administrators Member Name: svcbackup Event ID: 4732 | A member was added to a security-enabled global group. Group Name: Domain Admins Member Name: svcbackup Event ID: 4728\nFonte macos_unified_log: opendirectoryd: Added user 'svcbackup' to group 'admin' via dscl -append | opendirectoryd: Group membership modified for record 'admin'"
+      },
+      {
+        "tecnica_id": "T1098.003",
+        "nome_tecnica": "Additional Cloud Roles",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.5655,
+        "descricao_mitre": "An adversary may add additional roles or permissions to an adversary-controlled cloud account to maintain persistent access to a tenant. For example, adversaries may update IAM policies in cloud-based environments or add a new global administrator in Office 365 environments. With sufficient permissions, a compromised account can gain almost unlimited access to data and settings. This account modification may immediately follow Create Account or other malicious account activity, and could lead to privilege escalation, particularly if the roles added allow for lateral movement to additional accounts.",
+        "descricao_semantica_log": "Telemetria de auditoria de nuvem registra chamadas de API como AttachUserPolicy, CreatePolicyVersion ou atribuicao do papel Global Administrator no Office 365 a uma conta que recentemente foi criada ou comprometida. O evento tipicamente mostra a identidade que realizou a operacao com um nivel de privilegio elevado incompativel com seu historico de atividade, e ocorre em sequencia temporal curta apos a criacao da conta alvo, sugerindo escalonamento planejado de privilegios dentro do tenant.",
+        "plataformas_mitre": [
+          "IaaS",
+          "Identity Provider",
+          "Office Suite",
+          "SaaS"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.5,
+        "palavras_chave_filtro": [
+          "AttachUserPolicy",
+          "CreatePolicyVersion",
+          "Global Administrator",
+          "IAM role assignment",
+          "RoleBinding"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1098.003 (Additional Cloud Roles)\nTática: Privilege Escalation (TA0004)\nTelemetria de auditoria de nuvem registra chamadas de API como AttachUserPolicy, CreatePolicyVersion ou atribuicao do papel Global Administrator no Office 365 a uma conta que recentemente foi criada ou comprometida. O evento tipicamente mostra a identidade que realizou a operacao com um nivel de privilegio elevado incompativel com seu historico de atividade, e ocorre em sequencia temporal curta apos a criacao da conta alvo, sugerindo escalonamento planejado de privilegios dentro do tenant.\nPalavras-chave: AttachUserPolicy, CreatePolicyVersion, Global Administrator, IAM role assignment, RoleBinding\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      }
+    ],
+    "2": [
+      {
+        "tecnica_id": "T1654",
+        "nome_tecnica": "Log Enumeration",
+        "tatica": "Discovery",
+        "tatica_id": "TA0007",
+        "score": 0.6423,
+        "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures.",
+        "descricao_semantica_log": "A enumeracao de logs de sistema e servico se manifesta como acesso ou exportacao de arquivos e repositorios de eventos por utilitarios administrativos, muitas vezes fora do horario normal de manutencao. No Windows, wevtutil.exe ou cmdlets PowerShell como Get-WinEvent e Get-EventLog geram eventos de criacao de processo (4688) e blocos de script (4104) referenciando canais de log como Security ou System. No Linux, journalctl e a leitura direta de /var/log/auth.log ou /var/log/secure aparecem em registros auditd do tipo EXECVE. No macOS, o comando log show ou log collect com predicados especificos e capturado pelo Unified Log, podendo indicar coleta em massa para exfiltracao ou monitoramento de resposta a incidentes.",
+        "plataformas_mitre": [
+          "ESXi",
+          "IaaS",
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "wevtutil",
+          "Get-WinEvent",
+          "journalctl",
+          "log show",
+          "CollectGuestLogs",
+          "SIEM export"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 11:02:15 host auditd[1201]: type=EXECVE msg=audit(1690003335.001:512): argc=2 a0=\"journalctl\" a1=\"-xe\"",
+              "Aug  2 11:03:40 host auditd[1201]: type=EXECVE msg=audit(1690003420.002:513): argc=2 a0=\"cat\" a1=\"/var/log/auth.log\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "\\bjournalctl\\b",
+              "/var/log/(auth|syslog|secure)",
+              "\\bwtmp\\b|\\blastlog\\b"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "<Event><System><EventID>4688</EventID></System><EventData><Data Name='NewProcessName'>C:\\Windows\\System32\\wevtutil.exe</Data><Data Name='CommandLine'>wevtutil qe Security /c:10 /f:text</Data></EventData></Event>",
+              "<Event><System><EventID>4104</EventID><Provider Name='Microsoft-Windows-PowerShell'/></System><EventData><Data Name='ScriptBlockText'>Get-WinEvent -LogName Security -MaxEvents 50</Data></EventData></Event>"
+            ],
+            "event_ids": [
+              "4688",
+              "4104"
+            ],
+            "indicadores_regex": [
+              "wevtutil\\s+(qe|epl|gl)",
+              "Get-WinEvent",
+              "Get-EventLog"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "2026-08-02 11:05:12.442-0300  localhost  log[812]: Executing predicate query: log show --last 1h --predicate 'eventMessage contains \"authentication\"'",
+              "2026-08-02 11:06:03.119-0300  localhost  syslogd[92]: client requested log collect archive export"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "log show",
+              "log collect",
+              "predicate"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1654 (Log Enumeration)\nTática: Discovery (TA0007)\nA enumeracao de logs de sistema e servico se manifesta como acesso ou exportacao de arquivos e repositorios de eventos por utilitarios administrativos, muitas vezes fora do horario normal de manutencao. No Windows, wevtutil.exe ou cmdlets PowerShell como Get-WinEvent e Get-EventLog geram eventos de criacao de processo (4688) e blocos de script (4104) referenciando canais de log como Security ou System. No Linux, journalctl e a leitura direta de /var/log/auth.log ou /var/log/secure aparecem em registros auditd do tipo EXECVE. No macOS, o comando log show ou log collect com predicados especificos e capturado pelo Unified Log, podendo indicar coleta em massa para exfiltracao ou monitoramento de resposta a incidentes.\nPalavras-chave: wevtutil, Get-WinEvent, journalctl, log show, CollectGuestLogs, SIEM export\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug  2 11:02:15 host auditd[1201]: type=EXECVE msg=audit(1690003335.001:512): argc=2 a0=\"journalctl\" a1=\"-xe\" | Aug  2 11:03:40 host auditd[1201]: type=EXECVE msg=audit(1690003420.002:513): argc=2 a0=\"cat\" a1=\"/var/log/auth.log\"\nFonte windows_eventlog: <Event><System><EventID>4688</EventID></System><EventData><Data Name='NewProcessName'>C:\\Windows\\System32\\wevtutil.exe</Data><Data Name='CommandLine'>wevtutil qe Security /c:10 /f:text</Data></EventData></Event> | <Event><System><EventID>4104</EventID><Provider Name='Microsoft-Windows-PowerShell'/></System><EventData><Data Name='ScriptBlockText'>Get-WinEvent -LogName Security -MaxEvents 50</Data></EventData></Event>\nFonte macos_unified_log: 2026-08-02 11:05:12.442-0300  localhost  log[812]: Executing predicate query: log show --last 1h --predicate 'eventMessage contains \"authentication\"' | 2026-08-02 11:06:03.119-0300  localhost  syslogd[92]: client requested log collect archive export"
+      },
+      {
+        "tecnica_id": "T1546.005",
+        "nome_tecnica": "Event Triggered Execution: Trap",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.5988,
+        "descricao_mitre": "Adversarios estabelecem persistencia registrando comandos maliciosos para execucao via o comando trap ao receber sinais de interrupcao no shell.",
+        "descricao_semantica_log": "Entradas de auditd para execucoes EXECVE no Linux capturam a chamada ao comando trap dentro de scripts bash, associando sinais como SIGINT, SIGTERM ou SIGHUP a um payload oculto em diretorios como /tmp/.hidden, enquanto logs do processo bash registram o momento de registro do handler na sessao interativa. No macOS, o Unified Log do processo zsh mostra chamadas trap equivalentes vinculando sinais a scripts armazenados em diretorios de cache do usuario, garantindo execucao ao termino ou interrupcao da sessao.",
+        "plataformas_mitre": [
+          "macOS",
+          "Linux"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.55,
+        "palavras_chave_filtro": [
+          "trap",
+          "SIGINT",
+          "SIGTERM",
+          "SIGHUP",
+          "signal handler"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "2025-06-19T12:44:07+00:00 host auditd type=EXECVE argc=4 a0=\"bash\" a1=\"-c\" a2=\"trap\" a3=\"'/tmp/.hidden/payload.sh' SIGINT SIGTERM\"",
+              "2025-06-19T12:44:08+00:00 host bash[9021]: trap -- '/tmp/.hidden/payload.sh' SIGINT SIGTERM registered in interactive shell"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "trap.*SIG(INT|TERM|HUP)",
+              "\\.hidden/.*\\.sh"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "2025-06-19T12:50:33-0300 host.local zsh[1140]: trap command registered signals=SIGHUP,SIGTERM handler=/Users/victim/Library/.cache/agent.sh"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "trap command registered signals="
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1546.005 (Event Triggered Execution: Trap)\nTática: Privilege Escalation (TA0004)\nEntradas de auditd para execucoes EXECVE no Linux capturam a chamada ao comando trap dentro de scripts bash, associando sinais como SIGINT, SIGTERM ou SIGHUP a um payload oculto em diretorios como /tmp/.hidden, enquanto logs do processo bash registram o momento de registro do handler na sessao interativa. No macOS, o Unified Log do processo zsh mostra chamadas trap equivalentes vinculando sinais a scripts armazenados em diretorios de cache do usuario, garantindo execucao ao termino ou interrupcao da sessao.\nPalavras-chave: trap, SIGINT, SIGTERM, SIGHUP, signal handler\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: 2025-06-19T12:44:07+00:00 host auditd type=EXECVE argc=4 a0=\"bash\" a1=\"-c\" a2=\"trap\" a3=\"'/tmp/.hidden/payload.sh' SIGINT SIGTERM\" | 2025-06-19T12:44:08+00:00 host bash[9021]: trap -- '/tmp/.hidden/payload.sh' SIGINT SIGTERM registered in interactive shell\nFonte windows_eventlog: Nao aplicavel para esta plataforma\nFonte macos_unified_log: 2025-06-19T12:50:33-0300 host.local zsh[1140]: trap command registered signals=SIGHUP,SIGTERM handler=/Users/victim/Library/.cache/agent.sh"
+      },
+      {
+        "tecnica_id": "T1036.009",
+        "nome_tecnica": "Break Process Trees",
+        "tatica": "Stealth",
+        "tatica_id": "TA0005",
+        "score": 0.5879,
+        "descricao_mitre": "An adversary may attempt to evade process tree-based analysis by modifying executed malware's parent process ID (PPID). If endpoint protection software leverages the parent-child relationship for detection, breaking this relationship could result in the adversary's behavior not being associated with previous process tree activity.",
+        "descricao_semantica_log": "Telemetria de auditoria Linux captura sequencias de chamadas fork(), clone() e setsid() que resultam na criacao de um processo neto sem processo pai original, reparentado para o processo init ou systemd (PID 1). Registros auditd do tipo SYSCALL mostram o PPID mudando de um valor de processo suspeito para 1 em curto intervalo, enquanto ferramentas como ps e pstree exibiriam uma arvore de processos quebrada. Em macOS, o Unified Log via Endpoint Security registra eventos equivalentes de fork/daemon com reparentamento para launchd, indicando tentativa deliberada de desconectar a execucao do payload original de seu contexto de deteccao baseado em arvore de processos.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.55,
+        "palavras_chave_filtro": [
+          "fork",
+          "double-fork",
+          "setsid",
+          "daemon()",
+          "PPID=1",
+          "clone",
+          "reparent"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "type=SYSCALL msg=audit(1700000001.123:456): arch=c000003e syscall=57 success=yes exit=5678 ppid=1234 pid=1234 comm=\"payload\" exe=\"/tmp/.hidden/payload\" key=\"process_fork\"",
+              "type=SYSCALL msg=audit(1700000001.456:457): arch=c000003e syscall=112 success=yes exit=0 ppid=1 pid=5679 comm=\"payload\" exe=\"/tmp/.hidden/payload\" key=\"setsid_call\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "syscall=(56|57|112).*comm=\"[a-zA-Z0-9_.]+\"",
+              "ppid=1\\b.*exe=\"/tmp/"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "2025-04-02 10:22:41.881 process payload[5678] EVENT_FORK subsystem=com.apple.xpc ppid_changed_from=812 ppid_new=1",
+              "2025-04-02 10:22:41.902 process payload[5679] daemon() called, detached from controlling terminal, adopted by launchd"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "EVENT_FORK.*ppid_new=1",
+              "daemon\\(\\)\\s+called"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1036.009 (Break Process Trees)\nTática: Stealth (TA0005)\nTelemetria de auditoria Linux captura sequencias de chamadas fork(), clone() e setsid() que resultam na criacao de um processo neto sem processo pai original, reparentado para o processo init ou systemd (PID 1). Registros auditd do tipo SYSCALL mostram o PPID mudando de um valor de processo suspeito para 1 em curto intervalo, enquanto ferramentas como ps e pstree exibiriam uma arvore de processos quebrada. Em macOS, o Unified Log via Endpoint Security registra eventos equivalentes de fork/daemon com reparentamento para launchd, indicando tentativa deliberada de desconectar a execucao do payload original de seu contexto de deteccao baseado em arvore de processos.\nPalavras-chave: fork, double-fork, setsid, daemon(), PPID=1, clone, reparent\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: type=SYSCALL msg=audit(1700000001.123:456): arch=c000003e syscall=57 success=yes exit=5678 ppid=1234 pid=1234 comm=\"payload\" exe=\"/tmp/.hidden/payload\" key=\"process_fork\" | type=SYSCALL msg=audit(1700000001.456:457): arch=c000003e syscall=112 success=yes exit=0 ppid=1 pid=5679 comm=\"payload\" exe=\"/tmp/.hidden/payload\" key=\"setsid_call\"\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: 2025-04-02 10:22:41.881 process payload[5678] EVENT_FORK subsystem=com.apple.xpc ppid_changed_from=812 ppid_new=1 | 2025-04-02 10:22:41.902 process payload[5679] daemon() called, detached from controlling terminal, adopted by launchd"
+      },
+      {
+        "tecnica_id": "T1588.006",
+        "nome_tecnica": "Vulnerabilities",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.5845,
+        "descricao_mitre": "Adversarios podem adquirir informacoes sobre vulnerabilidades para uso durante o direcionamento de ataques, pesquisando bancos de dados abertos ou obtendo acesso a bases fechadas, e monitorando divulgacoes para buscar ou desenvolver exploits antes que a vulnerabilidade seja amplamente conhecida e corrigida.",
+        "descricao_semantica_log": "A pesquisa e aquisicao de informacoes sobre vulnerabilidades, incluindo consulta a bases publicas como a National Vulnerability Database ou acesso a bancos de dados fechados e vazados, e uma atividade de coleta de informacao realizada em infraestrutura e servicos externos, sem qualquer interacao direta com a rede, hosts ou aplicacoes da organizacao alvo. Nenhum log de firewall, IDS, autenticacao ou execucao de processo e gerado localmente, pois a atividade se limita a consulta de fontes de informacao publicas ou privadas de terceiros. A deteccao e essencialmente impossivel a partir dos logs internos da organizacao, dependendo de monitoramento de acesso nao autorizado a bases de vulnerabilidades proprias, feeds de threat intelligence sobre atores mapeando CVEs especificos, ou observacao posterior de exploracao direcionada.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.05,
+        "palavras_chave_filtro": [
+          "CVE database",
+          "vulnerability disclosure",
+          "National Vulnerability Database",
+          "0day research",
+          "vulnerability broker"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1588.006 (Vulnerabilities)\nTática: Resource Development (TA0042)\nA pesquisa e aquisicao de informacoes sobre vulnerabilidades, incluindo consulta a bases publicas como a National Vulnerability Database ou acesso a bancos de dados fechados e vazados, e uma atividade de coleta de informacao realizada em infraestrutura e servicos externos, sem qualquer interacao direta com a rede, hosts ou aplicacoes da organizacao alvo. Nenhum log de firewall, IDS, autenticacao ou execucao de processo e gerado localmente, pois a atividade se limita a consulta de fontes de informacao publicas ou privadas de terceiros. A deteccao e essencialmente impossivel a partir dos logs internos da organizacao, dependendo de monitoramento de acesso nao autorizado a bases de vulnerabilidades proprias, feeds de threat intelligence sobre atores mapeando CVEs especificos, ou observacao posterior de exploracao direcionada.\nPalavras-chave: CVE database, vulnerability disclosure, National Vulnerability Database, 0day research, vulnerability broker\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1053",
+        "nome_tecnica": "Scheduled Task/Job",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "score": 0.5816,
+        "descricao_mitre": "Adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code. Adversaries may use task scheduling to execute programs at system startup or on a scheduled basis for persistence, also abused to run a process under the context of a specified account such as one with elevated permissions.",
+        "descricao_semantica_log": "Telemetria geral de abuso de agendamento de tarefas em multiplas plataformas para persistencia e execucao privilegiada. Em Windows, o Agendador de Tarefas registra a criacao de tarefas via schtasks.exe ou WMI com execucao no contexto de SYSTEM. Em Linux e macOS, o daemon cron registra a execucao de comandos definidos em crontabs, frequentemente pertencentes ao usuario root, revelando comandos suspeitos como downloads remotos seguidos de execucao via shell.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "schtasks",
+          "4698",
+          "CRON",
+          "crontab",
+          "launchd",
+          "onlogon"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug 02 09:15:00 host CRON[2311]: (root) CMD (/tmp/.x/update.sh)",
+              "Aug 02 09:14:50 host crontab[2305]: (root) REPLACE (root)"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "CRON\\[\\d+\\]: \\(\\w+\\) CMD",
+              "crontab\\[\\d+\\]: \\(\\w+\\) REPLACE"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Security EventID=4698 TaskName=\\Microsoft\\Windows\\UpdateOrchestrator\\Backdoor Command=C:\\Users\\Public\\payload.exe",
+              "Security EventID=4688 NewProcessName=C:\\Windows\\System32\\schtasks.exe CommandLine=schtasks /create /tn Updater /tr payload.exe /sc onlogon /ru SYSTEM"
+            ],
+            "event_ids": [
+              "4698",
+              "4688",
+              "4702"
+            ],
+            "indicadores_regex": [
+              "schtasks(\\.exe)?\\s+/create",
+              "TaskName=.*"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "cron[301]: (root) CMD (/private/tmp/persist.sh)",
+              "launchd[1]: Loading job com.apple.update.helper from /Library/LaunchDaemons"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "cron\\[\\d+\\]: \\(\\w+\\) CMD",
+              "launchd.*LaunchDaemons"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1053 (Scheduled Task/Job)\nTática: Privilege Escalation (TA0004)\nTelemetria geral de abuso de agendamento de tarefas em multiplas plataformas para persistencia e execucao privilegiada. Em Windows, o Agendador de Tarefas registra a criacao de tarefas via schtasks.exe ou WMI com execucao no contexto de SYSTEM. Em Linux e macOS, o daemon cron registra a execucao de comandos definidos em crontabs, frequentemente pertencentes ao usuario root, revelando comandos suspeitos como downloads remotos seguidos de execucao via shell.\nPalavras-chave: schtasks, 4698, CRON, crontab, launchd, onlogon\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug 02 09:15:00 host CRON[2311]: (root) CMD (/tmp/.x/update.sh) | Aug 02 09:14:50 host crontab[2305]: (root) REPLACE (root)\nFonte windows_eventlog: Security EventID=4698 TaskName=\\Microsoft\\Windows\\UpdateOrchestrator\\Backdoor Command=C:\\Users\\Public\\payload.exe | Security EventID=4688 NewProcessName=C:\\Windows\\System32\\schtasks.exe CommandLine=schtasks /create /tn Updater /tr payload.exe /sc onlogon /ru SYSTEM\nFonte macos_unified_log: cron[301]: (root) CMD (/private/tmp/persist.sh) | launchd[1]: Loading job com.apple.update.helper from /Library/LaunchDaemons"
+      }
+    ],
+    "3": [
+      {
+        "tecnica_id": "T1204",
+        "nome_tecnica": "User Execution",
+        "tatica": "Execution",
+        "tatica_id": "TA0002",
+        "score": 0.6249,
+        "descricao_mitre": "Adversarios dependem de acoes do usuario, como abrir arquivos ou clicar em links maliciosos, para obter execucao de codigo.",
+        "descricao_semantica_log": "Processo filho inesperado e gerado a partir de uma aplicacao voltada ao usuario, como cliente de email, navegador ou gerenciador de arquivos, imediatamente apos a abertura de um anexo, link ou arquivo baixado externamente. A telemetria de criacao de processo revela linha de comando ofuscada ou codificada, extensao de arquivo suspeita como exe, scr, js, vbs ou hta, execucao a partir de diretorios de usuario como Downloads ou Desktop, e frequentemente uma conexao de saida subsequente para dominio externo recem registrado, indicando engenharia social seguida de execucao de codigo malicioso.",
+        "plataformas_mitre": [
+          "Linux",
+          "Windows",
+          "macOS",
+          "IaaS",
+          "Containers"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.5,
+        "palavras_chave_filtro": [
+          "execve",
+          "ProcessCreate",
+          "Downloads",
+          "WINWORD.EXE",
+          "cmd.exe",
+          "powershell -enc",
+          "ES_EVENT_TYPE_NOTIFY_EXEC",
+          "LSOpenURLsWithRole"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "type=EXECVE msg=audit(1770000000.123:4521): argc=1 a0=\"/home/jdoe/Downloads/invoice.sh\"",
+              "type=SYSCALL msg=audit(1770000012.456:4522): syscall=59 success=yes exe=\"/home/jdoe/Downloads/setup.bin\" comm=\"setup.bin\" key=\"user_exec_downloads\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "EXECVE.*Downloads/.*\\.(sh|bin|py|desktop)"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Sysmon EventID 1: ProcessCreate ParentImage=C:\\Windows\\explorer.exe Image=C:\\Users\\jdoe\\Downloads\\Invoice_2026.exe CommandLine='Invoice_2026.exe'",
+              "Sysmon EventID 1: ProcessCreate ParentImage=C:\\Program Files\\Microsoft Office\\WINWORD.EXE Image=C:\\Windows\\System32\\cmd.exe CommandLine='cmd.exe /c powershell -enc SQBFAFgA'"
+            ],
+            "event_ids": [
+              "1",
+              "4688"
+            ],
+            "indicadores_regex": [
+              "ParentImage.*explorer\\.exe.*Image.*Downloads\\\\.*\\.(exe|scr|hta)"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "ES_EVENT_TYPE_NOTIFY_EXEC process=/Users/jdoe/Downloads/update.pkg parent=Finder responsible=com.apple.finder",
+              "log show predicate 'subsystem == \"com.apple.launchservices\"' eventMessage CONTAINS 'LSOpenURLsWithRole' target=/Users/jdoe/Downloads/Setup.app"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "NOTIFY_EXEC.*Downloads/.*\\.(pkg|app|dmg)"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1204 (User Execution)\nTática: Execution (TA0002)\nProcesso filho inesperado e gerado a partir de uma aplicacao voltada ao usuario, como cliente de email, navegador ou gerenciador de arquivos, imediatamente apos a abertura de um anexo, link ou arquivo baixado externamente. A telemetria de criacao de processo revela linha de comando ofuscada ou codificada, extensao de arquivo suspeita como exe, scr, js, vbs ou hta, execucao a partir de diretorios de usuario como Downloads ou Desktop, e frequentemente uma conexao de saida subsequente para dominio externo recem registrado, indicando engenharia social seguida de execucao de codigo malicioso.\nPalavras-chave: execve, ProcessCreate, Downloads, WINWORD.EXE, cmd.exe, powershell -enc, ES_EVENT_TYPE_NOTIFY_EXEC, LSOpenURLsWithRole\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: type=EXECVE msg=audit(1770000000.123:4521): argc=1 a0=\"/home/jdoe/Downloads/invoice.sh\" | type=SYSCALL msg=audit(1770000012.456:4522): syscall=59 success=yes exe=\"/home/jdoe/Downloads/setup.bin\" comm=\"setup.bin\" key=\"user_exec_downloads\"\nFonte windows_eventlog: Sysmon EventID 1: ProcessCreate ParentImage=C:\\Windows\\explorer.exe Image=C:\\Users\\jdoe\\Downloads\\Invoice_2026.exe CommandLine='Invoice_2026.exe' | Sysmon EventID 1: ProcessCreate ParentImage=C:\\Program Files\\Microsoft Office\\WINWORD.EXE Image=C:\\Windows\\System32\\cmd.exe CommandLine='cmd.exe /c powershell -enc SQBFAFgA'\nFonte macos_unified_log: ES_EVENT_TYPE_NOTIFY_EXEC process=/Users/jdoe/Downloads/update.pkg parent=Finder responsible=com.apple.finder | log show predicate 'subsystem == \"com.apple.launchservices\"' eventMessage CONTAINS 'LSOpenURLsWithRole' target=/Users/jdoe/Downloads/Setup.app"
+      },
+      {
+        "tecnica_id": "T1569.002",
+        "nome_tecnica": "System Services: Service Execution",
+        "tatica": "Execution",
+        "tatica_id": "TA0002",
+        "score": 0.5906,
+        "descricao_mitre": "Adversarios abusam do Service Control Manager do Windows para executar comandos ou payloads maliciosos por meio de servicos.",
+        "descricao_semantica_log": "Um novo servico temporario e criado por meio da API do Service Control Manager, tipicamente via sc.exe ou ferramenta de execucao remota como PsExec, apontando para um binario recem criado em diretorio do sistema. A telemetria de seguranca mostra evento de instalacao de servico seguido de inicio imediato, com o processo services.exe como pai do binario de servico instalado, padrao caracteristico de execucao remota de comandos usada tanto para execucao unica quanto para estabelecer persistencia via servico do Windows.",
+        "plataformas_mitre": [
+          "Windows"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.65,
+        "palavras_chave_filtro": [
+          "PSEXESVC",
+          "sc.exe create",
+          "7045",
+          "4697",
+          "services.exe"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "EventID 7045: Service Control Manager - New service installed. ServiceName=PSEXESVC ImagePath=%SystemRoot%\\PSEXESVC.exe",
+              "EventID 4697: A service was installed in the system. ServiceName=PSEXESVC ServiceFileName=C:\\Windows\\PSEXESVC.exe",
+              "Sysmon EventID 1: ProcessCreate ParentImage=C:\\Windows\\System32\\services.exe Image=C:\\Windows\\PSEXESVC.exe CommandLine='C:\\Windows\\PSEXESVC.exe -accepteula cmd.exe'"
+            ],
+            "event_ids": [
+              "7045",
+              "4697",
+              "1"
+            ],
+            "indicadores_regex": [
+              "ServiceName=PSEXESVC",
+              "ParentImage.*services\\.exe.*Image.*PSEXESVC"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1569.002 (System Services: Service Execution)\nTática: Execution (TA0002)\nUm novo servico temporario e criado por meio da API do Service Control Manager, tipicamente via sc.exe ou ferramenta de execucao remota como PsExec, apontando para um binario recem criado em diretorio do sistema. A telemetria de seguranca mostra evento de instalacao de servico seguido de inicio imediato, com o processo services.exe como pai do binario de servico instalado, padrao caracteristico de execucao remota de comandos usada tanto para execucao unica quanto para estabelecer persistencia via servico do Windows.\nPalavras-chave: PSEXESVC, sc.exe create, 7045, 4697, services.exe\nFonte rede: Nao aplicavel para esta plataforma\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: EventID 7045: Service Control Manager - New service installed. ServiceName=PSEXESVC ImagePath=%SystemRoot%\\PSEXESVC.exe | EventID 4697: A service was installed in the system. ServiceName=PSEXESVC ServiceFileName=C:\\Windows\\PSEXESVC.exe | Sysmon EventID 1: ProcessCreate ParentImage=C:\\Windows\\System32\\services.exe Image=C:\\Windows\\PSEXESVC.exe CommandLine='C:\\Windows\\PSEXESVC.exe -accepteula cmd.exe'\nFonte macos_unified_log: Nao aplicavel para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1588",
+        "nome_tecnica": "Obtain Capabilities",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.5756,
+        "descricao_mitre": "Adversarios podem comprar e/ou roubar capacidades utilizadas durante o direcionamento de ataques, ao inves de desenvolve-las internamente. Isso inclui aquisicao de malware, software, licencas, exploits, certificados e informacoes sobre vulnerabilidades, obtidas de empresas especializadas, mercados criminosos ou individuos, para apoiar operacoes em diversas fases do ciclo de vida do adversario.",
+        "descricao_semantica_log": "A aquisicao de capacidades ocorre por meio de transacoes em mercados clandestinos, foruns criminosos, plataformas de Malware-as-a-Service ou roubo direto de terceiros, processos que acontecem completamente fora do perimetro de rede e dos endpoints da organizacao alvo. Nenhum evento de autenticacao, execucao de processo ou trafego de rede e gerado nos sistemas monitorados, uma vez que a compra ou o roubo acontece em infraestrutura de terceiros nao relacionada a vitima. A visibilidade defensiva desta tecnica depende quase exclusivamente de inteligencia de ameacas, monitoramento de marketplaces underground e correlacao posterior com artefatos entregues durante fases de acesso inicial ou execucao, quando a capacidade adquirida e finalmente utilizada contra o alvo.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.05,
+        "palavras_chave_filtro": [
+          "Malware-as-a-Service",
+          "marketplace underground",
+          "licenca de software",
+          "compra de exploit",
+          "MaaS"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1588 (Obtain Capabilities)\nTática: Resource Development (TA0042)\nA aquisicao de capacidades ocorre por meio de transacoes em mercados clandestinos, foruns criminosos, plataformas de Malware-as-a-Service ou roubo direto de terceiros, processos que acontecem completamente fora do perimetro de rede e dos endpoints da organizacao alvo. Nenhum evento de autenticacao, execucao de processo ou trafego de rede e gerado nos sistemas monitorados, uma vez que a compra ou o roubo acontece em infraestrutura de terceiros nao relacionada a vitima. A visibilidade defensiva desta tecnica depende quase exclusivamente de inteligencia de ameacas, monitoramento de marketplaces underground e correlacao posterior com artefatos entregues durante fases de acesso inicial ou execucao, quando a capacidade adquirida e finalmente utilizada contra o alvo.\nPalavras-chave: Malware-as-a-Service, marketplace underground, licenca de software, compra de exploit, MaaS\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1608",
+        "nome_tecnica": "Stage Capabilities",
+        "tatica": "Resource Development",
+        "tatica_id": "TA0042",
+        "score": 0.5737,
+        "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento.",
+        "descricao_semantica_log": "O posicionamento (staging) de capacidades ofensivas em infraestrutura propria, comprometida ou em servicos web de terceiros ocorre inteiramente fora da rede e dos endpoints da organizacao alvo, ja que a preparacao acontece em servidores, repositorios ou plataformas PaaS controlados pelo adversario antes de qualquer interacao com a vitima. Nao ha geracao de trafego de rede, autenticacao ou execucao de processo nos sistemas monitorados durante esta fase, pois a vitima ainda nao foi contatada nem exposta ao recurso preparado. A observabilidade desta tecnica pela organizacao alvo so se torna possivel de forma indireta, por meio de threat intelligence sobre infraestrutura maliciosa emergente, feeds de reputacao de dominios/IPs recem-registrados hospedando conteudo suspeito, ou quando o recurso staged e finalmente utilizado em uma tentativa de transferencia de ferramenta ou compromisso via drive-by, sendo entao detectavel sob tecnicas como Ingress Tool Transfer ou Drive-by Compromise.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "low",
+        "confianca_padrao": 0.05,
+        "palavras_chave_filtro": [
+          "GitHub",
+          "Pastebin",
+          "PaaS",
+          "staging infrastructure",
+          "malicious hosting"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          }
+        ],
+        "texto_original_chunk": "Técnica T1608 (Stage Capabilities)\nTática: Resource Development (TA0042)\nO posicionamento (staging) de capacidades ofensivas em infraestrutura propria, comprometida ou em servicos web de terceiros ocorre inteiramente fora da rede e dos endpoints da organizacao alvo, ja que a preparacao acontece em servidores, repositorios ou plataformas PaaS controlados pelo adversario antes de qualquer interacao com a vitima. Nao ha geracao de trafego de rede, autenticacao ou execucao de processo nos sistemas monitorados durante esta fase, pois a vitima ainda nao foi contatada nem exposta ao recurso preparado. A observabilidade desta tecnica pela organizacao alvo so se torna possivel de forma indireta, por meio de threat intelligence sobre infraestrutura maliciosa emergente, feeds de reputacao de dominios/IPs recem-registrados hospedando conteudo suspeito, ou quando o recurso staged e finalmente utilizado em uma tentativa de transferencia de ferramenta ou compromisso via drive-by, sendo entao detectavel sob tecnicas como Ingress Tool Transfer ou Drive-by Compromise.\nPalavras-chave: GitHub, Pastebin, PaaS, staging infrastructure, malicious hosting\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Não aplicável para esta plataforma\nFonte windows_eventlog: Não aplicável para esta plataforma\nFonte macos_unified_log: Não aplicável para esta plataforma"
+      },
+      {
+        "tecnica_id": "T1036.003",
+        "nome_tecnica": "Rename Legitimate Utilities",
+        "tatica": "Stealth",
+        "tatica_id": "TA0005",
+        "score": 0.5682,
+        "descricao_mitre": "Adversaries may rename legitimate / system utilities to try to evade security mechanisms concerning the usage of those utilities.",
+        "descricao_semantica_log": "Utilitarios legitimos como PsExec, netcat ou interpretes de script sao renomeados para nomes genericos antes da execucao, buscando evitar deteccoes baseadas no nome do processo ou da imagem. Sensores EDR comparam o hash SHA256 ou o nome de arquivo original embutido nos metadados do binario com o nome atual do arquivo em disco, sinalizando quando um binario com hash de PSEXESVC.exe e executado sob o nome svchost32.exe. Alertas adicionais sao gerados quando ferramentas conhecidas sao movidas para diretorios nao padrao e executadas com nome alterado, evitando politicas de bloqueio baseadas em caminho e nome originais.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.65,
+        "palavras_chave_filtro": [
+          "OriginalFileName",
+          "PSEXESVC",
+          "hash mismatch",
+          "renamed binary",
+          "non-standard path"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "type=EXECVE msg=audit(1732015001.010:901): comm=\"kworker0\" exe=\"/tmp/kworker0\" sha256=matches_known_ncat_binary"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "exe=\"/tmp/.*\".*sha256=matches_known"
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Sysmon Event ID 1: Image: C:\\Windows\\Temp\\svchost32.exe, Hashes: SHA256 matches known PSEXESVC.exe, OriginalFileName: psexesvc.exe"
+            ],
+            "event_ids": [
+              "1"
+            ],
+            "indicadores_regex": [
+              "OriginalFileName:\\s*psexesvc\\.exe"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "ES_EVENT_TYPE_NOTIFY_EXEC: /tmp/systemhelper - code signature Team ID matches known IronPython tool despite renamed binary"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "Team ID matches known.*renamed"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1036.003 (Rename Legitimate Utilities)\nTática: Stealth (TA0005)\nUtilitarios legitimos como PsExec, netcat ou interpretes de script sao renomeados para nomes genericos antes da execucao, buscando evitar deteccoes baseadas no nome do processo ou da imagem. Sensores EDR comparam o hash SHA256 ou o nome de arquivo original embutido nos metadados do binario com o nome atual do arquivo em disco, sinalizando quando um binario com hash de PSEXESVC.exe e executado sob o nome svchost32.exe. Alertas adicionais sao gerados quando ferramentas conhecidas sao movidas para diretorios nao padrao e executadas com nome alterado, evitando politicas de bloqueio baseadas em caminho e nome originais.\nPalavras-chave: OriginalFileName, PSEXESVC, hash mismatch, renamed binary, non-standard path\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: type=EXECVE msg=audit(1732015001.010:901): comm=\"kworker0\" exe=\"/tmp/kworker0\" sha256=matches_known_ncat_binary\nFonte windows_eventlog: Sysmon Event ID 1: Image: C:\\Windows\\Temp\\svchost32.exe, Hashes: SHA256 matches known PSEXESVC.exe, OriginalFileName: psexesvc.exe\nFonte macos_unified_log: ES_EVENT_TYPE_NOTIFY_EXEC: /tmp/systemhelper - code signature Team ID matches known IronPython tool despite renamed binary"
+      }
+    ],
+    "4": [
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "score": 0.4905,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+        "descricao_semantica_log": "Autenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "severidade_sugerida": "medium",
+        "confianca_padrao": 0.6,
+        "palavras_chave_filtro": [
+          "local account",
+          "logon type 10",
+          "sshd",
+          "sudo",
+          "authd",
+          "credential reuse"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "Não aplicável para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Aug  2 09:14:33 srv01 sshd[2211]: Accepted password for svcbackup from 198.51.100.22 port 51422 ssh2",
+              "Aug  2 09:15:02 srv01 sudo:    svcbackup : TTY=pts/0 ; PWD=/home/svcbackup ; USER=root ; COMMAND=/bin/bash"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "sshd\\[\\d+\\]: Accepted password for \\w+",
+              "sudo:\\s+\\w+ : TTY=.* USER=root COMMAND="
+            ]
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "An account was successfully logged on. Subject: NT AUTHORITY\\SYSTEM Account Name: WORKSTATION01\\localsupport Logon Type: 10 Event ID: 4624",
+              "An account failed to log on. Account Name: localsupport Logon Type: 3 Failure Reason: %%2313 Event ID: 4625"
+            ],
+            "event_ids": [
+              "4624",
+              "4625"
+            ],
+            "indicadores_regex": [
+              "Logon Type:\\s*(2|10)",
+              "Account Name:\\s*\\w+\\\\?\\w*local\\w*"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "authd: Authentication succeeded for user 'localsupport' via LocalAuthentication mechanism",
+              "loginwindow: Login window - user 'localsupport' authenticated locally, session started"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "authd: Authentication succeeded for user '\\w+'",
+              "loginwindow:.*authenticated locally"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1078.003 (Local Accounts)\nTática: Persistence (TA0003)\nAutenticacoes bem-sucedidas ou falhas usando contas locais (nao de dominio) fora do padrao de uso do usuario legitimo, incluindo logons interativos ou via RDP com SID local, sessoes SSH abertas por contas de servico locais, e uso de sudo/su para elevacao a partir de conta local em horarios atipicos. A telemetria evidencia reuso de credenciais locais entre multiplos hosts, indicando possivel persistencia ou movimento lateral apos comprometimento inicial.\nPalavras-chave: local account, logon type 10, sshd, sudo, authd, credential reuse\nFonte rede: Não aplicável para esta plataforma\nFonte linux_syslog: Aug  2 09:14:33 srv01 sshd[2211]: Accepted password for svcbackup from 198.51.100.22 port 51422 ssh2 | Aug  2 09:15:02 srv01 sudo:    svcbackup : TTY=pts/0 ; PWD=/home/svcbackup ; USER=root ; COMMAND=/bin/bash\nFonte windows_eventlog: An account was successfully logged on. Subject: NT AUTHORITY\\SYSTEM Account Name: WORKSTATION01\\localsupport Logon Type: 10 Event ID: 4624 | An account failed to log on. Account Name: localsupport Logon Type: 3 Failure Reason: %%2313 Event ID: 4625\nFonte macos_unified_log: authd: Authentication succeeded for user 'localsupport' via LocalAuthentication mechanism | loginwindow: Login window - user 'localsupport' authenticated locally, session started"
+      },
+      {
+        "tecnica_id": "T1598.003",
+        "nome_tecnica": "Phishing for Information: Spearphishing Link",
+        "tatica": "Reconnaissance",
+        "tatica_id": "TA0043",
+        "score": 0.471,
+        "descricao_mitre": "Adversarios enviam mensagens de spearphishing com link malicioso direcionando a vitima a um site clonado de login, com possivel uso de QR code ou tecnicas de browser-in-the-browser para coletar credenciais.",
+        "descricao_semantica_log": "O link malicioso direciona a vitima a um dominio recem-registrado que imita um portal de login legitimo, gerando uma consulta DNS inedita seguida de requisicao HTTP com parametros que indicam origem via QR code ou clique em e-mail. O firewall de borda registra a resolucao do dominio como primeira ocorrencia (first seen) na rede corporativa, enquanto o Sysmon no Windows e o subsistema WebKit no macOS capturam, respectivamente, a consulta DNS originada pelo navegador e a resolucao do host pelo motor de renderizacao, permitindo correlacionar o clique do usuario com a infraestrutura de phishing recem-criada.",
+        "plataformas_mitre": [
+          "PRE"
+        ],
+        "severidade_sugerida": "high",
+        "confianca_padrao": 0.65,
+        "palavras_chave_filtro": [
+          "typosquat domain",
+          "first seen domain",
+          "QR phishing",
+          "DnsQuery",
+          "login portal clone"
+        ],
+        "padroes_log": [
+          {
+            "fonte": "rede",
+            "exemplos": [
+              "2026-07-01T12:30:18Z SRC=10.5.3.12 DST=91.219.237.44 DPT=443 DNS_QUERY QNAME=empresa-suporte-login.net TTL=120 first_seen=true",
+              "2026-07-01T12:30:19Z SRC=10.5.3.12 DST=91.219.237.44 DPT=443 HTTP GET /login?ref=qr HOST=empresa-suporte-login.net"
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "first_seen=true",
+              "HOST=.*-login\\.net",
+              "ref=qr"
+            ]
+          },
+          {
+            "fonte": "linux_syslog",
+            "exemplos": [
+              "Nao aplicavel para esta plataforma"
+            ],
+            "event_ids": [],
+            "indicadores_regex": []
+          },
+          {
+            "fonte": "windows_eventlog",
+            "exemplos": [
+              "Sysmon Event ID 22: DnsQuery ProcessName=msedge.exe QueryName=empresa-suporte-login.net QueryStatus=0"
+            ],
+            "event_ids": [
+              "22"
+            ],
+            "indicadores_regex": [
+              "DnsQuery.*-login\\.net"
+            ]
+          },
+          {
+            "fonte": "macos_unified_log",
+            "exemplos": [
+              "process=WebKit.Networking subsystem=com.apple.WebKit category=resourceload message=\"resolved host empresa-suporte-login.net first-seen domain\""
+            ],
+            "event_ids": [],
+            "indicadores_regex": [
+              "resolved host.*first-seen"
+            ]
+          }
+        ],
+        "texto_original_chunk": "Técnica T1598.003 (Phishing for Information: Spearphishing Link)\nTática: Reconnaissance (TA0043)\nO link malicioso direciona a vitima a um dominio recem-registrado que imita um portal de login legitimo, gerando uma consulta DNS inedita seguida de requisicao HTTP com parametros que indicam origem via QR code ou clique em e-mail. O firewall de borda registra a resolucao do dominio como primeira ocorrencia (first seen) na rede corporativa, enquanto o Sysmon no Windows e o subsistema WebKit no macOS capturam, respectivamente, a consulta DNS originada pelo navegador e a resolucao do host pelo motor de renderizacao, permitindo correlacionar o clique do usuario com a infraestrutura de phishing recem-criada.\nPalavras-chave: typosquat domain, first seen domain, QR phishing, DnsQuery, login portal clone\nFonte rede: 2026-07-01T12:30:18Z SRC=10.5.3.12 DST=91.219.237.44 DPT=443 DNS_QUERY QNAME=empresa-suporte-login.net TTL=120 first_seen=true | 2026-07-01T12:30:19Z SRC=10.5.3.12 DST=91.219.237.44 DPT=443 HTTP GET /login?ref=qr HOST=empresa-suporte-login.net\nFonte linux_syslog: Nao aplicavel para esta plataforma\nFonte windows_eventlog: Sysmon Event ID 22: DnsQuery ProcessName=msedge.exe QueryName=empresa-suporte-login.net QueryStatus=0\nFonte macos_unified_log: process=WebKit.Networking subsystem=com.apple.WebKit category=resourceload message=\"resolved host empresa-suporte-login.net first-seen domain\""
+      }
+    ]
+  },
+  "relatorio": {
+    "arquivo_log": "windows-privesc-single.log",
+    "total_linhas_analisadas": 24,
+    "total_fases": 4,
+    "fases": [
+      {
+        "numero_fase": 1,
+        "linha_inicio": 1,
+        "linha_fim": 21,
+        "titulo_fase": "Reconhecimento de rede",
+        "descricao_comportamental": "Ocorreu uma sequência de eventos suspeitos envolvendo a conta 'Administrator' e 'SYSTEM' em diferentes hosts.",
+        "entidades_identificadas": [
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NW-DC01",
+          "NW-WEB-GW01",
+          "SYSTEM",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      },
+      {
+        "numero_fase": 2,
+        "linha_inicio": 1,
+        "linha_fim": 21,
+        "titulo_fase": "Exploração de vulnerabilidades",
+        "descricao_comportamental": "A conta 'Administrator' tentou logar sem sucesso, mas posteriormente conseguiu logar com sucesso, criando novos processos e tarefas.",
+        "entidades_identificadas": [
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NW-DC01",
+          "NW-WEB-GW01",
+          "SYSTEM",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      },
+      {
+        "numero_fase": 3,
+        "linha_inicio": 1,
+        "linha_fim": 21,
+        "titulo_fase": "Elevação de privilégios",
+        "descricao_comportamental": "Houve a criação de um novo processo 'svchost.exe' com privilégios elevados e alterações em contas e grupos de segurança.",
+        "entidades_identificadas": [
+          "Administrator",
+          "NORTHWIND\\svc-backup",
+          "NW-DC01",
+          "NW-WEB-GW01",
+          "SYSTEM",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "high",
+        "chunks_origem": [
+          1
+        ]
+      },
+      {
+        "numero_fase": 4,
+        "linha_inicio": 22,
+        "linha_fim": 24,
+        "titulo_fase": "Acesso remoto suspeito",
+        "descricao_comportamental": "O usuário t.oliveira está realizando logons em diferentes hosts com logon tipo 3, indicando acesso remoto.",
+        "entidades_identificadas": [
+          "10.20.4.201",
+          "NW-DC01",
+          "NW-SRV-APP12",
+          "t.oliveira"
+        ],
+        "severidade_inferida": "medium",
+        "chunks_origem": [
+          2
+        ]
+      }
+    ],
+    "ameacas": [
+      {
+        "tecnica_id": "T1654",
+        "nome_tecnica": "Log Enumeration",
+        "tatica": "Discovery",
+        "tatica_id": "TA0007",
+        "severidade": "medium",
+        "confianca_media": 0.6423,
+        "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures.",
+        "descricao_semantica_log": "A enumeracao de logs de sistema e servico se manifesta como acesso ou exportacao de arquivos e repositorios de eventos por utilitarios administrativos, muitas vezes fora do horario normal de manutencao. No Windows, wevtutil.exe ou cmdlets PowerShell como Get-WinEvent e Get-EventLog geram eventos de criacao de processo (4688) e blocos de script (4104) referenciando canais de log como Security ou System. No Linux, journalctl e a leitura direta de /var/log/auth.log ou /var/log/secure aparecem em registros auditd do tipo EXECVE. No macOS, o comando log show ou log collect com predicados especificos e capturado pelo Unified Log, podendo indicar coleta em massa para exfiltracao ou monitoramento de resposta a incidentes.",
+        "plataformas_mitre": [
+          "ESXi",
+          "IaaS",
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 2,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "A conta 'Administrator' tentou logar sem sucesso, mas posteriormente conseguiu logar com sucesso, criando novos processos e tarefas.",
+            "score_similaridade": 0.6423
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1654"
+      },
+      {
+        "tecnica_id": "T1204",
+        "nome_tecnica": "User Execution",
+        "tatica": "Execution",
+        "tatica_id": "TA0002",
+        "severidade": "medium",
+        "confianca_media": 0.6249,
+        "descricao_mitre": "Adversarios dependem de acoes do usuario, como abrir arquivos ou clicar em links maliciosos, para obter execucao de codigo.",
+        "descricao_semantica_log": "Processo filho inesperado e gerado a partir de uma aplicacao voltada ao usuario, como cliente de email, navegador ou gerenciador de arquivos, imediatamente apos a abertura de um anexo, link ou arquivo baixado externamente. A telemetria de criacao de processo revela linha de comando ofuscada ou codificada, extensao de arquivo suspeita como exe, scr, js, vbs ou hta, execucao a partir de diretorios de usuario como Downloads ou Desktop, e frequentemente uma conexao de saida subsequente para dominio externo recem registrado, indicando engenharia social seguida de execucao de codigo malicioso.",
+        "plataformas_mitre": [
+          "Linux",
+          "Windows",
+          "macOS",
+          "IaaS",
+          "Containers"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 3,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Houve a criação de um novo processo 'svchost.exe' com privilégios elevados e alterações em contas e grupos de segurança.",
+            "score_similaridade": 0.6249
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1204"
+      },
+      {
+        "tecnica_id": "T1569.002",
+        "nome_tecnica": "System Services: Service Execution",
+        "tatica": "Execution",
+        "tatica_id": "TA0002",
+        "severidade": "high",
+        "confianca_media": 0.5906,
+        "descricao_mitre": "Adversarios abusam do Service Control Manager do Windows para executar comandos ou payloads maliciosos por meio de servicos.",
+        "descricao_semantica_log": "Um novo servico temporario e criado por meio da API do Service Control Manager, tipicamente via sc.exe ou ferramenta de execucao remota como PsExec, apontando para um binario recem criado em diretorio do sistema. A telemetria de seguranca mostra evento de instalacao de servico seguido de inicio imediato, com o processo services.exe como pai do binario de servico instalado, padrao caracteristico de execucao remota de comandos usada tanto para execucao unica quanto para estabelecer persistencia via servico do Windows.",
+        "plataformas_mitre": [
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 3,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Houve a criação de um novo processo 'svchost.exe' com privilégios elevados e alterações em contas e grupos de segurança.",
+            "score_similaridade": 0.5906
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1569/002"
+      },
+      {
+        "tecnica_id": "T1078.001",
+        "nome_tecnica": "Default Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "high",
+        "confianca_media": 0.5794,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a default account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Default accounts are those that are built-into an OS, such as the Guest or Administrator accounts on Windows systems, or root in AWS, ESXi and Kubernetes.",
+        "descricao_semantica_log": "O abuso de contas padrao de fabrica ou de sistema operacional aparece como autenticacao bem-sucedida em identidades bem conhecidas que raramente deveriam ser usadas em producao, como Administrator, Guest, root ou vpxuser. Em Windows, o EventID 4624 mostra TargetUserName=Administrator com SID terminado em -500 autenticando de um host nao administrativo. Em Linux e ESXi, logins via ssh como root ou pela conta padrao vpxuser criada na integracao com vCenter sao registrados em auth.log ou hostd.log. Em dispositivos de rede, tentativas de autenticacao usando pares padrao de fabrica como admin/admin representam indicador direto desta tecnica.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Office Suite",
+          "SaaS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Ocorreu uma sequência de eventos suspeitos envolvendo a conta 'Administrator' e 'SYSTEM' em diferentes hosts.",
+            "score_similaridade": 0.5794
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078/001"
+      },
+      {
+        "tecnica_id": "T1098.007",
+        "nome_tecnica": "Additional Local or Domain Groups",
+        "tatica": "Persistence",
+        "tatica_id": "TA0003",
+        "severidade": "high",
+        "confianca_media": 0.5681,
+        "descricao_mitre": "An adversary may add additional local or domain groups to an adversary-controlled account to maintain persistent access to a system or domain.",
+        "descricao_semantica_log": "Adicao de uma conta a grupos privilegiados como Administradores locais, Remote Desktop Users ou sudoers, capturada por comandos net localgroup, net group ou usermod -aG executados fora de janelas de manutencao programadas. A telemetria de auditoria de grupo mostra o nome do grupo alvo, a conta adicionada e a conta que realizou a operacao, permitindo correlacionar com atividade administrativa anomala recente.",
+        "plataformas_mitre": [
+          "Windows",
+          "macOS",
+          "Linux"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Ocorreu uma sequência de eventos suspeitos envolvendo a conta 'Administrator' e 'SYSTEM' em diferentes hosts.",
+            "score_similaridade": 0.5681
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1098/007"
+      },
+      {
+        "tecnica_id": "T1098.003",
+        "nome_tecnica": "Additional Cloud Roles",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "high",
+        "confianca_media": 0.5655,
+        "descricao_mitre": "An adversary may add additional roles or permissions to an adversary-controlled cloud account to maintain persistent access to a tenant. For example, adversaries may update IAM policies in cloud-based environments or add a new global administrator in Office 365 environments. With sufficient permissions, a compromised account can gain almost unlimited access to data and settings. This account modification may immediately follow Create Account or other malicious account activity, and could lead to privilege escalation, particularly if the roles added allow for lateral movement to additional accounts.",
+        "descricao_semantica_log": "Telemetria de auditoria de nuvem registra chamadas de API como AttachUserPolicy, CreatePolicyVersion ou atribuicao do papel Global Administrator no Office 365 a uma conta que recentemente foi criada ou comprometida. O evento tipicamente mostra a identidade que realizou a operacao com um nivel de privilegio elevado incompativel com seu historico de atividade, e ocorre em sequencia temporal curta apos a criacao da conta alvo, sugerindo escalonamento planejado de privilegios dentro do tenant.",
+        "plataformas_mitre": [
+          "IaaS",
+          "Identity Provider",
+          "Office Suite",
+          "SaaS"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Ocorreu uma sequência de eventos suspeitos envolvendo a conta 'Administrator' e 'SYSTEM' em diferentes hosts.",
+            "score_similaridade": 0.5655
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1098/003"
+      },
+      {
+        "tecnica_id": "T1053",
+        "nome_tecnica": "Scheduled Task/Job",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "medium",
+        "confianca_media": 0.5816,
+        "descricao_mitre": "Adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code. Adversaries may use task scheduling to execute programs at system startup or on a scheduled basis for persistence, also abused to run a process under the context of a specified account such as one with elevated permissions.",
+        "descricao_semantica_log": "Telemetria geral de abuso de agendamento de tarefas em multiplas plataformas para persistencia e execucao privilegiada. Em Windows, o Agendador de Tarefas registra a criacao de tarefas via schtasks.exe ou WMI com execucao no contexto de SYSTEM. Em Linux e macOS, o daemon cron registra a execucao de comandos definidos em crontabs, frequentemente pertencentes ao usuario root, revelando comandos suspeitos como downloads remotos seguidos de execucao via shell.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 2,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "A conta 'Administrator' tentou logar sem sucesso, mas posteriormente conseguiu logar com sucesso, criando novos processos e tarefas.",
+            "score_similaridade": 0.5816
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1053"
+      },
+      {
+        "tecnica_id": "T1036.003",
+        "nome_tecnica": "Rename Legitimate Utilities",
+        "tatica": "Stealth",
+        "tatica_id": "TA0005",
+        "severidade": "medium",
+        "confianca_media": 0.5682,
+        "descricao_mitre": "Adversaries may rename legitimate / system utilities to try to evade security mechanisms concerning the usage of those utilities.",
+        "descricao_semantica_log": "Utilitarios legitimos como PsExec, netcat ou interpretes de script sao renomeados para nomes genericos antes da execucao, buscando evitar deteccoes baseadas no nome do processo ou da imagem. Sensores EDR comparam o hash SHA256 ou o nome de arquivo original embutido nos metadados do binario com o nome atual do arquivo em disco, sinalizando quando um binario com hash de PSEXESVC.exe e executado sob o nome svchost32.exe. Alertas adicionais sao gerados quando ferramentas conhecidas sao movidas para diretorios nao padrao e executadas com nome alterado, evitando politicas de bloqueio baseadas em caminho e nome originais.",
+        "plataformas_mitre": [
+          "Linux",
+          "macOS",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 3,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Houve a criação de um novo processo 'svchost.exe' com privilégios elevados e alterações em contas e grupos de segurança.",
+            "score_similaridade": 0.5682
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1036/003"
+      },
+      {
+        "tecnica_id": "T1078.003",
+        "nome_tecnica": "Local Accounts",
+        "tatica": "Privilege Escalation",
+        "tatica_id": "TA0004",
+        "severidade": "medium",
+        "confianca_media": 0.5594,
+        "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Local accounts are those configured by an organization for use by users, remote support, services, or for administration on a single system or service.",
+        "descricao_semantica_log": "O abuso de contas locais aparece como autenticacoes bem-sucedidas de uma mesma conta de administrador local em multiplos hosts distintos em curto periodo, sugerindo reuso de senha para movimentacao lateral. Em Windows, o EventID 4624 LogonType=3 ou 10 com TargetUserName correspondente a uma conta local (nao qualificada por dominio) e SubjectUserSid local, combinado com EventID 4732 de adicao ao grupo Administrators local, indica escalonamento. Em Linux/macOS, comandos su - localadmin ou sudo executados por contas locais fora do padrao de uso normal, junto a entradas correspondentes em /etc/passwd, evidenciam a mesma tecnica. Trafego SMB/RDP autenticado repetidamente com a mesma credencial local entre hosts diferentes tambem e um forte indicador.",
+        "plataformas_mitre": [
+          "Containers",
+          "ESXi",
+          "Linux",
+          "macOS",
+          "Network Devices",
+          "Windows"
+        ],
+        "fases_relacionadas": [
+          {
+            "numero_fase": 1,
+            "linha_inicio": 1,
+            "linha_fim": 21,
+            "descricao_comportamental": "Ocorreu uma sequência de eventos suspeitos envolvendo a conta 'Administrator' e 'SYSTEM' em diferentes hosts.",
+            "score_similaridade": 0.6283
+          },
+          {
+            "numero_fase": 4,
+            "linha_inicio": 22,
+            "linha_fim": 24,
+            "descricao_comportamental": "O usuário t.oliveira está realizando logons em diferentes hosts com logon tipo 3, indicando acesso remoto.",
+            "score_similaridade": 0.4905
+          }
+        ],
+        "analise_llm": "",
+        "recomendacoes": [],
+        "url_mitre": "https://attack.mitre.org/techniques/T1078/003"
+      }
+    ],
+    "narrativa_incidente": "Em uma rede Windows, um ataque foi detectado que começou com a identificação de contas de administrador e sistema em diferentes hosts (Fase 1). Em seguida, a conta 'Administrator' tentou logar sem sucesso, mas conseguiu logar com sucesso, criando novos processos e tarefas (Fase 2). Com os privilégios elevados, um novo processo 'svchost.exe' foi criado e alterações foram feitas em contas e grupos de segurança (Fase 3). Finalmente, um usuário suspeito realizou logons em diferentes hosts com logon tipo 3, indicando acesso remoto (Fase 4).",
+    "resumo_executivo": "Um ataque foi detectado em uma rede Windows, com risco alto de perda de dados e acesso não autorizado. É necessário uma resposta imediata para evitar danos adicionais. O ataque envolveu a exploração de vulnerabilidades, elevação de privilégios e acesso remoto suspeito.",
+    "severidade_geral": "high",
+    "timestamp_geracao": "2026-08-07T01:19:14Z"
+  }
+}

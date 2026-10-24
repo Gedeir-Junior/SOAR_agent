@@ -17,6 +17,27 @@ if str(BASE_DIR) not in sys.path:
 # Agora o import vai funcionar perfeitamente sem dar ModuleNotFoundError
 from services.qdrant_config import obter_cliente_qdrant, configurar_colecao, COLECAO_PRINCIPAL
 
+# Técnicas cuja própria descrição admite não gerar evidência observável em log
+# (OSINT passivo, staging de infraestrutura do atacante etc.) não devem competir
+# no índice vetorial: seu texto usa vocabulário genérico de "ataque externo" que
+# vence buscas de outras táticas (ex.: Initial Access) sem relação real com o
+# log analisado. Ver achado da rodada de testes de fase única de 15/08/2026.
+_MARCADORES_SEM_EVIDENCIA_LOG = [
+    "nenhum log", "nenhuma conexao", "nenhuma conexão", "nenhum evento",
+    "fora da rede", "fora do perimetro", "fora do perímetro",
+    "sem qualquer interacao", "sem qualquer interação",
+    "nao ha geracao", "não há geração", "nao gera", "não gera",
+    "sem gerar log", "nao recebe nenhuma conexao", "não recebe nenhuma conexão",
+]
+
+
+def _gera_evidencia_observavel(descricao: str) -> bool:
+    """False quando a própria descrição admite que a técnica não deixa rastro
+    observável em log (ver _MARCADORES_SEM_EVIDENCIA_LOG)."""
+    desc = (descricao or "").lower()
+    return not any(marcador in desc for marcador in _MARCADORES_SEM_EVIDENCIA_LOG)
+
+
 def processar_e_ingestao_datasets():
     print("[*] Carregando modelo de embeddings na memória...")
     encoder = SentenceTransformer("all-MiniLM-L6-v2")
@@ -32,20 +53,25 @@ def processar_e_ingestao_datasets():
         return
 
     points_batch = []
+    total_pulados = 0
 
     for arquivo in arquivos_json:
         if arquivo.name == "manifest.json":
             continue
-            
+
         print(f"[*] Processando arquivo de tática: {arquivo.name}...")
         with arquivo.open("r", encoding="utf-8") as f:
             tactic_data = json.load(f)
-            
+
         for padrao in tactic_data.get("padroes", []):
             texto_chunk = padrao.get("texto_busca_vetorial")
             if not texto_chunk:
                 continue
-                
+
+            if not _gera_evidencia_observavel(padrao.get("descricao_semantica_log", "")):
+                total_pulados += 1
+                continue
+
             vetor_chunk = encoder.encode(texto_chunk).tolist()
             
             payload_dados = {
@@ -63,11 +89,14 @@ def processar_e_ingestao_datasets():
                 "texto_original_chunk": texto_chunk
             }
             
-            point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, padrao.get("tecnica_id")))
+            chave_ponto = f"{padrao.get('tecnica_id')}::{padrao.get('tatica_id')}"
+            point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, chave_ponto))
             
             points_batch.append(
                 PointStruct(id=point_id, vector=vetor_chunk, payload=payload_dados)
             )
+
+    print(f"[*] {total_pulados} técnica(s) pulada(s) por não gerar evidência observável em log.")
 
     if points_batch:
         print(f"[*] Fazendo upload de {len(points_batch)} técnicas para o Qdrant...")

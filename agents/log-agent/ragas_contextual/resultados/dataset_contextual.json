@@ -1,0 +1,1708 @@
+{
+  "resumo_plataformas": [
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "plataforma_esperada": "linux",
+      "plataforma_detectada": "linux"
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "plataforma_esperada": "macos",
+      "plataforma_detectada": "macos"
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "plataforma_esperada": "network",
+      "plataforma_detectada": "network"
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "plataforma_esperada": "windows",
+      "plataforma_detectada": "windows"
+    }
+  ],
+  "amostras_contexto": [
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Reconnaissance",
+      "linha_inicio_esperado": 1,
+      "linha_fim_esperado": 18,
+      "tecnicas_esperadas": [
+        "T1590",
+        "T1590.001",
+        "T1590.004",
+        "T1590.005",
+        "T1596.002"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2
+      ],
+      "query": "Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1608.002",
+          "nome_tecnica": "Upload Tool",
+          "score": 0.5752,
+          "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros."
+        },
+        {
+          "tecnica_id": "T1213.006",
+          "nome_tecnica": "Databases",
+          "score": 0.5531,
+          "descricao_mitre": "Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.55,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5482,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1072",
+          "nome_tecnica": "Software Deployment Tools",
+          "score": 0.5477,
+          "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede."
+        },
+        {
+          "tecnica_id": "T1078.003",
+          "nome_tecnica": "Local Accounts",
+          "score": 0.5471,
+          "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion."
+        }
+      ]
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "numero_fase_esperado": 2,
+      "tatica_esperada": "Initial Access",
+      "linha_inicio_esperado": 19,
+      "linha_fim_esperado": 37,
+      "tecnicas_esperadas": [
+        "T1133",
+        "T1190",
+        "T1195.001",
+        "T1566.001",
+        "T1566.003"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2
+      ],
+      "query": "Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1608.002",
+          "nome_tecnica": "Upload Tool",
+          "score": 0.5752,
+          "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros."
+        },
+        {
+          "tecnica_id": "T1213.006",
+          "nome_tecnica": "Databases",
+          "score": 0.5531,
+          "descricao_mitre": "Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.55,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5482,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1072",
+          "nome_tecnica": "Software Deployment Tools",
+          "score": 0.5477,
+          "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede."
+        },
+        {
+          "tecnica_id": "T1078.003",
+          "nome_tecnica": "Local Accounts",
+          "score": 0.5471,
+          "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion."
+        }
+      ]
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "numero_fase_esperado": 3,
+      "tatica_esperada": "Discovery",
+      "linha_inicio_esperado": 38,
+      "linha_fim_esperado": 45,
+      "tecnicas_esperadas": [
+        "T1007"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2
+      ],
+      "query": "Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1608.002",
+          "nome_tecnica": "Upload Tool",
+          "score": 0.5752,
+          "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros."
+        },
+        {
+          "tecnica_id": "T1213.006",
+          "nome_tecnica": "Databases",
+          "score": 0.5531,
+          "descricao_mitre": "Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.55,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5482,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1072",
+          "nome_tecnica": "Software Deployment Tools",
+          "score": 0.5477,
+          "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede."
+        },
+        {
+          "tecnica_id": "T1078.003",
+          "nome_tecnica": "Local Accounts",
+          "score": 0.5471,
+          "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion."
+        }
+      ]
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "numero_fase_esperado": 4,
+      "tatica_esperada": "Privilege Escalation",
+      "linha_inicio_esperado": 46,
+      "linha_fim_esperado": 67,
+      "tecnicas_esperadas": [
+        "T1053.003",
+        "T1068",
+        "T1078.001",
+        "T1098",
+        "T1098.004",
+        "T1098.007"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2
+      ],
+      "query": "Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1608.002",
+          "nome_tecnica": "Upload Tool",
+          "score": 0.5752,
+          "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros."
+        },
+        {
+          "tecnica_id": "T1213.006",
+          "nome_tecnica": "Databases",
+          "score": 0.5531,
+          "descricao_mitre": "Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.55,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5482,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1072",
+          "nome_tecnica": "Software Deployment Tools",
+          "score": 0.5477,
+          "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede."
+        },
+        {
+          "tecnica_id": "T1078.003",
+          "nome_tecnica": "Local Accounts",
+          "score": 0.5471,
+          "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion."
+        }
+      ]
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "numero_fase_esperado": 5,
+      "tatica_esperada": "Execution",
+      "linha_inicio_esperado": 68,
+      "linha_fim_esperado": 88,
+      "tecnicas_esperadas": [
+        "T1059",
+        "T1059.004",
+        "T1059.006",
+        "T1204.002",
+        "T1204.004",
+        "T1569"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2
+      ],
+      "query": "Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1608.002",
+          "nome_tecnica": "Upload Tool",
+          "score": 0.5752,
+          "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros."
+        },
+        {
+          "tecnica_id": "T1213.006",
+          "nome_tecnica": "Databases",
+          "score": 0.5531,
+          "descricao_mitre": "Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.55,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5482,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1072",
+          "nome_tecnica": "Software Deployment Tools",
+          "score": 0.5477,
+          "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede."
+        },
+        {
+          "tecnica_id": "T1078.003",
+          "nome_tecnica": "Local Accounts",
+          "score": 0.5471,
+          "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion."
+        }
+      ]
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "fonte": "linux_syslog",
+      "numero_fase_esperado": 6,
+      "tatica_esperada": "Stealth",
+      "linha_inicio_esperado": 89,
+      "linha_fim_esperado": 103,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002",
+        "T1027.003",
+        "T1027.004"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "query": "Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL. Um processo mal-intencionado está sendo executado no host fin-app07, envolvendo a criação de arquivos zipados, compactação com upx, alteração de permissões e execução de código malicioso. O processo envolve a criação de um agente malicioso que é enviado para um servidor externo.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1574.014",
+          "nome_tecnica": "AppDomainManager",
+          "score": 0.6056,
+          "descricao_mitre": "Adversaries may execute their own malicious payloads by hijacking how the .NET `AppDomainManager` loads assemblies. The .NET framework uses the `AppDomainManager` class to create and manage one or more isolated runtime environments (called application domains) inside a process to host the execution of .NET applications. Assemblies (`.exe` or `.dll` binaries compiled to run as .NET code) may be loaded into an application domain as executable code.(Citation: Microsoft App Domains) \n\nKnown as \"AppDomainManager injection,\" adversaries may execute arbitrary code by hijacking how .NET applications load assemblies. For example, malware may create a custom application domain inside a target process to load and execute an arbitrary assembly. Alternatively, configuration files (`.config`) or process environment variables that define .NET runtime settings may be tampered with to instruct otherwise benign .NET applications to load a malicious assembly (identified by name) into the target process.(Citation: PenTestLabs AppDomainManagerInject)(Citation: PwC Yellow Liderc)(Citation: Rapid7 AppDomain Manager Injection)"
+        },
+        {
+          "tecnica_id": "T1027.015",
+          "nome_tecnica": "Compression",
+          "score": 0.598,
+          "descricao_mitre": "Adversaries may use compression to obfuscate their payloads or files, including combining or concatenating archives to evade detection."
+        },
+        {
+          "tecnica_id": "T1608.002",
+          "nome_tecnica": "Upload Tool",
+          "score": 0.5752,
+          "descricao_mitre": "Adversarios podem fazer upload de ferramentas em infraestrutura de terceiros ou controlada pelo adversario para torna-las acessiveis durante o direcionamento de ataques, posicionando-as em repositorios GitHub controlados ou plataformas PaaS, podendo tambem evitar o upload ao fazer com que maquinas comprometidas baixem a ferramenta diretamente de um local de hospedagem original de terceiros."
+        },
+        {
+          "tecnica_id": "T1059.012",
+          "nome_tecnica": "Hypervisor CLI",
+          "score": 0.5722,
+          "descricao_mitre": "Adversaries may abuse hypervisor command line interpreters (CLIs) to execute malicious commands. Hypervisor CLIs typically enable a wide variety of functionality for managing both the hypervisor itself and the guest virtual machines it hosts. \n\nFor example, on ESXi systems, tools such as `esxcli` and `vim-cmd` allow administrators to configure firewall rules and log forwarding on the hypervisor, list virtual machines, start and stop virtual machines, and more.(Citation: Broadcom ESXCLI Reference)(Citation: Crowdstrike Hypervisor Jackpotting Pt 2 2021)(Citation: LOLESXi) Adversaries may be able to leverage these tools in order to support further actions, such as [File and Directory Discovery](https://attack.mitre.org/techniques/T1083) or [Data Encrypted for Impact](https://attack.mitre.org/techniques/T1486)."
+        },
+        {
+          "tecnica_id": "T1583.008",
+          "nome_tecnica": "Acquire Infrastructure: Malvertising",
+          "score": 0.5699,
+          "descricao_mitre": "Adversaries compram anuncios online para distribuir cargas maliciosas ou redirecionar vitimas para dominios clonados, apoiando drive-by compromise."
+        },
+        {
+          "tecnica_id": "T1574.008",
+          "nome_tecnica": "Path Interception by Search Order Hijacking",
+          "score": 0.5699,
+          "descricao_mitre": "Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32."
+        },
+        {
+          "tecnica_id": "T1213.006",
+          "nome_tecnica": "Databases",
+          "score": 0.5531,
+          "descricao_mitre": "Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5525,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.55,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1072",
+          "nome_tecnica": "Software Deployment Tools",
+          "score": 0.5477,
+          "descricao_mitre": "Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede."
+        },
+        {
+          "tecnica_id": "T1078.003",
+          "nome_tecnica": "Local Accounts",
+          "score": 0.5471,
+          "descricao_mitre": "Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion."
+        },
+        {
+          "tecnica_id": "T1204",
+          "nome_tecnica": "User Execution",
+          "score": 0.5434,
+          "descricao_mitre": "Adversarios dependem de acoes do usuario, como abrir arquivos ou clicar em links maliciosos, para obter execucao de codigo."
+        },
+        {
+          "tecnica_id": "T1588",
+          "nome_tecnica": "Obtain Capabilities",
+          "score": 0.5393,
+          "descricao_mitre": "Adversarios podem comprar e/ou roubar capacidades utilizadas durante o direcionamento de ataques, ao inves de desenvolve-las internamente. Isso inclui aquisicao de malware, software, licencas, exploits, certificados e informacoes sobre vulnerabilidades, obtidas de empresas especializadas, mercados criminosos ou individuos, para apoiar operacoes em diversas fases do ciclo de vida do adversario."
+        },
+        {
+          "tecnica_id": "T1210",
+          "nome_tecnica": "Exploitation of Remote Services",
+          "score": 0.5331,
+          "descricao_mitre": "Adversarios exploram vulnerabilidades em servicos remotos expostos (SMB, RDP, aplicacoes web, hipervisores) para obter acesso nao autorizado e mover-se lateralmente."
+        }
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Initial Access",
+      "linha_inicio_esperado": 1,
+      "linha_fim_esperado": 11,
+      "tecnicas_esperadas": [
+        "T1195.003",
+        "T1566.001"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou uma atividade suspeita, mas não há informações suficientes para determinar o objetivo do atacante.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.6549,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1682",
+          "nome_tecnica": "Query Public AI Services",
+          "score": 0.5625,
+          "descricao_mitre": "Adversaries may query publicly accessible artificial intelligence (AI) services, such as large language models (LLMs), to support targeting and operations. In addition to searching websites or databases directly (i.e., Search Open Websites/Domains), adversaries may use AI services to synthesize, aggregate, and analyze publicly available information at scale."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5502,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.5281,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5273,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "numero_fase_esperado": 2,
+      "tatica_esperada": "Discovery",
+      "linha_inicio_esperado": 12,
+      "linha_fim_esperado": 17,
+      "tecnicas_esperadas": [
+        "T1007"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou uma atividade suspeita, mas não há informações suficientes para determinar o objetivo do atacante.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.6549,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1682",
+          "nome_tecnica": "Query Public AI Services",
+          "score": 0.5625,
+          "descricao_mitre": "Adversaries may query publicly accessible artificial intelligence (AI) services, such as large language models (LLMs), to support targeting and operations. In addition to searching websites or databases directly (i.e., Search Open Websites/Domains), adversaries may use AI services to synthesize, aggregate, and analyze publicly available information at scale."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5502,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.5281,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5273,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "numero_fase_esperado": 3,
+      "tatica_esperada": "Privilege Escalation",
+      "linha_inicio_esperado": 18,
+      "linha_fim_esperado": 50,
+      "tecnicas_esperadas": [
+        "T1037.002",
+        "T1053.003",
+        "T1055",
+        "T1078",
+        "T1078.003",
+        "T1098",
+        "T1098.004"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou uma atividade suspeita, mas não há informações suficientes para determinar o objetivo do atacante.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.6549,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1682",
+          "nome_tecnica": "Query Public AI Services",
+          "score": 0.5625,
+          "descricao_mitre": "Adversaries may query publicly accessible artificial intelligence (AI) services, such as large language models (LLMs), to support targeting and operations. In addition to searching websites or databases directly (i.e., Search Open Websites/Domains), adversaries may use AI services to synthesize, aggregate, and analyze publicly available information at scale."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5502,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.5281,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5273,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "numero_fase_esperado": 4,
+      "tatica_esperada": "Execution",
+      "linha_inicio_esperado": 51,
+      "linha_fim_esperado": 81,
+      "tecnicas_esperadas": [
+        "T1059.002",
+        "T1059.004",
+        "T1059.006",
+        "T1129",
+        "T1204.002",
+        "T1204.004",
+        "T1569.001"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou uma atividade suspeita, mas não há informações suficientes para determinar o objetivo do atacante.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.6549,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1682",
+          "nome_tecnica": "Query Public AI Services",
+          "score": 0.5625,
+          "descricao_mitre": "Adversaries may query publicly accessible artificial intelligence (AI) services, such as large language models (LLMs), to support targeting and operations. In addition to searching websites or databases directly (i.e., Search Open Websites/Domains), adversaries may use AI services to synthesize, aggregate, and analyze publicly available information at scale."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5502,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.5281,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5273,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "fonte": "macos_unified_log",
+      "numero_fase_esperado": 5,
+      "tatica_esperada": "Stealth",
+      "linha_inicio_esperado": 82,
+      "linha_fim_esperado": 90,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2
+      ],
+      "query": "O sistema detectou uma atividade suspeita, mas não há informações suficientes para determinar o objetivo do atacante. O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.6549,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1041",
+          "nome_tecnica": "Exfiltration Over C2 Channel",
+          "score": 0.6268,
+          "descricao_mitre": "Adversaries may steal data by exfiltrating it over an existing command and control channel. Stolen data is encoded into the normal communications channel using the same protocol as command and control communications."
+        },
+        {
+          "tecnica_id": "T1036.008",
+          "nome_tecnica": "Masquerade File Type",
+          "score": 0.578,
+          "descricao_mitre": "Adversaries may masquerade malicious payloads as legitimate files through changes to the payload's formatting, including the file's signature, extension, icon, and contents."
+        },
+        {
+          "tecnica_id": "T1682",
+          "nome_tecnica": "Query Public AI Services",
+          "score": 0.5625,
+          "descricao_mitre": "Adversaries may query publicly accessible artificial intelligence (AI) services, such as large language models (LLMs), to support targeting and operations. In addition to searching websites or databases directly (i.e., Search Open Websites/Domains), adversaries may use AI services to synthesize, aggregate, and analyze publicly available information at scale."
+        },
+        {
+          "tecnica_id": "T1608.001",
+          "nome_tecnica": "Upload Malware",
+          "score": 0.5598,
+          "descricao_mitre": "Adversarios podem fazer upload de malware em infraestrutura de terceiros ou controlada pelo adversario para torna-lo acessivel durante o direcionamento de ataques, incluindo hospedagem em servicos web, IPFS ou blockchain, e podem tambem subir arquivos backdoored em repositorios de pacotes e lojas de aplicativos legitimas."
+        },
+        {
+          "tecnica_id": "T1565.003",
+          "nome_tecnica": "Runtime Data Manipulation",
+          "score": 0.5517,
+          "descricao_mitre": "Adversaries may modify systems in order to manipulate the data as it is accessed and displayed to an end user, thus threatening the integrity of the data.(Citation: FireEye APT38 Oct 2018)(Citation: DOJ Lazarus Sony 2018) By manipulating runtime data, adversaries may attempt to affect a business process, organizational understanding, and decision making.\n\nAdversaries may alter application binaries used to display data in order to cause runtime manipulations. Adversaries may also conduct [Change Default File Association](https://attack.mitre.org/techniques/T1546/001) and [Masquerading](https://attack.mitre.org/techniques/T1036) to cause a similar effect. The type of modification and the impact it will have depends on the target application and process as well as the goals and objectives of the adversary. For complex systems, an adversary would likely need special expertise and possibly access to specialized software related to the system that would typically be gained through a prolonged information gathering campaign in order to have the desired impact."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5502,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1566.003",
+          "nome_tecnica": "Spearphishing via Service",
+          "score": 0.543,
+          "descricao_mitre": "Adversaries may send spearphishing messages via third-party services in an attempt to gain access to victim systems. Spearphishing via service is a specific variant of spearphishing. It is different from other forms of spearphishing in that it employs the use of third party services rather than directly via enterprise email channels.\n\nAll forms of spearphishing are electronically delivered social engineering targeted at a specific individual, company, or industry. In this scenario, adversaries send messages through various social media services, personal webmail, and other non-enterprise controlled services. These services are more likely to have a less-strict security policy than an enterprise. As with most kinds of spearphishing, the goal is to generate rapport with the target or get the target's interest in some way. Adversaries will create fake social media accounts and message employees for potential job opportunities. Doing so allows a plausible reason for asking about services, policies, and software that's running in an environment. The adversary can then send malicious links or attachments through these services.\n\nA common example is to build rapport with a target via social media, then send content to a personal webmail service that the target uses on their work computer. This allows an adversary to bypass some email restrictions on the work account, and the target is more likely to open the file since it's something they were expecting. If the payload doesn't work as expected, the adversary can continue normal communications and troubleshoot with the target on how to get it working."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.5281,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5273,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Reconnaissance",
+      "linha_inicio_esperado": 1,
+      "linha_fim_esperado": 29,
+      "tecnicas_esperadas": [
+        "T1589.002",
+        "T1590.002",
+        "T1595",
+        "T1595.001",
+        "T1595.002",
+        "T1595.003"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2,
+        3
+      ],
+      "query": "O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada. O atacante tenta exfiltrar dados da rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1590.002",
+          "nome_tecnica": "Gather Victim Network Information: DNS",
+          "score": 0.6939,
+          "descricao_mitre": "Adversaries gather victim DNS records and may attempt zone transfers to map subdomains and hosts."
+        },
+        {
+          "tecnica_id": "T1583.002",
+          "nome_tecnica": "Acquire Infrastructure: DNS Server",
+          "score": 0.6859,
+          "descricao_mitre": "Adversaries configuram e operam seus proprios servidores DNS para dar suporte a futuras operacoes de Command and Control baseadas em DNS."
+        },
+        {
+          "tecnica_id": "T1596.001",
+          "nome_tecnica": "Search Open Technical Databases: DNS/Passive DNS",
+          "score": 0.6573,
+          "descricao_mitre": "Adversarios consultam registros DNS publicos e repositorios de DNS passivo para mapear subdominios, servidores de e-mail e hosts da vitima, podendo tambem tentar transferencias de zona (AXFR) diretamente contra os servidores autoritativos da organizacao."
+        },
+        {
+          "tecnica_id": "T1071.004",
+          "nome_tecnica": "DNS",
+          "score": 0.6318,
+          "descricao_mitre": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. The DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic. DNS beaconing may be used to send commands to remote systems via DNS queries; DNS beacons may be difficult to detect because the beacons infrequently communicate with infected devices."
+        },
+        {
+          "tecnica_id": "T1584.002",
+          "nome_tecnica": "Compromise Infrastructure: DNS Server",
+          "score": 0.6047,
+          "descricao_mitre": "Adversaries comprometem servidores DNS de terceiros para alterar registros DNS, redirecionar trafego ou apoiar Command and Control baseado em DNS."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5693,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1574.008",
+          "nome_tecnica": "Path Interception by Search Order Hijacking",
+          "score": 0.5324,
+          "descricao_mitre": "Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32."
+        },
+        {
+          "tecnica_id": "T1059.004",
+          "nome_tecnica": "Unix Shell",
+          "score": 0.5262,
+          "descricao_mitre": "Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi."
+        },
+        {
+          "tecnica_id": "T1546.004",
+          "nome_tecnica": "Unix Shell Configuration Modification",
+          "score": 0.5198,
+          "descricao_mitre": "Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.5193,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1560",
+          "nome_tecnica": "Archive Collected Data",
+          "score": 0.489,
+          "descricao_mitre": "Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede."
+        },
+        {
+          "tecnica_id": "T1074",
+          "nome_tecnica": "Data Staged",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "numero_fase_esperado": 2,
+      "tatica_esperada": "Initial Access",
+      "linha_inicio_esperado": 30,
+      "linha_fim_esperado": 48,
+      "tecnicas_esperadas": [
+        "T1133",
+        "T1190",
+        "T1566.003",
+        "T1659"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2,
+        3
+      ],
+      "query": "O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada. O atacante tenta exfiltrar dados da rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1590.002",
+          "nome_tecnica": "Gather Victim Network Information: DNS",
+          "score": 0.6939,
+          "descricao_mitre": "Adversaries gather victim DNS records and may attempt zone transfers to map subdomains and hosts."
+        },
+        {
+          "tecnica_id": "T1583.002",
+          "nome_tecnica": "Acquire Infrastructure: DNS Server",
+          "score": 0.6859,
+          "descricao_mitre": "Adversaries configuram e operam seus proprios servidores DNS para dar suporte a futuras operacoes de Command and Control baseadas em DNS."
+        },
+        {
+          "tecnica_id": "T1596.001",
+          "nome_tecnica": "Search Open Technical Databases: DNS/Passive DNS",
+          "score": 0.6573,
+          "descricao_mitre": "Adversarios consultam registros DNS publicos e repositorios de DNS passivo para mapear subdominios, servidores de e-mail e hosts da vitima, podendo tambem tentar transferencias de zona (AXFR) diretamente contra os servidores autoritativos da organizacao."
+        },
+        {
+          "tecnica_id": "T1071.004",
+          "nome_tecnica": "DNS",
+          "score": 0.6318,
+          "descricao_mitre": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. The DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic. DNS beaconing may be used to send commands to remote systems via DNS queries; DNS beacons may be difficult to detect because the beacons infrequently communicate with infected devices."
+        },
+        {
+          "tecnica_id": "T1584.002",
+          "nome_tecnica": "Compromise Infrastructure: DNS Server",
+          "score": 0.6047,
+          "descricao_mitre": "Adversaries comprometem servidores DNS de terceiros para alterar registros DNS, redirecionar trafego ou apoiar Command and Control baseado em DNS."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5693,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1574.008",
+          "nome_tecnica": "Path Interception by Search Order Hijacking",
+          "score": 0.5324,
+          "descricao_mitre": "Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32."
+        },
+        {
+          "tecnica_id": "T1059.004",
+          "nome_tecnica": "Unix Shell",
+          "score": 0.5262,
+          "descricao_mitre": "Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi."
+        },
+        {
+          "tecnica_id": "T1546.004",
+          "nome_tecnica": "Unix Shell Configuration Modification",
+          "score": 0.5198,
+          "descricao_mitre": "Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.5193,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1560",
+          "nome_tecnica": "Archive Collected Data",
+          "score": 0.489,
+          "descricao_mitre": "Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede."
+        },
+        {
+          "tecnica_id": "T1074",
+          "nome_tecnica": "Data Staged",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "numero_fase_esperado": 3,
+      "tatica_esperada": "Discovery",
+      "linha_inicio_esperado": 49,
+      "linha_fim_esperado": 54,
+      "tecnicas_esperadas": [
+        "T1040"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2,
+        3
+      ],
+      "query": "O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada. O atacante tenta exfiltrar dados da rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1590.002",
+          "nome_tecnica": "Gather Victim Network Information: DNS",
+          "score": 0.6939,
+          "descricao_mitre": "Adversaries gather victim DNS records and may attempt zone transfers to map subdomains and hosts."
+        },
+        {
+          "tecnica_id": "T1583.002",
+          "nome_tecnica": "Acquire Infrastructure: DNS Server",
+          "score": 0.6859,
+          "descricao_mitre": "Adversaries configuram e operam seus proprios servidores DNS para dar suporte a futuras operacoes de Command and Control baseadas em DNS."
+        },
+        {
+          "tecnica_id": "T1596.001",
+          "nome_tecnica": "Search Open Technical Databases: DNS/Passive DNS",
+          "score": 0.6573,
+          "descricao_mitre": "Adversarios consultam registros DNS publicos e repositorios de DNS passivo para mapear subdominios, servidores de e-mail e hosts da vitima, podendo tambem tentar transferencias de zona (AXFR) diretamente contra os servidores autoritativos da organizacao."
+        },
+        {
+          "tecnica_id": "T1071.004",
+          "nome_tecnica": "DNS",
+          "score": 0.6318,
+          "descricao_mitre": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. The DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic. DNS beaconing may be used to send commands to remote systems via DNS queries; DNS beacons may be difficult to detect because the beacons infrequently communicate with infected devices."
+        },
+        {
+          "tecnica_id": "T1584.002",
+          "nome_tecnica": "Compromise Infrastructure: DNS Server",
+          "score": 0.6047,
+          "descricao_mitre": "Adversaries comprometem servidores DNS de terceiros para alterar registros DNS, redirecionar trafego ou apoiar Command and Control baseado em DNS."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5693,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1574.008",
+          "nome_tecnica": "Path Interception by Search Order Hijacking",
+          "score": 0.5324,
+          "descricao_mitre": "Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32."
+        },
+        {
+          "tecnica_id": "T1059.004",
+          "nome_tecnica": "Unix Shell",
+          "score": 0.5262,
+          "descricao_mitre": "Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi."
+        },
+        {
+          "tecnica_id": "T1546.004",
+          "nome_tecnica": "Unix Shell Configuration Modification",
+          "score": 0.5198,
+          "descricao_mitre": "Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.5193,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1560",
+          "nome_tecnica": "Archive Collected Data",
+          "score": 0.489,
+          "descricao_mitre": "Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede."
+        },
+        {
+          "tecnica_id": "T1074",
+          "nome_tecnica": "Data Staged",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "numero_fase_esperado": 4,
+      "tatica_esperada": "Privilege Escalation",
+      "linha_inicio_esperado": 55,
+      "linha_fim_esperado": 80,
+      "tecnicas_esperadas": [
+        "T1053",
+        "T1068",
+        "T1078",
+        "T1078.001",
+        "T1078.002",
+        "T1098.004"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2,
+        3
+      ],
+      "query": "O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada. O atacante tenta exfiltrar dados da rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1590.002",
+          "nome_tecnica": "Gather Victim Network Information: DNS",
+          "score": 0.6939,
+          "descricao_mitre": "Adversaries gather victim DNS records and may attempt zone transfers to map subdomains and hosts."
+        },
+        {
+          "tecnica_id": "T1583.002",
+          "nome_tecnica": "Acquire Infrastructure: DNS Server",
+          "score": 0.6859,
+          "descricao_mitre": "Adversaries configuram e operam seus proprios servidores DNS para dar suporte a futuras operacoes de Command and Control baseadas em DNS."
+        },
+        {
+          "tecnica_id": "T1596.001",
+          "nome_tecnica": "Search Open Technical Databases: DNS/Passive DNS",
+          "score": 0.6573,
+          "descricao_mitre": "Adversarios consultam registros DNS publicos e repositorios de DNS passivo para mapear subdominios, servidores de e-mail e hosts da vitima, podendo tambem tentar transferencias de zona (AXFR) diretamente contra os servidores autoritativos da organizacao."
+        },
+        {
+          "tecnica_id": "T1071.004",
+          "nome_tecnica": "DNS",
+          "score": 0.6318,
+          "descricao_mitre": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. The DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic. DNS beaconing may be used to send commands to remote systems via DNS queries; DNS beacons may be difficult to detect because the beacons infrequently communicate with infected devices."
+        },
+        {
+          "tecnica_id": "T1584.002",
+          "nome_tecnica": "Compromise Infrastructure: DNS Server",
+          "score": 0.6047,
+          "descricao_mitre": "Adversaries comprometem servidores DNS de terceiros para alterar registros DNS, redirecionar trafego ou apoiar Command and Control baseado em DNS."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5693,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1574.008",
+          "nome_tecnica": "Path Interception by Search Order Hijacking",
+          "score": 0.5324,
+          "descricao_mitre": "Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32."
+        },
+        {
+          "tecnica_id": "T1059.004",
+          "nome_tecnica": "Unix Shell",
+          "score": 0.5262,
+          "descricao_mitre": "Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi."
+        },
+        {
+          "tecnica_id": "T1546.004",
+          "nome_tecnica": "Unix Shell Configuration Modification",
+          "score": 0.5198,
+          "descricao_mitre": "Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.5193,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1560",
+          "nome_tecnica": "Archive Collected Data",
+          "score": 0.489,
+          "descricao_mitre": "Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede."
+        },
+        {
+          "tecnica_id": "T1074",
+          "nome_tecnica": "Data Staged",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "numero_fase_esperado": 5,
+      "tatica_esperada": "Execution",
+      "linha_inicio_esperado": 81,
+      "linha_fim_esperado": 103,
+      "tecnicas_esperadas": [
+        "T1047",
+        "T1053.007",
+        "T1059.006",
+        "T1059.007",
+        "T1204.001",
+        "T1609"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "query": "O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada. O atacante tenta exfiltrar dados da rede. [resumo falhou] trecho entre linhas 84-116",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1590.002",
+          "nome_tecnica": "Gather Victim Network Information: DNS",
+          "score": 0.6939,
+          "descricao_mitre": "Adversaries gather victim DNS records and may attempt zone transfers to map subdomains and hosts."
+        },
+        {
+          "tecnica_id": "T1583.002",
+          "nome_tecnica": "Acquire Infrastructure: DNS Server",
+          "score": 0.6859,
+          "descricao_mitre": "Adversaries configuram e operam seus proprios servidores DNS para dar suporte a futuras operacoes de Command and Control baseadas em DNS."
+        },
+        {
+          "tecnica_id": "T1596.001",
+          "nome_tecnica": "Search Open Technical Databases: DNS/Passive DNS",
+          "score": 0.6573,
+          "descricao_mitre": "Adversarios consultam registros DNS publicos e repositorios de DNS passivo para mapear subdominios, servidores de e-mail e hosts da vitima, podendo tambem tentar transferencias de zona (AXFR) diretamente contra os servidores autoritativos da organizacao."
+        },
+        {
+          "tecnica_id": "T1071.004",
+          "nome_tecnica": "DNS",
+          "score": 0.6318,
+          "descricao_mitre": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. The DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic. DNS beaconing may be used to send commands to remote systems via DNS queries; DNS beacons may be difficult to detect because the beacons infrequently communicate with infected devices."
+        },
+        {
+          "tecnica_id": "T1584.002",
+          "nome_tecnica": "Compromise Infrastructure: DNS Server",
+          "score": 0.6047,
+          "descricao_mitre": "Adversaries comprometem servidores DNS de terceiros para alterar registros DNS, redirecionar trafego ou apoiar Command and Control baseado em DNS."
+        },
+        {
+          "tecnica_id": "T1608",
+          "nome_tecnica": "Stage Capabilities",
+          "score": 0.5693,
+          "descricao_mitre": "Adversarios podem fazer upload, instalar ou configurar capacidades para uso durante o direcionamento de ataques, posicionando ferramentas e malware desenvolvidos ou obtidos em infraestrutura propria, comprometida ou em servicos web como GitHub, Pastebin ou plataformas PaaS, para apoiar comportamentos de acesso inicial e pos-comprometimento."
+        },
+        {
+          "tecnica_id": "T1574.008",
+          "nome_tecnica": "Path Interception by Search Order Hijacking",
+          "score": 0.5324,
+          "descricao_mitre": "Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32."
+        },
+        {
+          "tecnica_id": "T1059.004",
+          "nome_tecnica": "Unix Shell",
+          "score": 0.5262,
+          "descricao_mitre": "Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi."
+        },
+        {
+          "tecnica_id": "T1546.004",
+          "nome_tecnica": "Unix Shell Configuration Modification",
+          "score": 0.5198,
+          "descricao_mitre": "Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS."
+        },
+        {
+          "tecnica_id": "T1588.007",
+          "nome_tecnica": "Artificial Intelligence",
+          "score": 0.5193,
+          "descricao_mitre": "Adversarios podem obter acesso a ferramentas de inteligencia artificial generativa, como grandes modelos de linguagem (LLMs), para apoiar reconhecimento, criacao de scripts basicos, engenharia social e desenvolvimento de payloads, incluindo geracao de conteudo em multiplos idiomas para campanhas de phishing e automacao de tarefas tecnicas ofensivas."
+        },
+        {
+          "tecnica_id": "T1560",
+          "nome_tecnica": "Archive Collected Data",
+          "score": 0.489,
+          "descricao_mitre": "Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede."
+        },
+        {
+          "tecnica_id": "T1074",
+          "nome_tecnica": "Data Staged",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados."
+        },
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.4508,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        }
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "fonte": "rede",
+      "numero_fase_esperado": 6,
+      "tatica_esperada": "Stealth",
+      "linha_inicio_esperado": 104,
+      "linha_fim_esperado": 116,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002",
+        "T1027.003"
+      ],
+      "fases_detectadas_sobrepostas": [
+        4
+      ],
+      "query": "[resumo falhou] trecho entre linhas 84-116",
+      "tecnicas_recuperadas": []
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Initial Access",
+      "linha_inicio_esperado": 1,
+      "linha_fim_esperado": 14,
+      "tecnicas_esperadas": [
+        "T1133",
+        "T1195.003",
+        "T1566.001"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5321,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        },
+        {
+          "tecnica_id": "T1596.005",
+          "nome_tecnica": "Search Open Technical Databases: Scan Databases",
+          "score": 0.5057,
+          "descricao_mitre": "Adversarios pesquisam bases de dados publicas de varredura da internet, como Shodan e Censys, para obter enderecos IP ativos, portas abertas, certificados e banners de servidores da vitima ja coletados por terceiros."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.4854,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1591.003",
+          "nome_tecnica": "Gather Victim Org Information: Identify Business Tempo",
+          "score": 0.4821,
+          "descricao_mitre": "Adversaries gather information about the victim's business tempo, such as operational hours and shipment schedules."
+        },
+        {
+          "tecnica_id": "T1654",
+          "nome_tecnica": "Log Enumeration",
+          "score": 0.481,
+          "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures."
+        }
+      ]
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "numero_fase_esperado": 2,
+      "tatica_esperada": "Discovery",
+      "linha_inicio_esperado": 15,
+      "linha_fim_esperado": 19,
+      "tecnicas_esperadas": [
+        "T1007"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5321,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        },
+        {
+          "tecnica_id": "T1596.005",
+          "nome_tecnica": "Search Open Technical Databases: Scan Databases",
+          "score": 0.5057,
+          "descricao_mitre": "Adversarios pesquisam bases de dados publicas de varredura da internet, como Shodan e Censys, para obter enderecos IP ativos, portas abertas, certificados e banners de servidores da vitima ja coletados por terceiros."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.4854,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1591.003",
+          "nome_tecnica": "Gather Victim Org Information: Identify Business Tempo",
+          "score": 0.4821,
+          "descricao_mitre": "Adversaries gather information about the victim's business tempo, such as operational hours and shipment schedules."
+        },
+        {
+          "tecnica_id": "T1654",
+          "nome_tecnica": "Log Enumeration",
+          "score": 0.481,
+          "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures."
+        }
+      ]
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "numero_fase_esperado": 3,
+      "tatica_esperada": "Privilege Escalation",
+      "linha_inicio_esperado": 20,
+      "linha_fim_esperado": 43,
+      "tecnicas_esperadas": [
+        "T1053.005",
+        "T1055",
+        "T1078.001",
+        "T1078.002",
+        "T1098",
+        "T1134.001"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5321,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        },
+        {
+          "tecnica_id": "T1596.005",
+          "nome_tecnica": "Search Open Technical Databases: Scan Databases",
+          "score": 0.5057,
+          "descricao_mitre": "Adversarios pesquisam bases de dados publicas de varredura da internet, como Shodan e Censys, para obter enderecos IP ativos, portas abertas, certificados e banners de servidores da vitima ja coletados por terceiros."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.4854,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1591.003",
+          "nome_tecnica": "Gather Victim Org Information: Identify Business Tempo",
+          "score": 0.4821,
+          "descricao_mitre": "Adversaries gather information about the victim's business tempo, such as operational hours and shipment schedules."
+        },
+        {
+          "tecnica_id": "T1654",
+          "nome_tecnica": "Log Enumeration",
+          "score": 0.481,
+          "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures."
+        }
+      ]
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "numero_fase_esperado": 4,
+      "tatica_esperada": "Execution",
+      "linha_inicio_esperado": 44,
+      "linha_fim_esperado": 66,
+      "tecnicas_esperadas": [
+        "T1047",
+        "T1059.001",
+        "T1106",
+        "T1197",
+        "T1569.002",
+        "T1574.001"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5321,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        },
+        {
+          "tecnica_id": "T1596.005",
+          "nome_tecnica": "Search Open Technical Databases: Scan Databases",
+          "score": 0.5057,
+          "descricao_mitre": "Adversarios pesquisam bases de dados publicas de varredura da internet, como Shodan e Censys, para obter enderecos IP ativos, portas abertas, certificados e banners de servidores da vitima ja coletados por terceiros."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.4854,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1591.003",
+          "nome_tecnica": "Gather Victim Org Information: Identify Business Tempo",
+          "score": 0.4821,
+          "descricao_mitre": "Adversaries gather information about the victim's business tempo, such as operational hours and shipment schedules."
+        },
+        {
+          "tecnica_id": "T1654",
+          "nome_tecnica": "Log Enumeration",
+          "score": 0.481,
+          "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures."
+        }
+      ]
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "fonte": "windows_eventlog",
+      "numero_fase_esperado": 5,
+      "tatica_esperada": "Stealth",
+      "linha_inicio_esperado": 67,
+      "linha_fim_esperado": 81,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002",
+        "T1027.003",
+        "T1027.004"
+      ],
+      "fases_detectadas_sobrepostas": [
+        1
+      ],
+      "query": "O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.",
+      "tecnicas_recuperadas": [
+        {
+          "tecnica_id": "T1588.002",
+          "nome_tecnica": "Tool",
+          "score": 0.5321,
+          "descricao_mitre": "Adversarios podem comprar, roubar ou baixar ferramentas de software, abertas ou comerciais, que podem ser usadas para fins maliciosos mesmo sem terem sido originalmente projetadas para isso (ex.: PsExec). A aquisicao de ferramentas pode envolver licencas comerciais, como Cobalt Strike, download gratuito, roubo de terceiros ou quebra de versoes de teste."
+        },
+        {
+          "tecnica_id": "T1596.005",
+          "nome_tecnica": "Search Open Technical Databases: Scan Databases",
+          "score": 0.5057,
+          "descricao_mitre": "Adversarios pesquisam bases de dados publicas de varredura da internet, como Shodan e Censys, para obter enderecos IP ativos, portas abertas, certificados e banners de servidores da vitima ja coletados por terceiros."
+        },
+        {
+          "tecnica_id": "T1591.002",
+          "nome_tecnica": "Gather Victim Org Information: Business Relationships",
+          "score": 0.4854,
+          "descricao_mitre": "Adversaries gather information about the victim's business relationships, including third-party access and supply chains."
+        },
+        {
+          "tecnica_id": "T1591.003",
+          "nome_tecnica": "Gather Victim Org Information: Identify Business Tempo",
+          "score": 0.4821,
+          "descricao_mitre": "Adversaries gather information about the victim's business tempo, such as operational hours and shipment schedules."
+        },
+        {
+          "tecnica_id": "T1654",
+          "nome_tecnica": "Log Enumeration",
+          "score": 0.481,
+          "descricao_mitre": "Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures."
+        }
+      ]
+    }
+  ],
+  "amostras_geracao_documento": [
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "pergunta": "Conte a sequência cronológica deste incidente, do início ao fim, e avalie o risco geral e a urgência de resposta.",
+      "contexto": "Fase 1 (Reconhecimento de rede): Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados.\nFase 2 (Exfiltração de dados): Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.\nFase 3 (Execução de código malicioso): Um processo mal-intencionado está sendo executado no host fin-app07, envolvendo a criação de arquivos zipados, compactação com upx, alteração de permissões e execução de código malicioso.\nFase 4 (Criação de agente malicioso): O processo envolve a criação de um agente malicioso que é enviado para um servidor externo.\n\nTécnicas MITRE identificadas:\nT1059.012 (Hypervisor CLI) — tática Execution: Adversaries may abuse hypervisor command line interpreters (CLIs) to execute malicious commands. Hypervisor CLIs typically enable a wide variety of functionality for managing both the hypervisor itself and the guest virtual machines it hosts. \n\nFor example, on ESXi systems, tools such as `esxcli` an\nT1213.006 (Databases) — tática Collection: Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros.\nT1072 (Software Deployment Tools) — tática Lateral Movement: Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede.\nT1210 (Exploitation of Remote Services) — tática Lateral Movement: Adversarios exploram vulnerabilidades em servicos remotos expostos (SMB, RDP, aplicacoes web, hipervisores) para obter acesso nao autorizado e mover-se lateralmente.\nT1078.003 (Local Accounts) — tática Persistence: Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.\nT1204 (User Execution) — tática Execution: Adversarios dependem de acoes do usuario, como abrir arquivos ou clicar em links maliciosos, para obter execucao de codigo.\nT1027.015 (Compression) — tática Stealth: Adversaries may use compression to obfuscate their payloads or files, including combining or concatenating archives to evade detection.",
+      "resposta_narrativa": "Em uma série de ataques maliciosos, os usuários jsantos e dbsync executaram comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados. Em seguida, houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL. Posteriormente, um processo mal-intencionado foi executado no host fin-app07, envolvendo a criação de arquivos zipados, compactação com upx, alteração de permissões e execução de código malicioso. Finalmente, um agente malicioso foi criado e enviado para um servidor externo.",
+      "resposta_resumo": "Foi detectado um ataque malicioso que envolveu a execução de comandos maliciosos em vários hosts, tentativa de exfiltrar dados de um banco de dados e criação de um agente malicioso. O risco é alto e há urgência em responder rapidamente para evitar danos maiores.",
+      "titulos_fases_em_ordem": [
+        "Reconhecimento de rede",
+        "Exfiltração de dados",
+        "Execução de código malicioso",
+        "Criação de agente malicioso"
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "pergunta": "Conte a sequência cronológica deste incidente, do início ao fim, e avalie o risco geral e a urgência de resposta.",
+      "contexto": "Fase 1 (Reconhecimento de rede): O sistema detectou uma atividade suspeita, mas não há informações suficientes para determinar o objetivo do atacante.\nFase 2 (Exploração de sistema): O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon.\n\nTécnicas MITRE identificadas:\nT1041 (Exfiltration Over C2 Channel) — tática Exfiltration: Adversaries may steal data by exfiltrating it over an existing command and control channel. Stolen data is encoded into the normal communications channel using the same protocol as command and control communications.\nT1036.008 (Masquerade File Type) — tática Stealth: Adversaries may masquerade malicious payloads as legitimate files through changes to the payload's formatting, including the file's signature, extension, icon, and contents.\nT1565.003 (Runtime Data Manipulation) — tática Impact: Adversaries may modify systems in order to manipulate the data as it is accessed and displayed to an end user, thus threatening the integrity of the data.(Citation: FireEye APT38 Oct 2018)(Citation: DOJ Lazarus Sony 2018) By manipulating runtime data, adversaries may attempt to affect a business pro\nT1566.003 (Spearphishing via Service) — tática Initial Access: Adversaries may send spearphishing messages via third-party services in an attempt to gain access to victim systems. Spearphishing via service is a specific variant of spearphishing. It is different from other forms of spearphishing in that it employs the use of third party services rather than dire",
+      "resposta_narrativa": "No dia X, o sistema detectou uma atividade suspeita durante a Fase 1, caracterizada como Reconhecimento de rede. Embora não houvesse informações suficientes para determinar o objetivo do atacante, essa atividade foi registrada como de baixa severidade. No entanto, durante a Fase 2, a atividade suspeita evoluiu para Exploração de sistema, com o atacante comprimindo arquivos e preparando um arquivo para upload via um canal de beacon. Essa evolução da atividade suspeita elevou a severidade para alta. O atacante parece estar explorando o sistema com o objetivo de exfiltrar informações.",
+      "resposta_resumo": "Foi detectada uma atividade suspeita em nosso sistema, que evoluiu de Reconhecimento de rede para Exploração de sistema. O atacante está comprimindo arquivos e preparando um arquivo para upload, o que representa um risco significativo de perda de dados confidenciais. É fundamental uma resposta imediata para evitar danos maiores.",
+      "titulos_fases_em_ordem": [
+        "Reconhecimento de rede",
+        "Exploração de sistema"
+      ]
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "pergunta": "Conte a sequência cronológica deste incidente, do início ao fim, e avalie o risco geral e a urgência de resposta.",
+      "contexto": "Fase 1 (Reconhecimento de rede): O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows.\nFase 2 (Comprometimento de sistema): O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada.\nFase 3 (Exfiltração de dados): O atacante tenta exfiltrar dados da rede.\nFase 4 (Eventos não classificados): [resumo falhou] trecho entre linhas 84-116\n\nTécnicas MITRE identificadas:\nT1071.004 (DNS) — tática Command and Control: Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client\nT1059.004 (Unix Shell) — tática Execution: Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi.\nT1574.008 (Path Interception by Search Order Hijacking) — tática Stealth: Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32.\nT1546.004 (Unix Shell Configuration Modification) — tática Persistence: Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS.\nT1560 (Archive Collected Data) — tática Collection: Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede.\nT1074 (Data Staged) — tática Collection: Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados.",
+      "resposta_narrativa": "Em uma rede multifase, um atacante iniciou uma sequência de ataques, começando com o reconhecimento da rede (Fase 1) onde ele explorou vulnerabilidades em vários sistemas, realizando requisições DNS, DNS AXFR e zone transfer, além de tentar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. Com sucesso, ele conseguiu comprometer um sistema e realizar uma shell privilegiada (Fase 2), o que lhe permitiu tentar exfiltrar dados da rede (Fase 3). Embora a fase final (Fase 4) não tenha sido classificada, é provável que o atacante tenha continuado a explorar a rede.",
+      "resposta_resumo": "Um atacante comprometeu uma rede, explorando vulnerabilidades e realizando ataques de SQL Injection, comprometendo um sistema e tentando exfiltrar dados. Isso representa um risco significativo para a segurança da rede e é urgente uma resposta imediata para evitar danos maiores.",
+      "titulos_fases_em_ordem": [
+        "Reconhecimento de rede",
+        "Comprometimento de sistema",
+        "Exfiltração de dados",
+        "Eventos não classificados"
+      ]
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "pergunta": "Conte a sequência cronológica deste incidente, do início ao fim, e avalie o risco geral e a urgência de resposta.",
+      "contexto": "Fase 1 (Reconhecimento de rede): O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.\n\nTécnicas MITRE identificadas:\nT1654 (Log Enumeration) — tática Discovery: Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (R",
+      "resposta_narrativa": "Em uma sequência de eventos, o sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema estava tentando se conectar a uma rede. A técnica utilizada foi a enumeração de logs (T1654), o que sugere que o atacante estava tentando coletar informações sobre a rede e os sistemas conectados. Essa fase comportamental é característica de uma fase de reconhecimento de rede, onde o atacante busca coletar informações sobre a infraestrutura da vítima antes de prosseguir com a fase de exploração.",
+      "resposta_resumo": "Foi detectado um ataque de reconhecimento de rede, com coleta de informações sobre a rede e os sistemas conectados. O risco é alto, pois o atacante pode usar essas informações para planejar uma fase de exploração mais avançada. É fundamental responder rapidamente para evitar danos adicionais.",
+      "titulos_fases_em_ordem": [
+        "Reconhecimento de rede"
+      ]
+    }
+  ],
+  "amostras_geracao_ameaca": [
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1059.012",
+      "nome_tecnica": "Hypervisor CLI",
+      "pergunta": "O que a técnica T1059.012 (Hypervisor CLI) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may abuse hypervisor command line interpreters (CLIs) to execute malicious commands. Hypervisor CLIs typically enable a wide variety of functionality for managing both the hypervisor itself and the guest virtual machines it hosts. \n\nFor example, on ESXi systems, tools such as `esxcli` and `vim-cmd` allow administrators to configure firewall rules and log forwarding on the hypervisor, list virtual machines, start and stop virtual machines, and more.(Citation: Broadcom ESXCLI Reference)(Citation: Crowdstrike Hypervisor Jackpotting Pt 2 2021)(Citation: LOLESXi) Adversaries may be able to leverage these tools in order to support further actions, such as [File and Directory Discovery](https://attack.mitre.org/techniques/T1083) or [Data Encrypted for Impact](https://attack.mitre.org/techniques/T1486).\n\nFases relacionadas:\nFase 3 (L92-101): Um processo mal-intencionado está sendo executado no host fin-app07, envolvendo a criação de arquivos zipados, compactação com upx, alteração de permissões e execução de código malicioso.",
+      "resposta": "O atacante está explorando a vulnerabilidade do hypervisor CLI para executar comandos maliciosos, desabilitar o firewall do hipervisor e encerrar máquinas virtuais. Isso representa um risco imediato de acesso não autorizado a recursos críticos e possíveis danos à infraestrutura. Os sistemas expostos incluem o host fin-app07 e potencialmente outras máquinas virtuais hospedadas no mesmo hipervisor."
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1213.006",
+      "nome_tecnica": "Databases",
+      "pergunta": "O que a técnica T1213.006 (Databases) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversarios exploram bancos de dados on-premises ou em nuvem para minerar informacoes valiosas como credenciais e dados financeiros.\n\nFases relacionadas:\nFase 2 (L1-91): Houve uma tentativa de exfiltrar dados de um banco de dados PostgreSQL.",
+      "resposta": "O atacante está explorando o banco de dados PostgreSQL para coletar informações valiosas, como credenciais e dados financeiros, aumentando o risco de exfiltração de dados confidenciais. O sistema de banco de dados está exposto e pode ser vulnerável a ataques futuros. É necessário agir rapidamente para evitar a perda de dados sensíveis."
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1072",
+      "nome_tecnica": "Software Deployment Tools",
+      "pergunta": "O que a técnica T1072 (Software Deployment Tools) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversarios abusam de ferramentas centralizadas de gerenciamento de configuracao e implantacao de software (SCCM, Intune, Ansible) para executar comandos e mover-se lateralmente na rede.\n\nFases relacionadas:\nFase 1 (L1-91): Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados.",
+      "resposta": "O atacante está abusando de ferramentas de gerenciamento centralizado para executar comandos maliciosos e se mover lateralmente na rede, colocando em risco a segurança de vários hosts e dados criptografados. O risco imediato é a perda de controle sobre os sistemas afetados e a possibilidade de propagação do ataque. Os sistemas expostos incluem os hosts onde os usuários jsantos e dbsync executaram comandos maliciosos."
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1210",
+      "nome_tecnica": "Exploitation of Remote Services",
+      "pergunta": "O que a técnica T1210 (Exploitation of Remote Services) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversarios exploram vulnerabilidades em servicos remotos expostos (SMB, RDP, aplicacoes web, hipervisores) para obter acesso nao autorizado e mover-se lateralmente.\n\nFases relacionadas:\nFase 4 (L92-101): O processo envolve a criação de um agente malicioso que é enviado para um servidor externo.",
+      "resposta": "O atacante está explorando uma vulnerabilidade em um serviço remoto exposto para obter acesso não autorizado e mover-se lateralmente. O risco imediato é a perda de controle sobre o sistema e a possibilidade de acesso a dados confidenciais. Os sistemas expostos incluem o servidor vulnerável e possivelmente outros sistemas conectados à rede."
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1078.003",
+      "nome_tecnica": "Local Accounts",
+      "pergunta": "O que a técnica T1078.003 (Local Accounts) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may obtain and abuse credentials of a local account to gain Initial Access, Persistence, Privilege Escalation, or Defense Evasion.\n\nFases relacionadas:\nFase 1 (L1-91): Ocorreu uma série de atividades suspeitas de usuários jsantos e dbsync executando comandos maliciosos em vários hosts, incluindo execução de scripts, montagem de dispositivos, alteração de permissões e criptografia de dados.",
+      "resposta": "O atacante está obtendo e abusando de credenciais de contas locais para manter acesso persistente aos sistemas, o que representa um risco imediato de elevação de privilégios e defesa evasiva. Os sistemas expostos incluem os hosts onde os usuários jsantos e dbsync estão executando comandos maliciosos, bem como outros sistemas que possam estar conectados a esses hosts. É importante investigar e bloquear a atividade maliciosa para evitar danos adicionais."
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1204",
+      "nome_tecnica": "User Execution",
+      "pergunta": "O que a técnica T1204 (User Execution) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversarios dependem de acoes do usuario, como abrir arquivos ou clicar em links maliciosos, para obter execucao de codigo.\n\nFases relacionadas:\nFase 4 (L92-101): O processo envolve a criação de um agente malicioso que é enviado para um servidor externo.",
+      "resposta": "O atacante está dependendo da ação do usuário para executar um código malicioso, provavelmente um agente malicioso, que é enviado para um servidor externo. Isso representa um risco imediato de infecção do sistema e exposição de dados confidenciais. Os sistemas expostos incluem o cliente de email, navegador e gerenciador de arquivos."
+    },
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "tecnica_id": "T1027.015",
+      "nome_tecnica": "Compression",
+      "pergunta": "O que a técnica T1027.015 (Compression) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may use compression to obfuscate their payloads or files, including combining or concatenating archives to evade detection.\n\nFases relacionadas:\nFase 3 (L92-101): Um processo mal-intencionado está sendo executado no host fin-app07, envolvendo a criação de arquivos zipados, compactação com upx, alteração de permissões e execução de código malicioso.",
+      "resposta": "O atacante está utilizando compressão para obfuscar seu payload, combinando arquivos para evadir detecção. O risco imediato é a execução de código malicioso no host fin-app07. Os sistemas expostos incluem o host fin-app07 e possivelmente outros sistemas conectados à rede."
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "tecnica_id": "T1041",
+      "nome_tecnica": "Exfiltration Over C2 Channel",
+      "pergunta": "O que a técnica T1041 (Exfiltration Over C2 Channel) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may steal data by exfiltrating it over an existing command and control channel. Stolen data is encoded into the normal communications channel using the same protocol as command and control communications.\n\nFases relacionadas:\nFase 2 (L87-90): O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon.",
+      "resposta": "O atacante está utilizando um canal de comando e controle existente para exfiltrar dados do sistema, o que representa um risco imediato de perda de dados confidenciais. O processo responsável pelo C2 está realizando chamadas de sistema anormais, indicando que o atacante está preparando o ambiente para o upload de dados roubados. Os sistemas expostos incluem o host infectado e possivelmente outros sistemas conectados ao mesmo canal de C2."
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "tecnica_id": "T1036.008",
+      "nome_tecnica": "Masquerade File Type",
+      "pergunta": "O que a técnica T1036.008 (Masquerade File Type) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may masquerade malicious payloads as legitimate files through changes to the payload's formatting, including the file's signature, extension, icon, and contents.\n\nFases relacionadas:\nFase 2 (L87-90): O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon.",
+      "resposta": "O atacante está tentando mascarar um payload malicioso como um arquivo legítimo, alterando o cabeçalho binário, extensão ou ícone do arquivo para simular um tipo de arquivo benigno. Isso representa um risco imediato de infecção do sistema e exposição de dados sensíveis. O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon, o que pode comprometer sistemas críticos."
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "tecnica_id": "T1565.003",
+      "nome_tecnica": "Runtime Data Manipulation",
+      "pergunta": "O que a técnica T1565.003 (Runtime Data Manipulation) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may modify systems in order to manipulate the data as it is accessed and displayed to an end user, thus threatening the integrity of the data.(Citation: FireEye APT38 Oct 2018)(Citation: DOJ Lazarus Sony 2018) By manipulating runtime data, adversaries may attempt to affect a business process, organizational understanding, and decision making.\n\nAdversaries may alter application binaries used to display data in order to cause runtime manipulations. Adversaries may also conduct [Change Default File Association](https://attack.mitre.org/techniques/T1546/001) and [Masquerading](https://attack.mitre.org/techniques/T1036) to cause a similar effect. The type of modification and the impact it will have depends on the target application and process as well as the goals and objectives of the adversary. For complex systems, an adversary would likely need special expertise and possibly access to specialized software related to the system that would typically be gained through a prolonged information gathering campaign in order to have the desired impact.\n\nFases relacionadas:\nFase 2 (L87-90): O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon.",
+      "resposta": "O atacante está manipulando dados em tempo de execução para alterar a exibição de dados para usuários finais, ameaçando a integridade dos dados. O risco imediato é que o atacante possa afetar processos comerciais e decisões de negócios. Os sistemas expostos incluem aplicativos e processos que utilizam arquivos de configuração e binários modificados."
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "tecnica_id": "T1566.003",
+      "nome_tecnica": "Spearphishing via Service",
+      "pergunta": "O que a técnica T1566.003 (Spearphishing via Service) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may send spearphishing messages via third-party services in an attempt to gain access to victim systems. Spearphishing via service is a specific variant of spearphishing. It is different from other forms of spearphishing in that it employs the use of third party services rather than directly via enterprise email channels.\n\nAll forms of spearphishing are electronically delivered social engineering targeted at a specific individual, company, or industry. In this scenario, adversaries send messages through various social media services, personal webmail, and other non-enterprise controlled services. These services are more likely to have a less-strict security policy than an enterprise. As with most kinds of spearphishing, the goal is to generate rapport with the target or get the target's interest in some way. Adversaries will create fake social media accounts and message employees for potential job opportunities. Doing so allows a plausible reason for asking about services, policies, and software that's running in an environment. The adversary can then send malicious links or attachments through these services.\n\nA common example is to build rapport with a target via social media, then send content to a personal webmail service that the target uses on their work computer. This allows an adversary to bypass some email restrictions on the work account, and the target is more likely to open the file since it's something they were expecting. If the payload doesn't work as expected, the adversary can continue normal communications and troubleshoot with the target on how to get it working.\n\nFases relacionadas:\nFase 2 (L87-90): O atacante está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon.",
+      "resposta": "O atacante está utilizando a técnica de spearphishing via serviço para tentar ganhar acesso às sistemas da vítima. Ele está explorando o sistema, comprimindo arquivos e preparando um arquivo para upload via um canal de beacon, o que representa um risco imediato de infecção por malware. Os sistemas expostos incluem a estação corporativa e possivelmente outros dispositivos conectados à rede."
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "tecnica_id": "T1071.004",
+      "nome_tecnica": "DNS",
+      "pergunta": "O que a técnica T1071.004 (DNS) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. The DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic. DNS beaconing may be used to send commands to remote systems via DNS queries; DNS beacons may be difficult to detect because the beacons infrequently communicate with infected devices.\n\nFases relacionadas:\nFase 1 (L1-83): O atacante tenta explorar vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer. Ele também tenta realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows.",
+      "resposta": "O atacante está utilizando o protocolo DNS para se comunicar com sistemas controlados, evitando detecção e filtragem de rede. Ele está explorando vulnerabilidades em vários sistemas da rede, realizando requisições DNS, DNS AXFR e zone transfer, e tentando realizar ataques de SQL Injection e execução de comandos remotos em sistemas Windows. Isso representa um risco imediato de perda de dados e controle da rede."
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "tecnica_id": "T1059.004",
+      "nome_tecnica": "Unix Shell",
+      "pergunta": "O que a técnica T1059.004 (Unix Shell) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries abuse Unix shells such as bash and zsh to execute commands and scripts on Linux, macOS and ESXi.\n\nFases relacionadas:\nFase 2 (L1-83): O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada.",
+      "resposta": "O atacante está utilizando uma shell Unix para executar comandos e scripts em sistemas Linux, macOS e ESXi, o que representa um risco imediato de execução de payloads maliciosos. Isso pode permitir ao atacante acessar e manipular dados sensíveis, bem como implantar malware no sistema. Os sistemas expostos incluem Linux, macOS e ESXi."
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "tecnica_id": "T1574.008",
+      "nome_tecnica": "Path Interception by Search Order Hijacking",
+      "pergunta": "O que a técnica T1574.008 (Path Interception by Search Order Hijacking) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may hijack the search order used by Windows to load programs that do not specify a full path, placing a malicious file named after a system utility (such as net.exe) in the calling program's directory so it executes before the legitimate binary in System32.\n\nFases relacionadas:\nFase 2 (L1-83): O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada.",
+      "resposta": "O atacante está realizando uma técnica de Path Interception by Search Order Hijacking, onde está colocando um arquivo malicioso com nome de utilitário do sistema no diretório do processo chamador, forçando a execução do arquivo malicioso em vez do legítimo. Isso representa um risco imediato de execução de código malicioso e potencialmente de elevação de privilégios. Os sistemas expostos incluem sistemas Windows que utilizam a busca por ordem de diretório para carregar programas."
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "tecnica_id": "T1546.004",
+      "nome_tecnica": "Unix Shell Configuration Modification",
+      "pergunta": "O que a técnica T1546.004 (Unix Shell Configuration Modification) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may establish persistence through executing malicious commands triggered by a user's shell, inserting commands into scripts such as .bashrc, .bash_profile, /etc/profile.d, or zsh equivalents on macOS.\n\nFases relacionadas:\nFase 2 (L1-83): O atacante conseguiu comprometer um sistema e realizar uma shell privilegiada.",
+      "resposta": "O atacante está modificando a configuração do shell do usuário para estabelecer persistência no sistema. Isso representa um risco imediato de execução de comandos maliciosos e possíveis danos ao sistema. Os sistemas expostos incluem sistemas Linux e macOS, especialmente aqueles com shell Unix configurados."
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "tecnica_id": "T1560",
+      "nome_tecnica": "Archive Collected Data",
+      "pergunta": "O que a técnica T1560 (Archive Collected Data) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversarios podem comprimir e/ou criptografar dados coletados antes da exfiltracao para ofuscar o conteudo e reduzir o volume transmitido pela rede.\n\nFases relacionadas:\nFase 3 (L1-83): O atacante tenta exfiltrar dados da rede.",
+      "resposta": "O atacante está comprimindo e/ou criptografando dados coletados para exfiltrar, o que pode ofuscar o conteúdo e reduzir o volume transmitido pela rede, aumentando a dificuldade de detecção. O risco imediato é a perda de dados confidenciais. Os sistemas expostos incluem os que contêm dados sensíveis e os que têm acesso à rede."
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "tecnica_id": "T1074",
+      "nome_tecnica": "Data Staged",
+      "pergunta": "O que a técnica T1074 (Data Staged) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversarios armazenam dados coletados em um local central antes da exfiltracao, podendo combinar arquivos ou utilizar instancias de nuvem para centralizar a preparacao dos dados.\n\nFases relacionadas:\nFase 3 (L1-83): O atacante tenta exfiltrar dados da rede.",
+      "resposta": "O atacante está armazenando dados coletados em um local central, o que aumenta o risco de exfiltração de dados confidenciais. Isso pode comprometer sistemas de armazenamento de dados e permitir que o atacante acesse informações sensíveis. A rede está exposta a uma possível perda de dados."
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "tecnica_id": "T1654",
+      "nome_tecnica": "Log Enumeration",
+      "pergunta": "O que a técnica T1654 (Log Enumeration) revela sobre este incidente, qual o risco imediato e quais sistemas estão expostos?",
+      "contexto": "Descrição MITRE: Adversaries may enumerate system and service logs to find useful data. These logs may highlight various types of valuable insights for an adversary, such as user authentication records (Account Discovery), security or vulnerable software (Software Discovery), or hosts within a compromised network (Remote System Discovery). Host binaries may be leveraged to collect system logs. Examples include using wevtutil.exe or PowerShell on Windows to access and/or export security event information. In cloud environments, adversaries may leverage utilities such as the Azure VM Agent's CollectGuestLogs.exe to collect security logs from cloud hosted infrastructure. Adversaries may also target centralized logging infrastructure such as SIEMs. Logs may also be bulk exported and sent to adversary-controlled infrastructure for offline analysis. In addition to gaining a better understanding of the environment, adversaries may also monitor logs in real time to track incident response procedures.\n\nFases relacionadas:\nFase 1 (L2-81): O sistema detectou um resumo de log com falha de reconhecimento de rede, indicando que o sistema está tentando se conectar a uma rede.",
+      "resposta": "O atacante está enumerando logs de sistema e serviço para coletar informações valiosas sobre a rede e os sistemas comprometidos. Isso pode incluir dados de autenticação de usuários, software vulnerável e hosts dentro da rede comprometida. O risco imediato é que o atacante possa monitorar logs em tempo real para rastrear procedimentos de resposta a incidentes."
+    }
+  ],
+  "checks_estruturais": [
+    {
+      "arquivo": "linux-syslog-multifase.log",
+      "total_fases_esperado": 6,
+      "total_fases_detectado": 4,
+      "fases_ordenadas_sem_sobreposicao": false,
+      "problemas_ordem": [
+        "Fase 1 (L1-91) se sobrepõe à fase 2 (L1-91).",
+        "Fase 3 (L92-101) se sobrepõe à fase 4 (L92-101)."
+      ]
+    },
+    {
+      "arquivo": "macos-unified-log-multifase.log",
+      "total_fases_esperado": 5,
+      "total_fases_detectado": 2,
+      "fases_ordenadas_sem_sobreposicao": true,
+      "problemas_ordem": []
+    },
+    {
+      "arquivo": "rede-multifase.log",
+      "total_fases_esperado": 6,
+      "total_fases_detectado": 4,
+      "fases_ordenadas_sem_sobreposicao": false,
+      "problemas_ordem": [
+        "Fase 1 (L1-83) se sobrepõe à fase 2 (L1-83).",
+        "Fase 2 (L1-83) se sobrepõe à fase 3 (L1-83)."
+      ]
+    },
+    {
+      "arquivo": "windows-eventlog-multifase.log",
+      "total_fases_esperado": 5,
+      "total_fases_detectado": 1,
+      "fases_ordenadas_sem_sobreposicao": true,
+      "problemas_ordem": []
+    }
+  ]
+}

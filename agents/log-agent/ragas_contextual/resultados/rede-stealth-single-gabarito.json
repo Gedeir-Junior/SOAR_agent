@@ -1,0 +1,20 @@
+{
+  "fonte": "rede",
+  "arquivo_log": "rede-stealth-single.log",
+  "total_linhas": 13,
+  "fases": [
+    {
+      "numero_fase_esperado": 1,
+      "tatica_esperada": "Stealth",
+      "tatica_id_esperada": "TA0005",
+      "linha_inicio": 1,
+      "linha_fim": 13,
+      "tecnicas_esperadas": [
+        "T1027",
+        "T1027.002",
+        "T1027.003"
+      ],
+      "fonte": "rede"
+    }
+  ]
+}
